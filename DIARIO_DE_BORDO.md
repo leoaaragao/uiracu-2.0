@@ -64,6 +64,16 @@ Se eu vier a usar GitHub Copilot ativamente para gerar código neste repositóri
 ### 7. Evidências
 - Prints do processo de download no gbif.org salvos em `Evidencias/` (filtros aplicados, escolha de taxonomia, tela final com o DOI) — servem tanto como prova de reprodutibilidade quanto como material para a apresentação final.
 
+### 7b. Publicação no GitHub — erros de conta (registrado por transparência)
+Publicar o repositório não saiu certo de primeira, e isso fica registrado porque também é parte do processo real:
+
+1. **Primeiro erro:** criei o repositório em `github.com/leonardoaragaobemol/uiracu-2.0` sem perceber que essa é minha conta de trabalho (Bemol), não a pessoal. O `git push` falhou (`403 Permission denied to leoaaragao`) porque o navegador estava autenticado com a conta pessoal (`leoaaragao`), que não tinha permissão nesse repositório.
+2. **Tentativa de correção:** limpamos a credencial salva (`git credential-manager erase`) para forçar um novo login — o erro se repetiu, porque o navegador já estava com sessão ativa em `leoaaragao` e o GitHub não perguntou qual conta usar.
+3. **Diagnóstico e decisão final:** identifiquei que `leonardoaragaobemol` era a conta errada para este projeto (trabalho ≠ acadêmico/pessoal) e decidi migrar tudo para `leoaaragao`. Apaguei o repositório vazio na conta errada (nada foi perdido — o push nunca tinha completado) e criei um novo em `github.com/leoaaragao/uiracu-2.0`.
+4. **Resultado:** publicado com sucesso na conta certa. Ver commits em [github.com/leoaaragao/uiracu-2.0](https://github.com/leoaaragao/uiracu-2.0).
+
+**Lição:** ao trabalhar em máquina com múltiplas contas Google/GitHub logadas (pessoal + trabalho), sempre confirmar qual sessão está ativa no navegador *antes* de criar o repositório, não depois.
+
 ---
 
 ## 2026-09-23 — Etapa 2: Auditoria dos registros (Ficha 01, Bloco C)
@@ -170,11 +180,32 @@ Discutido: a área de calibração (M) deveria, a rigor, seguir a biologia da su
 
 ---
 
+## 2026-09-23 — Etapa 5: Segunda coleta GBIF, sem filtro de país (em andamento)
+
+### Motivo
+A área de calibração (M) deve seguir a biologia, não a fronteira do Brasil (ver Etapa 4, "pendência em aberto"). A subespécie *cana* também ocorre no Peru e na Bolívia. Decidido buscar ocorrências desses países também, para ter uma base mais completa na hora de desenhar M.
+
+### Filtros usados (mesmos de antes, tirando o país)
+- Scientific name: *Lagothrix lagothricha* (espécie — mesma opção 1 de sempre, taxonKey 5786085)
+- ~~Country: Brazil~~ **removido**
+- Has coordinate: Yes
+- Occurrence status: Present
+- Has geospatial issues: Either
+- Taxonomic reference: **GBIF Backbone Taxonomy** (não Catalogue of Life — mesma correção de antes, para manter consistência com a auditoria taxonômica)
+- Extensões: Multimedia
+
+**Erro evitado por repetição de checklist:** ao reabrir o fluxo de download, a taxonomia voltava a aparecer como "Catalogue of Life" por padrão (é o default do GBIF) — reconferido e trocado de novo para GBIF Backbone Taxonomy antes de continuar. Vale de lição: o GBIF não lembra a escolha anterior a cada novo download, então essa checagem precisa ser feita **toda vez**.
+
+*(Resultado desta coleta e novo total de registros: a preencher quando o download terminar e for auditado.)*
+
+---
+
 ## Próximos passos (ainda não feitos)
 - [x] Auditoria completa dos registros (geografia, precisão, tempo, viés amostral — camadas 3 a 7 da Ficha 01).
 - [x] Excluir Roraima do recorte de estudo (motivo ecológico) — 92 → 85 UCs.
 - [x] Publicar repositório no GitHub.
 - [x] Rarefação espacial dos registros (thinning 50 km) — 85 → 37.
+- [ ] Concluir segunda coleta GBIF (Peru/Bolívia incluídos, sem filtro de país) e auditar.
 - [ ] Definir área acessível (M) por ecorregião/bacia hidrográfica (não por estado) e baixar/recortar WorldClim (10 min de arco).
 - [ ] PCA das variáveis bioclimáticas (eixos com >90% da variância).
 - [ ] Background / pseudo-ausências aleatórias em M.

@@ -99,12 +99,70 @@ Saídas: `Dados/FO01_04_log_auditoria.csv` (log completo por registro), `Dados/F
 
 ---
 
+## 2026-09-23 — Etapa 3: Por que Roraima ficou de fora
+
+### Pergunta que motivou isso
+Depois da auditoria, notamos que nenhum dos 139 registros do GBIF caiu em Roraima. Antes de simplesmente aceitar isso, verificamos: é falta de dado (viés de amostragem) ou a espécie realmente não ocorre lá?
+
+### O que descobrimos
+O **Rio Negro é um limite de distribuição documentado** para *Lagothrix lagothricha*: a literatura (Handbook of the Mammals of the World, via Zenodo) descreve a espécie ocorrendo a oeste/norte do Rio Negro, alcançando o alto Rio Negro até a fronteira com a Venezuela. Roraima fica do **outro lado** dessa fronteira natural — é drenada pelo Rio Branco, um afluente do Negro, numa região geológica diferente (Escudo das Guianas, floresta de transição Negro-Branco), com uma fauna de primatas historicamente distinta da porção sul/oeste da Amazônia onde nossa espécie (e a subespécie *cana* em particular) se concentra.
+
+Isso bate com o que a professora ensinou na aula de hoje: **"seres vivos obedecem a limites naturais, não políticos"** — a área acessível (M) de uma espécie deve ser definida por hipótese biogeográfica (rios, ecorregiões, relevo), nunca por fronteira de estado. E também conecta diretamente com a fundamentação teórica do seu próprio projeto de doutorado, que já cita Nelson (1992): grandes calhas fluviais isolam centros de endemismo e criam padrões descontínuos de diversidade na Amazônia — o Rio Negro é um exemplo-livro-texto disso.
+
+### Diferença importante entre duas afirmações
+- ❌ "Não achamos dados em Roraima, então tiramos" (decisão estatística/preguiçosa)
+- ✅ "Roraima provavelmente fica fora da área biogeograficamente acessível a essa espécie, e a ausência de registros é consistente com essa hipótese" (decisão ecológica, com fonte)
+
+A segunda é cientificamente defensável; a primeira não seria (confundiria ausência de amostragem com ausência real — exatamente o erro que a Ficha 01 pede para nunca cometer).
+
+### Decisão e ação
+Removidas as UCs cuja `uf` é exclusivamente Roraima (7 das 9 que tocavam o estado; 2 que também tocam o Amazonas foram mantidas). **92 → 85 Unidades de Conservação** na área de estudo (Amazonas, Acre, Rondônia).
+
+**Ressalva registrada:** este corte foi feito por estado (proxy administrativo), por simplicidade nesta etapa. O corte definitivo da área acessível M (próxima ficha) será feito por ecorregião/bacia hidrográfica, não por limite político — pode refinar ainda mais essa lista (inclusive as 2 UCs Amazonas/Roraima remanescentes podem ter só uma fração relevante, a ser verificada com o polígono de M).
+
+**Script atualizado:** `Scripts/01_filtrar_ucs_federais.py` (comentário no cabeçalho documenta o motivo).
+
+---
+
+## 2026-09-23 — Aprendizados da aula de hoje (Modelagem, remoto) aplicáveis ao projeto
+
+A aula do dia (estudo de caso da castanheira/*Bertholletia excelsa* e de *Brosimum glaziovii*, com a professora Marinez) trouxe orientações diretamente reaproveitáveis aqui. Registrando para aplicar nos próximos passos:
+
+1. **Rarefação espacial (thinning)** — antes de modelar, remover registros muito próximos entre si (ex.: 50 km) para reduzir o "efeito museu" (excesso de pontos perto de cidades/herbários). A turma reduziu 4.512 registros de castanheira para 151 dessa forma. **Vamos aplicar isso aos nossos 85 registros antes da modelagem.**
+2. **Área M por ecorregião, nunca por limite político** — usar união de ecorregiões que tocam os pontos de ocorrência (hipótese ampla) como primeira tentativa; testar interseção estrita só se o modelo não conseguir distinguir bem as áreas. Rios/bacias hidrográficas (ANA, nível 2) quando funcionam como barreira — é exatamente o caso do Rio Negro para nós.
+3. **Validação cruzada (K-fold)**, não tabuleiro de xadrez nem só bootstrap — mais robusta com poucos pontos, recomendação explícita da professora "para o contexto brasileiro".
+4. **Resolução climática**: 10 minutos de arco quando os dados não passaram por auditoria muito rigorosa (nosso caso, com 85 pontos) — resoluções mais finas podem inserir erro artificial.
+5. **PCA das 19 variáveis bioclimáticas** em vez de escolher variáveis manualmente — usar os eixos que somam >90% da variância, respeitando a regra prática de ~10 pontos por dimensão do modelo.
+6. **Maxent não deve ser balanceado 50/50** manualmente — ele compara presença contra todo o background, diferente de GLM/Random Forest.
+7. **Cuidado com "ausências verdadeiras"** de campo (locais onde a espécie já existiu mas foi extinta localmente) — podem confundir o modelo; melhor deixar pseudo-ausências aleatórias no M, a menos que a ausência real esteja muito bem documentada.
+8. **Threshold de binarização**: otimizar sensibilidade + especificidade; justificar a escolha na redação (ex.: 0,7 para orçamento restrito de conservação).
+9. **Mapa de incerteza é obrigatório junto do mapa de consenso** (desvio padrão entre algoritmos) — nunca esconder a discordância. Desvio padrão alto não significa modelo errado, significa um alerta real que deve aparecer no produto final.
+10. **Nunca misturar cenários climáticos futuros distintos** (ex. otimista SSP1-2.6 com pessimista SSP5-8.5); ao apresentar para tomador de decisão, mostrar o pior cenário.
+11. **Pós-processamento com MapBiomas (classe 3, formação florestal) + Unidades de Conservação** dá mais segurança para projeções futuras do que só o mapa climático — UC tem menor chance de deixar de existir até o fim do século do que um fragmento florestal fora dela. É exatamente a etapa final do nosso pipeline (cruzar adequabilidade × as 85 UCs).
+12. **Níveis hierárquicos do resultado** (a professora foi clara sobre isso): Nível 1 = dado bruto; Nível 2 = modelagem; **Nível 3 = distribuição potencial dentro de M (nosso alvo realista)**; Nível 4 = distribuição realizada (precisa de dados de interação/barreira que não temos); Nível 5 = resposta demográfica. **Vamos comunicar o resultado como Nível 3, sem prometer mais que isso.**
+13. **Regras de ouro (checklist para todo o resto do projeto):**
+    - Não converter "sem dado" em zero
+    - Não igualar pseudo-ausência a ausência ecológica real
+    - Nunca interpretar adequabilidade como probabilidade absoluta de presença
+    - Não ocultar a discordância entre algoritmos
+    - Não mascarar áreas de extrapolação
+
+---
+
 ## Próximos passos (ainda não feitos)
 - [x] Auditoria completa dos registros (geografia, precisão, tempo, viés amostral — camadas 3 a 7 da Ficha 01).
-- [ ] Definir área acessível (M) e baixar/recortar WorldClim.
-- [ ] Background / pseudo-ausências.
-- [ ] Ajuste do(s) modelo(s) (GLM e/ou Random Forest) e validação espacial.
-- [ ] Mapa de incerteza e explicabilidade (importância de variáveis).
-- [ ] Dashboard em Streamlit (mapa das 92 UCs + score + fotos das ocorrências).
-- [ ] Publicar repositório no GitHub.
+- [x] Excluir Roraima do recorte de estudo (motivo ecológico) — 92 → 85 UCs.
+- [x] Publicar repositório no GitHub.
+- [ ] Rarefação espacial dos 85 registros (thinning ~50 km) antes de modelar.
+- [ ] Definir área acessível (M) por ecorregião/bacia hidrográfica (não por estado) e baixar/recortar WorldClim (10 min de arco).
+- [ ] PCA das variáveis bioclimáticas (eixos com >90% da variância).
+- [ ] Background / pseudo-ausências aleatórias em M.
+- [ ] Ajuste dos modelos (GLM, Maxent, Random Forest) com validação cruzada (K-fold).
+- [ ] Mapa de consenso + mapa de incerteza (desvio padrão entre algoritmos) — nunca um sem o outro.
+- [ ] Explicabilidade (importância de variáveis).
+- [ ] Pós-processamento: cruzar adequabilidade × MapBiomas (classe 3) × as 85 UCs.
+- [ ] Dashboard em Streamlit (mapa das 85 UCs + score + fotos das ocorrências).
 - [ ] Montar apresentação em PPT a partir deste diário.
+
+## Documentos de apoio
+- [Anotações da aula (Gemini), 22-23/09/2026](https://drive.google.com/drive/folders/1RgYTo5Ki5dCN0r64YvgQBRm3Cfrw0HHj) — referenciadas na seção "Aprendizados da aula" acima.

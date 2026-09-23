@@ -1,6 +1,8 @@
 # Uiraçu 2.0
 
-Priorização espacial de biodiversidade em Unidades de Conservação federais da Amazônia Ocidental (AM, AC, RO, RR), usando modelagem de distribuição de espécies (SDM) e dados abertos.
+Priorização espacial de biodiversidade em Unidades de Conservação federais da Amazônia Ocidental (Amazonas, Acre, Rondônia), usando modelagem de distribuição de espécies (SDM) e dados abertos.
+
+> Roraima foi avaliada e excluída do recorte: o Rio Negro/Rio Branco é um limite de distribuição documentado para a espécie foco. Ver [`DIARIO_DE_BORDO.md`](DIARIO_DE_BORDO.md#por-que-roraima-ficou-de-fora).
 
 Projeto desenvolvido para a disciplina **Análise espacial da biodiversidade, mudanças globais e inteligência artificial** (ENBT/JBRJ, 2026-2, docente Marinez Ferreira de Siqueira), e usado como piloto reprodutível da Etapa 2 (SDM) do projeto de doutorado *"Priorização Espacial para Bônus de Biodiversidade em Unidades de Conservação da Amazônia" (IPBB)*.
 
@@ -12,9 +14,9 @@ Projeto desenvolvido para a disciplina **Análise espacial da biodiversidade, mu
 
 ## O que este repositório faz
 
-1. Filtra as Unidades de Conservação **federais ativas** em AM/AC/RO/RR a partir do CNUC (MMA/ICMBio) — 92 UCs.
+1. Filtra as Unidades de Conservação **federais ativas** em AM/AC/RO a partir do CNUC (MMA/ICMBio) — 85 UCs.
 2. Audita a taxonomia e coleta ocorrências da espécie no GBIF (script + download oficial com DOI).
-3. *(em andamento)* Modela a adequabilidade ambiental (SDM) e cruza com as 92 UCs.
+3. *(em andamento)* Modela a adequabilidade ambiental (SDM) e cruza com as 85 UCs.
 4. *(planejado)* Dashboard interativo em Streamlit para visualizar resultados.
 
 Processo completo, decisão por decisão — incluindo onde e como a IA (Claude) ajudou — está documentado em [`DIARIO_DE_BORDO.md`](DIARIO_DE_BORDO.md).

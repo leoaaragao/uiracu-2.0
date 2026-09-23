@@ -1,9 +1,18 @@
 """
 Ficha simples 01 / Bloco B - preparacao dos dados de UC.
 Filtra o CNUC (ucs.shp, fonte: projeto Uiracu, dados oficiais MMA/ICMBio)
-para as Unidades de Conservacao FEDERAIS que tocam AM, AC, RO ou RR.
+para as Unidades de Conservacao FEDERAIS na area de estudo da especie.
 
 Principio (Protocolo 02): preservar o dado original intocado, gerar copia derivada.
+
+DECISAO (2026-09-23): Roraima foi excluida do recorte administrativo inicial.
+Motivo ECOLOGICO, nao apenas ausencia de registros: o Rio Negro/Rio Branco e
+um limite de distribuicao documentado para Lagothrix lagothricha (a especie
+ocorre a oeste/norte do Rio Negro; Roraima fica do outro lado, na bacia do
+Rio Branco / Escudo das Guianas). Ver DIARIO_DE_BORDO.md, secao "Por que
+Roraima ficou de fora". Esta e uma simplificacao por estado (proxy); o
+recorte definitivo da area acessivel M (ficha 2.1) usara ecorregioes, nao
+limites administrativos - podera refinar esta lista.
 """
 import geopandas as gpd
 
@@ -11,7 +20,7 @@ SRC = "Dados/ucs_cnuc_bruto/ucs.shp"
 OUT_GPKG = "Dados/ucs_federais_amazonia_ocidental.gpkg"
 OUT_CSV = "Dados/ucs_federais_amazonia_ocidental_atributos.csv"
 
-ESTADOS_ALVO = ["AMAZONAS", "ACRE", "RONDÔNIA", "RONDONIA", "RORAIMA"]
+ESTADOS_ALVO = ["AMAZONAS", "ACRE", "RONDÔNIA", "RONDONIA"]  # Roraima removida - ver nota acima
 
 gdf = gpd.read_file(SRC)
 print("Total de UCs no Brasil:", len(gdf))
@@ -25,7 +34,7 @@ is_ativo = gdf["situacao"].str.upper() == "ATIVO"
 is_alvo = gdf["uf"].str.upper().apply(lambda s: any(e in s for e in ESTADOS_ALVO))
 
 sel = gdf[is_federal & is_ativo & is_alvo].copy()
-print("UCs federais ativas em AM/AC/RO/RR:", len(sel))
+print("UCs federais ativas em AM/AC/RO:", len(sel))
 print()
 print(sel[["nome_uc", "categoria", "grupo", "uf", "ha_total", "cat_iucn"]].sort_values("nome_uc").to_string(index=False))
 

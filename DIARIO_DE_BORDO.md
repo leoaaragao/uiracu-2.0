@@ -196,7 +196,30 @@ A área de calibração (M) deve seguir a biologia, não a fronteira do Brasil (
 
 **Erro evitado por repetição de checklist:** ao reabrir o fluxo de download, a taxonomia voltava a aparecer como "Catalogue of Life" por padrão (é o default do GBIF) — reconferido e trocado de novo para GBIF Backbone Taxonomy antes de continuar. Vale de lição: o GBIF não lembra a escolha anterior a cada novo download, então essa checagem precisa ser feita **toda vez**.
 
-*(Resultado desta coleta e novo total de registros: a preencher quando o download terminar e for auditado.)*
+**Resultado:** 2.631 registros (mundo todo, sem filtro de país). DOI oficial: `https://doi.org/10.15468/dl.r8eynx`. **Faltou o filtro "Occurrence status: Present"** desta vez (o GBIF não reaplica escolhas anteriores) — adicionada checagem automática no script de auditoria para pegar isso (camada 1).
+
+**Nota de processo:** o arquivo do primeiro download (só Brasil, DOI `dl.pxqmwc`) foi removido da pasta de trabalho a pedido meu, para não conviver com o novo. Continua recuperável pelo histórico do Git a qualquer momento, se precisar.
+
+### Diagnóstico: a base mundial trouxe outra subespécie junto
+Antes de usar os 2.631 registros direto, cruzei país × subespécie (`infraspecificEpithet`):
+
+| País | *cana* | *poeppigii* | *tschudii* | nominotípica | *lugens* | sem subespécie |
+|---|---|---|---|---|---|---|
+| Brasil | **48** | 5 | 0 | 2 | 0 | 84 |
+| Colômbia | 0 | 2 | 0 | 124 | 49 | 876 |
+| Equador | 0 | 184 | 0 | 140 | 0 | 602 |
+| Peru | **0** | 108 | **158** | 7 | 0 | 227 |
+
+**Achado:** a subespécie *cana* só aparece no Brasil. Colômbia/Equador são dominados pela nominotípica e por *lugens* — população separada por outra barreira biogeográfica (alto Amazonas/Napo), o mesmo tipo de caso que a Roraima (Etapa 3). Peru é um meio-termo: geograficamente próximo, mas taxonomicamente é outra subespécie (*tschudii*/*poeppigii*), não *cana*.
+
+Testei filtrar para Brasil + Peru (`Scripts/09_filtrar_brasil_peru.py` → 639 registros; script de auditoria `05` atualizado para lidar com departamentos peruanos) e rodei a auditoria: **599 registros utilizáveis no total (120 BR + 479 PE)**, com os mesmos **85 registros brasileiros de sempre** dentro da área de estudo do projeto (número idêntico ao da Etapa 2 — bom sinal de consistência).
+
+### ⏸️ PAUSADO — decisão pendente para 24/09/2026
+Cheguei numa pergunta que não tenho segurança para decidir sozinho: **a área de calibração M deve usar só Brasil (só *cana*), Brasil+Peru (mistura *cana* com *tschudii*/*poeppigii*), ou existe uma terceira abordagem mais correta (ex.: delimitar por ecorregião e deixar a biologia decidir naturalmente quais pontos entram)?**
+
+Decisão: **parar aqui e perguntar à professora na aula de amanhã**, em vez de seguir com uma escolha que eu mesmo tenho dúvida se está certa. Resumo específico para essa conversa em [`RESUMO_PARA_PROFESSORA_24-09.md`](RESUMO_PARA_PROFESSORA_24-09.md).
+
+**Nada foi executado além da auditoria/diagnóstico acima** — a rarefação, definição de M e download do WorldClim continuam pendentes até a decisão. O script de rarefação (`07`) já foi ajustado para rodar sobre o conjunto maior quando a decisão sair, mas **não foi executado**.
 
 ---
 
@@ -204,9 +227,11 @@ A área de calibração (M) deve seguir a biologia, não a fronteira do Brasil (
 - [x] Auditoria completa dos registros (geografia, precisão, tempo, viés amostral — camadas 3 a 7 da Ficha 01).
 - [x] Excluir Roraima do recorte de estudo (motivo ecológico) — 92 → 85 UCs.
 - [x] Publicar repositório no GitHub.
-- [x] Rarefação espacial dos registros (thinning 50 km) — 85 → 37.
-- [ ] Concluir segunda coleta GBIF (Peru/Bolívia incluídos, sem filtro de país) e auditar.
+- [x] Rarefação espacial dos registros (thinning 50 km) — 85 → 37 (sobre a base só-Brasil; a refazer conforme decisão abaixo).
+- [x] Segunda coleta GBIF sem filtro de país + diagnóstico (achado: mistura de subespécies).
+- [ ] **⏸️ Decidir com a professora (24/09): escopo geográfico de M** — Brasil / Brasil+Peru / outra abordagem.
 - [ ] Definir área acessível (M) por ecorregião/bacia hidrográfica (não por estado) e baixar/recortar WorldClim (10 min de arco).
+- [ ] Refazer rarefação espacial sobre a base final decidida.
 - [ ] PCA das variáveis bioclimáticas (eixos com >90% da variância).
 - [ ] Background / pseudo-ausências aleatórias em M.
 - [ ] Ajuste dos modelos (GLM, Maxent, Random Forest) com validação cruzada (K-fold).

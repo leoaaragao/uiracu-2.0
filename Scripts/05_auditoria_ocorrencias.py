@@ -14,16 +14,23 @@ Saidas:
 import pandas as pd
 import numpy as np
 
-SRC = "Dados/gbif_oficial_extraido/occurrence.txt"
+SRC = "Dados/FO01_02b_ocorrencias_brasil_peru.csv"
 OUT_LOG = "Dados/FO01_04_log_auditoria.csv"
 OUT_AUDITADAS = "Dados/FO01_03_ocorrencias_auditadas.csv"
 OUT_SINTESE = "Dados/FO01_05_sintese_auditoria.md"
 
-ESTADOS_ALVO = {"Amazonas", "Acre", "Rondônia", "Roraima"}
-ESTADOS_AMAZONIA_PLAUSIVEL = ESTADOS_ALVO | {"Pará", "Mato Grosso"}  # adjacentes, dentro da distribuicao conhecida
+# Brasil: area de estudo (recorte politico do projeto) x "vizinhanca amazonica" plausivel
+ESTADOS_ALVO = {"Amazonas", "Acre", "Rondônia"}  # Roraima removida - ver DIARIO_DE_BORDO.md
+ESTADOS_AMAZONIA_PLAUSIVEL = ESTADOS_ALVO | {"Pará", "Mato Grosso"}
+# Peru: incluido deliberadamente (2026-09-23) para dar mais contraste ambiental a M,
+# mesmo misturando subespecies vizinhas (tschudii/poeppigii) - ver DIARIO_DE_BORDO.md
+DEPARTAMENTOS_PERU_PLAUSIVEL = {
+    "Loreto", "Ucayali", "Madre de Dios", "Cusco", "Puno", "Junín", "Pasco",
+    "San Martín", "Huánuco", "Amazonas",  # "Amazonas" tambem existe como depto peruano
+}
 PALAVRAS_CATIVEIRO = r"zool[oó]gico|\bzoo\b|cativeiro|cativ[oa]|parque zool"
 
-df = pd.read_csv(SRC, sep="\t", quoting=3, low_memory=False, encoding="utf-8")
+df = pd.read_csv(SRC, low_memory=False, encoding="utf-8")
 n0 = len(df)
 print(f"Registros carregados: {n0}")
 
@@ -38,6 +45,10 @@ flags["c1_lon_fora_intervalo"] = ~df["decimalLongitude"].between(-180, 180)
 dup_key = df["decimalLatitude"].round(5).astype(str) + "_" + df["decimalLongitude"].round(5).astype(str) + "_" + df["eventDate"].astype(str) + "_" + df["recordedBy"].astype(str)
 flags["c1_duplicata_provavel"] = dup_key.duplicated(keep=False) & ~df["decimalLatitude"].isna()
 flags["c1_issue_gbif"] = df["issue"].fillna("")
+# a 2a coleta (DOI dl.r8eynx) saiu sem o filtro "Occurrence status = Present" -
+# checando aqui para garantir que nenhum registro de AUSENCIA entrou por engano
+flags["c1_occurrence_status"] = df["occurrenceStatus"]
+flags["c1_status_nao_presente"] = df["occurrenceStatus"].astype(str).str.upper() != "PRESENT"
 
 # ---------- Camada 2: Taxonomia ----------
 flags["c2_taxon_rank"] = df["taxonRank"]
@@ -45,11 +56,27 @@ flags["c2_status_taxonomico"] = df["taxonomicStatus"]
 flags["c2_nome_aceito"] = df["acceptedScientificName"]
 flags["c2_infraespecifico"] = df["infraspecificEpithet"]
 
-# ---------- Camada 3: Geografia ----------
+# ---------- Camada 3: Geografia (consciente do pais - Brasil e Peru tem listas proprias) ----------
 flags["c3_country_code"] = df["countryCode"]
 flags["c3_estado_gbif"] = df["level1Name"]
-flags["c3_fora_estados_alvo"] = ~df["level1Name"].isin(ESTADOS_ALVO)
-flags["c3_fora_amazonia_plausivel"] = ~df["level1Name"].fillna("NAO_IDENTIFICADO").isin(ESTADOS_AMAZONIA_PLAUSIVEL)
+
+def _fora_estados_alvo(row):
+    # Area de estudo do PROJETO (recorte politico): so os 3 estados brasileiros-alvo.
+    # Peru inteiro fica "fora da area de estudo" mas pode ser plausivel (ver funcao abaixo).
+    if row["countryCode"] == "BR":
+        return row["level1Name"] not in ESTADOS_ALVO
+    return True
+
+def _fora_amazonia_plausivel(row):
+    # Plausibilidade BIOLOGICA (Camada 6 usa isto para decidir REVISAR/EXCLUIR).
+    if row["countryCode"] == "BR":
+        return row["level1Name"] not in ESTADOS_AMAZONIA_PLAUSIVEL
+    if row["countryCode"] == "PE":
+        return row["level1Name"] not in DEPARTAMENTOS_PERU_PLAUSIVEL
+    return True  # qualquer outro pais nao deveria estar nesta base (ja filtrada a BR+PE)
+
+flags["c3_fora_estados_alvo"] = df.apply(_fora_estados_alvo, axis=1)
+flags["c3_fora_amazonia_plausivel"] = df.apply(_fora_amazonia_plausivel, axis=1)
 flags["c3_issue_geo"] = df["issue"].fillna("").str.contains(
     "COUNTRY_COORDINATE_MISMATCH|COORDINATE_INVALID|COORDINATE_OUT_OF_RANGE|PRESUMED_.*_INVALID", regex=True
 )
@@ -95,6 +122,8 @@ flags["c7_instituicao"] = df["institutionCode"]
 def decidir(row):
     if row["c1_sem_coordenada"] or row["c1_coordenada_zero"] or row["c1_lat_fora_intervalo"] or row["c1_lon_fora_intervalo"]:
         return "EXCLUIR", "coordenada ausente/zero/fora do intervalo valido"
+    if row["c1_status_nao_presente"]:
+        return "EXCLUIR", f"occurrenceStatus != PRESENT (valor={row['c1_occurrence_status']}) - filtro Present nao estava ativo nesta coleta"
     if row["c6_fossil"]:
         return "EXCLUIR", "basisOfRecord = fossil, irrelevante para distribuicao atual"
     if row["c6_cultivado_ou_cativo"]:
@@ -108,7 +137,7 @@ def decidir(row):
     if row["c3_fora_amazonia_plausivel"]:
         return "REVISAR", f"fora da distribuicao amazonica plausivel da especie (estado={row['c3_estado_gbif']}) - provavel erro de identificacao/geolocalizacao"
     if row["c3_fora_estados_alvo"]:
-        return "MANTER_COM_RESSALVA", f"dentro da Amazonia mas fora de AM/AC/RO/RR (estado={row['c3_estado_gbif']}) - fora da area de estudo, mantido apenas como contexto de fundo"
+        return "MANTER_COM_RESSALVA", f"fora da area de estudo do projeto (AM/AC/RO), pais={row['c3_country_code']} regiao={row['c3_estado_gbif']} - populacao vizinha plausivel, usada so para dar contraste ambiental a M, nao entra no resultado final por UC"
     if row["c1_duplicata_provavel"]:
         return "MANTER_COM_RESSALVA", "possivel duplicata (mesma coordenada/data/coletor) - conferir antes de modelar"
     if row["c4_incerteza_grande"]:

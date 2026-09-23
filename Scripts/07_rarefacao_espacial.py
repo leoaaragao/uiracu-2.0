@@ -17,11 +17,12 @@ SEED = 42
 log = pd.read_csv("Dados/FO01_04_log_auditoria.csv")
 occ = pd.read_csv("Dados/FO01_03_ocorrencias_auditadas.csv")
 
-usaveis = occ[
-    occ["audit_decisao"].isin(["MANTER", "MANTER_COM_RESSALVA"])
-    & occ["gbifID"].isin(log.loc[~log["c3_fora_estados_alvo"], "gbifID"])
-].copy()
-print(f"Registros utilizaveis antes da rarefacao: {len(usaveis)}")
+# Rarefeita o conjunto INTEIRO usavel (Brasil + Peru) - e o que vai calibrar o
+# modelo (area M). O recorte para as 85 UCs brasileiras acontece so no
+# pos-processamento/resultado final, nao aqui (mesma logica ensinada na aula:
+# M ecologico primeiro, corte politico depois).
+usaveis = occ[occ["audit_decisao"].isin(["MANTER", "MANTER_COM_RESSALVA"])].copy()
+print(f"Registros utilizaveis antes da rarefacao (Brasil+Peru): {len(usaveis)}")
 
 def haversine_km(lat1, lon1, lat2, lon2):
     lat1, lon1, lat2, lon2 = map(radians, [lat1, lon1, lat2, lon2])

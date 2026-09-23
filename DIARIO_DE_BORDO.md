@@ -221,6 +221,11 @@ Decisão: **parar aqui e perguntar à professora na aula de amanhã**, em vez de
 
 **Nada foi executado além da auditoria/diagnóstico acima** — a rarefação, definição de M e download do WorldClim continuam pendentes até a decisão. O script de rarefação (`07`) já foi ajustado para rodar sobre o conjunto maior quando a decisão sair, mas **não foi executado**.
 
+### Segunda dúvida levantada (mesma categoria de problema): o limiar de rarefação é sempre 50 km?
+Questionamento levantado durante a conversa: a rarefação espacial (Etapa 4) não distingue "pontos próximos por viés de coleta" de "pontos próximos porque a espécie realmente só existe numa área pequena". Contraexemplo real: *Saguinus bicolor* (sauim-de-coleira) é endêmico de ~7.500 km² em torno de Manaus (partes de Manaus, Rio Preto da Eva e Itacoatiara), sobrevivendo em fragmentos de mata **dentro da própria cidade** ([Revista Amazônia](https://revistaamazonia.com.br/sauim-de-coleira-sobrevive-em-fragmentos-de-mata-dentro-de-manaus-e-se-torna-o-primata-amazonico-com-a-menor-area-de-ocorrencia-do-brasil-nn/); [FAPEAM](https://www.fapeam.am.gov.br/pesquisa-analisa-a-distribuicao-geografica-e-saude-do-sauim-de-coleira/)). Um thinning de 50 km aplicado a essa espécie colapsaria quase toda a distribuição conhecida em 1-2 pontos, apagando sinal ecológico real, não removendo viés.
+
+**Conclusão provisória (a confirmar com a professora):** o limiar de rarefação deve ser proporcional ao tamanho da distribuição conhecida da espécie, não um valor fixo reaplicado entre casos de estudo diferentes. Para *Lagothrix lagothricha* (distribuição de centenas de milhares de km²), 50 km é uma fração pequena da extensão e parece adequado — mas isso precisa ser uma verificação explícita, não um copiar-e-colar do exemplo da castanheira. Adicionado como segunda pergunta no resumo para a aula de 24/09.
+
 ---
 
 ## Próximos passos (ainda não feitos)

@@ -28,6 +28,14 @@ Depois da aula, entendi que a área M não deveria parar exatamente na fronteira
 
 Cheguei a testar a opção (b), mas fiquei em dúvida se está certo teoricamente — se a`M` deve ser definida pela espécie inteira, só pela subespécie, ou por uma lógica de ecorregião que ainda nem apliquei (a próxima ficha). **Por isso parei aqui para perguntar a você amanhã.**
 
+## Segunda dúvida: o limiar de rarefação (50 km) sempre vale?
+
+Pensando no thinning de 50 km que apliquei (item 7 acima), me ocorreu um contraexemplo: o **sauim-de-coleira** (*Saguinus bicolor*), endêmico de uma área de só **~7.500 km²** (partes de Manaus, Rio Preto da Eva e Itacoatiara), sobrevivendo até em fragmentos de mata **dentro da cidade de Manaus**.
+
+Se eu aplicasse o mesmo raio de 50 km num levantamento dessa espécie, o filtro provavelmente colapsaria quase todos os registros em 1-2 pontos — porque a distribuição inteira dela cabe num raio pequeno. Nesse caso, "pontos concentrados perto da cidade" não seria viés de coleta (efeito museu) — seria o **sinal ecológico real**, já que a espécie genuinamente só existe ali.
+
+**Minha dúvida:** o limiar de rarefação precisa ser proporcional ao tamanho da distribuição conhecida da espécie (não um valor fixo tipo "sempre 50 km")? Para o nosso macaco-barrigudo, que tem distribuição ampla (centenas de milhares de km² pela Amazônia), 50 km parece razoável — mas eu gostaria de confirmar esse raciocínio com a senhora, e entender se existe uma regra prática (ex.: limiar como fração da área de distribuição/extensão de ocorrência) ou se isso é sempre uma decisão caso a caso.
+
 ## Trabalho técnico (não executado, aguardando decisão)
 Preparei o código para as três opções, mas **não rodei o passo de definição de M nem baixei o WorldClim** com nenhuma delas — está tudo pausado nesse ponto até a orientação de amanhã. Nada foi perdido nem sobrescrito de forma irreversível (histórico completo no Git).
 

@@ -149,11 +149,32 @@ A aula do dia (estudo de caso da castanheira/*Bertholletia excelsa* e de *Brosim
 
 ---
 
+## 2026-09-23 — Etapa 4: Rarefação espacial
+
+Aplicado o thinning de 50 km ensinado na aula (`Scripts/07_rarefacao_espacial.py`): para cada par de pontos mais próximo que 50 km, mantido apenas um (priorizando o de menor incerteza de coordenada; entre incertezas desconhecidas, sorteio com semente fixa para reprodutibilidade).
+
+**85 → 37 registros** (56% removidos por proximidade excessiva — sinal de quanto o "efeito museu" estava presente nos dados, especialmente no Amazonas: 61 → 28).
+
+| Estado | Antes | Depois |
+|---|---|---|
+| Amazonas | 61 | 28 |
+| Rondônia | 22 | 8 |
+| Acre | 2 | 1 |
+
+**Limitação a carregar adiante:** Acre ficou com apenas 1 ponto após a rarefação — qualquer resultado para as UCs do Acre terá pouquíssimo suporte direto de dados (soma-se à limitação já registrada de Roraima).
+
+Saída: `Dados/FO01_06_ocorrencias_rarefeitas.csv`.
+
+### Pendência em aberto: escopo geográfico de M
+Discutido: a área de calibração (M) deveria, a rigor, seguir a biologia da subespécie *cana*, que também ocorre no Peru e na Bolívia — não faz sentido cortar M exatamente na fronteira política do Brasil. Os dados atuais (37 pontos) são só do Brasil (`country=BR` no filtro original do GBIF). Decisão de buscar ou não ocorrências do Peru/Bolívia para enriquecer M fica para a próxima etapa (ficha da área acessível). Já está definido, independentemente disso, que o **dashboard final será recortado nas 85 UCs federais brasileiras** — a distinção "M ecológico x recorte político no pós-processamento" é a mesma que a professora ensinou na aula.
+
+---
+
 ## Próximos passos (ainda não feitos)
 - [x] Auditoria completa dos registros (geografia, precisão, tempo, viés amostral — camadas 3 a 7 da Ficha 01).
 - [x] Excluir Roraima do recorte de estudo (motivo ecológico) — 92 → 85 UCs.
 - [x] Publicar repositório no GitHub.
-- [ ] Rarefação espacial dos 85 registros (thinning ~50 km) antes de modelar.
+- [x] Rarefação espacial dos registros (thinning 50 km) — 85 → 37.
 - [ ] Definir área acessível (M) por ecorregião/bacia hidrográfica (não por estado) e baixar/recortar WorldClim (10 min de arco).
 - [ ] PCA das variáveis bioclimáticas (eixos com >90% da variância).
 - [ ] Background / pseudo-ausências aleatórias em M.

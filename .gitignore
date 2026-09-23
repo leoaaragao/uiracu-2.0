@@ -1,0 +1,22 @@
+# Ambiente virtual (nunca versionar)
+.venv/
+__pycache__/
+*.pyc
+
+# Dado bruto de terceiros, grande, reobtenivel pela fonte documentada no README
+Dados/ucs_cnuc_bruto/
+
+# Downloads brutos do GBIF (grandes; o DOI garante a reprodutibilidade sem
+# precisar versionar o zip no git)
+Dados/*gbif_oficial*
+Dados/**/0*-*.zip
+
+# Rasters climaticos (grandes; baixados via script, nao versionados)
+Dados/worldclim*/
+*.tif
+*.tiff
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini

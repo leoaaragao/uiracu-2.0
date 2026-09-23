@@ -5,9 +5,20 @@ Projeto da disciplina *Análise espacial da biodiversidade, mudanças globais e 
 **Espécie foco:** *Lagothrix lagothricha* (macaco-barrigudo-cinza; subespécie predominante na região: *L. l. cana*)
 **Área:** Unidades de Conservação federais do Amazonas, Acre, Rondônia e Roraima
 **Autor:** Leonardo Andrade Aragão
-**Ferramenta de IA usada:** Claude (Claude Code / Anthropic), com verificação humana em cada etapa, conforme Protocolo 01/02 da disciplina.
 
 Este arquivo é o registro cronológico de decisões, comandos executados e papel da IA em cada etapa — é a base para a Declaração de Uso de IA do projeto final e para a apresentação em slides.
+
+## Ferramentas de IA utilizadas no projeto (linhagem completa)
+
+O Uiraçu 2.0 não começa do zero: reaproveita dados e conceito de um protótipo anterior (Uiraçu 1.0), feito com outra ferramenta de IA. Registro as duas, com verificação humana em cada etapa, conforme Protocolo 01/02 da disciplina.
+
+| Ferramenta | Empresa | Onde foi usada | Finalidade |
+|---|---|---|---|
+| **Antigravity** (IDE com assistência de IA) | Google | Uiraçu 1.0 (`Aluno/Uiraçu - Biodiversity Bonus/`), projeto pessoal anterior, fora desta disciplina | Construção do protótipo React/Vite/Tailwind original: componentes de UI, lógica de cálculo do IPBB (sliders de peso) e organização do shapefile de UCs (`ucs.zip`) que reaproveitei aqui |
+| **Claude** (Claude Code, via VS Code) | Anthropic | Todo o Uiraçu 2.0 (este repositório): ambiente Python, filtro de UCs, auditoria taxonômica, coleta GBIF, documentação, versionamento e publicação no GitHub | Assistente de programação e análise, com decisões científicas e cliques finais sempre meus |
+| **GitHub** (+ Git Credential Manager) | Microsoft/GitHub | Publicação e versionamento do código-fonte | Não é uma ferramenta de IA generativa — registrado aqui por transparência do fluxo de trabalho completo, não por exigência da Declaração de Uso de IA |
+
+Se eu vier a usar GitHub Copilot ativamente para gerar código neste repositório, essa entrada será adicionada aqui também, com a mesma transparência.
 
 ---
 

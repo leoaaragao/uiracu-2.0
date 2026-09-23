@@ -66,8 +66,41 @@ Se eu vier a usar GitHub Copilot ativamente para gerar código neste repositóri
 
 ---
 
+## 2026-09-23 — Etapa 2: Auditoria dos registros (Ficha 01, Bloco C)
+
+### 8. Auditoria em 7 camadas
+Script `Scripts/05_auditoria_ocorrencias.py`, aplicado aos 139 registros do download oficial. Cada registro recebeu uma decisão (MANTER / MANTER_COM_RESSALVA / REVISAR / EXCLUIR) com justificativa registrada — nada foi excluído silenciosamente.
+
+**Achado principal:** só 62% dos registros (86/139) estão de fato em AM, AC, RO ou RR segundo a geocodificação do GBIF. O resto se distribui por todo o Brasil, incluindo estados fora da distribuição conhecida da espécie (São Paulo, Bahia, Rio de Janeiro, Pernambuco, Santa Catarina, Espírito Santo, Distrito Federal).
+
+**Padrão identificado (Prática 1 do programa: "a IA encontrou um padrão — ele é ecológico?"):** boa parte desses registros fora do lugar vêm do dataset ICMBio/SISBio e compartilham **coordenadas idênticas entre registros de datas diferentes**, batendo exatamente com o centro de capitais (Brasília, São Paulo, Rio, Salvador). Conclusão: não é o animal que está lá — é o endereço da instituição que registrou a autorização de pesquisa no sistema, usado como coordenada de plantão. Regra criada para sinalizar esse padrão especificamente (coordenada repetida + fora da Amazônia plausível), em vez de simplesmente descartar tudo que caía fora dos 4 estados.
+
+Também encontrado: 1 espécime do Espírito Santo com localidade "Zoo Park da Montanha" e observação de campo "nascido em cativeiro" — corretamente sinalizado para exclusão (busca textual na localidade/observações, não só no campo estruturado `establishmentMeans`, que estava vazio nesse registro).
+
+**Decisão humana:** 1 registro na fronteira Brasil/Peru ("Loreto" segundo a geocodificação, mas com localidade descrita como "ilha no rio Amazonas, a montante de Benjamin Constant/AM") foi avaliado manualmente e mantido com ressalva — é uma ambiguidade de fronteira, não um erro.
+
+**Depuração:** durante a construção do script, uma verificação de cativeiro por texto não estava funcionando — `pandas.Series.astype(str)` não converteu corretamente valores ausentes em colunas totalmente vazias (comportamento inesperado no pandas 3.0.6, versão recém-lançada). Diagnosticado testando célula por célula até isolar a coluna problemática; corrigido trocando `.astype(str)` por `.fillna("")`. Fica registrado como lição: sempre testar a regra em um caso conhecido antes de confiar no resultado agregado — exatamente o que o Protocolo 02 pede ("comparar ao menos um resultado com cálculo independente ou expectativa ecológica").
+
+### 9. Resultado final da auditoria
+
+| Decisão | N | % |
+|---|---|---|
+| MANTER | 33 | 23,7% |
+| MANTER_COM_RESSALVA | 87 | 62,6% |
+| REVISAR | 8 | 5,8% |
+| EXCLUIR | 11 | 7,9% |
+
+**Registros utilizáveis dentro da área de estudo (AM/AC/RO/RR): 85**
+- Amazonas: 61 · Rondônia: 22 · Acre: 2 · **Roraima: 0**
+
+**Limitação a carregar adiante:** Roraima não tem nenhuma ocorrência nos dados coletados. Qualquer resultado do modelo para as UCs de Roraima será **extrapolação**, não interpolação — precisa aparecer explicitamente no mapa de incerteza final (Ponto de Parada 6 da Ficha 2.1).
+
+Saídas: `Dados/FO01_04_log_auditoria.csv` (log completo por registro), `Dados/FO01_03_ocorrencias_auditadas.csv` (base + decisão), `Dados/FO01_05_sintese_auditoria.md`.
+
+---
+
 ## Próximos passos (ainda não feitos)
-- [ ] Auditoria completa dos registros (geografia, precisão, tempo, viés amostral — camadas 3 a 7 da Ficha 01).
+- [x] Auditoria completa dos registros (geografia, precisão, tempo, viés amostral — camadas 3 a 7 da Ficha 01).
 - [ ] Definir área acessível (M) e baixar/recortar WorldClim.
 - [ ] Background / pseudo-ausências.
 - [ ] Ajuste do(s) modelo(s) (GLM e/ou Random Forest) e validação espacial.

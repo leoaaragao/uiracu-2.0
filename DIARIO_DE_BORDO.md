@@ -295,6 +295,22 @@ Estes dados **não têm DOI** — foram obtidos via API de busca (`occurrence/se
 
 Testado interativamente (mapa, popup, clique, aba de exploração) — funcionando. Como rodar: ver `README.md`.
 
+## 2026-09-24 — Etapa 9: Dashboard v2 — filtro dentro/fora de UC e mapa por espécie
+
+A pedido, adicionados dois recursos ao dashboard:
+
+1. **Modo do mapa** (seletor): alterna entre "Riqueza agregada por UC" (mapa original) e **"Pontos de uma espécie (dentro/fora das UCs)"**.
+2. No novo modo: seletor de **qualquer uma das 168 espécies** pesquisadas + interruptor **"Incluir pontos fora das UCs"**. Mostra os pontos individuais no mapa (verde = dentro de alguma UC, marrom = fora, mas dentro da região de busca), com contagem explícita ("X dentro · Y fora").
+
+Tecnicamente: criada uma função cacheada (`juntar_pontos_com_uc`) que faz a junção espacial ponto-a-ponto de **todas** as 14.588 ocorrências baixadas (não só as 792 já confirmadas dentro de UC) contra os polígonos das 85 UCs — generaliza o que o `Scripts/16` fez só para as 68 espécies já identificadas, agora para as 168 dentro do próprio dashboard.
+
+Testado: seleção de espécie, alternância dentro/fora, contagens corretas exibidas (ex.: *Alouatta belzebul* — 1 dentro / 140 fora). Sem erros de console.
+
+**Sugestões registradas para próximas iterações (ainda não implementadas):**
+- Colorir/filtrar por status de ameaça (IUCN) — precisaria de mais uma consulta por espécie.
+- Um índice simples de biodiversidade por UC (riqueza + peso por espécie ameaçada) — pré-visualização do IPBB usando só os dados já coletados, sem esperar o SDM do *Lagothrix*.
+- Exportar o mapa/relatório do dashboard como imagem ou PDF.
+
 ---
 
 ## Próximos passos (ainda não feitos)
@@ -303,7 +319,9 @@ Testado interativamente (mapa, popup, clique, aba de exploração) — funcionan
 - [x] Publicar repositório no GitHub.
 - [x] Rarefação espacial dos registros (thinning 50 km) — 85 → 37 (sobre a base só-Brasil; a refazer conforme decisão abaixo).
 - [x] Segunda coleta GBIF sem filtro de país + diagnóstico (achado: mistura de subespécies).
-- [ ] **⏸️ Decidir com a professora (24/09): escopo geográfico de M** — Brasil / Brasil+Peru / outra abordagem.
+- [x] Cruzamento de 168 espécies de primatas × 85 UCs (evidência GBIF) + planilha + coordenadas completas.
+- [x] Dashboard interativo v1 e v2 (riqueza por UC, ranking, pontos por espécie dentro/fora de UC).
+- [ ] **⏸️ AINDA PENDENTE — decidir com a professora: escopo geográfico de M** (Brasil / Brasil+Peru / outra abordagem) para o SDM do *Lagothrix*. A conversa em 24/09 migrou para o cruzamento multiespécie antes de fechar esse ponto — retomar na próxima oportunidade.
 - [ ] Definir área acessível (M) por ecorregião/bacia hidrográfica (não por estado) e baixar/recortar WorldClim (10 min de arco).
 - [ ] Refazer rarefação espacial sobre a base final decidida.
 - [ ] PCA das variáveis bioclimáticas (eixos com >90% da variância).
@@ -312,7 +330,8 @@ Testado interativamente (mapa, popup, clique, aba de exploração) — funcionan
 - [ ] Mapa de consenso + mapa de incerteza (desvio padrão entre algoritmos) — nunca um sem o outro.
 - [ ] Explicabilidade (importância de variáveis).
 - [ ] Pós-processamento: cruzar adequabilidade × MapBiomas (classe 3) × as 85 UCs.
-- [ ] Dashboard em Streamlit (mapa das 85 UCs + score + fotos das ocorrências).
+- [ ] Integrar resultado do SDM do *Lagothrix* ao dashboard (hoje só mostra a camada multiespécie).
+- [ ] *(sugestão nova, não decidida)* Índice simples de biodiversidade por UC combinando riqueza multiespécie + peso por status de ameaça (IUCN) — prévia do IPBB sem depender do SDM.
 - [ ] Montar apresentação em PPT a partir deste diário.
 
 ## Documentos de apoio

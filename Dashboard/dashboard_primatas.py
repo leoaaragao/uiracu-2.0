@@ -24,10 +24,27 @@ def carregar_dados():
     ucs = gpd.read_file(os.path.join(RAIZ, "Dados", "ucs_federais_amazonia_ocidental.gpkg")).to_crs("EPSG:4326")
     matriz = pd.read_csv(os.path.join(RAIZ, "Referencias", "matriz_especies_x_ucs_gbif.csv")).set_index("species")
     ranking = pd.read_csv(os.path.join(RAIZ, "Referencias", "ranking_especies_por_incidencia_ucs.csv")).set_index("species")
-    tab_pais = pd.read_csv(os.path.join(RAIZ, "Referencias", "ocorrencias_primatas_brasil_gbif.csv"))
-    return ucs, matriz, ranking, tab_pais
+    ocorrencias = pd.read_csv(os.path.join(RAIZ, "Referencias", "ocorrencias_primatas_brasil_gbif.csv"))
+    ocorrencias = ocorrencias.dropna(subset=["decimalLatitude", "decimalLongitude"])
+    return ucs, matriz, ranking, ocorrencias
+
+@st.cache_data
+def juntar_pontos_com_uc(_ucs, ocorrencias):
+    """Marca, para TODAS as ocorrencias baixadas (168 especies), se cada ponto
+    cai dentro de alguma das 85 UCs (join geometrico real, nao por pais)."""
+    pontos = gpd.GeoDataFrame(
+        ocorrencias,
+        geometry=gpd.points_from_xy(ocorrencias["decimalLongitude"], ocorrencias["decimalLatitude"]),
+        crs="EPSG:4326",
+    )
+    uc_slim = _ucs[["nome_uc", "geometry"]]
+    j = gpd.sjoin(pontos, uc_slim, how="left", predicate="within")
+    j["dentro_de_uc"] = j["nome_uc"].notna()
+    j["nome_uc"] = j["nome_uc"].fillna("(fora das UCs de estudo)")
+    return j.drop(columns="geometry")
 
 ucs, matriz, ranking, ocorrencias = carregar_dados()
+pontos_com_uc = juntar_pontos_com_uc(ucs, ocorrencias)
 
 # Riqueza por UC (n de especies com >=1 registro) e lista de especies por UC
 riqueza = (matriz > 0).sum(axis=0)  # index = nome_uc
@@ -81,36 +98,88 @@ with col_lateral:
     st.plotly_chart(fig, use_container_width=True)
 
 with col_mapa:
-    st.subheader("Mapa — riqueza de primatas por UC")
-    m = folium.Map(location=[-7, -65], zoom_start=5, tiles="OpenStreetMap")
-    maxr = max(int(ucs["riqueza_primatas"].max()), 1)
+    modo_mapa = st.radio(
+        "Modo do mapa",
+        ["Riqueza agregada por UC", "Pontos de uma espécie (dentro/fora das UCs)"],
+        horizontal=True,
+    )
 
-    def cor(r):
-        if r == 0:
-            return "#DDDDDD"
-        frac = r / maxr
-        # verde claro -> verde escuro
-        g = int(230 - frac * 140)
-        return f"#{g:02x}{int(120-frac*60):02x}{g-40:02x}"
+    if modo_mapa == "Riqueza agregada por UC":
+        st.subheader("Mapa — riqueza de primatas por UC")
+        m = folium.Map(location=[-7, -65], zoom_start=5, tiles="OpenStreetMap")
+        maxr = max(int(ucs["riqueza_primatas"].max()), 1)
 
-    for _, row in ucs.iterrows():
-        especies_lista = especies_por_uc.get(row["nome_uc"], [])
-        popup_html = f"<b>{row['nome_uc']}</b><br>Categoria: {row['categoria']}<br>" \
-                      f"Riqueza de primatas (evidência GBIF): <b>{row['riqueza_primatas']}</b>"
-        if especies_lista:
-            popup_html += "<br><br>" + "<br>".join(f"• <i>{e}</i>" for e in especies_lista[:15])
-            if len(especies_lista) > 15:
-                popup_html += f"<br>... e mais {len(especies_lista)-15}"
+        def cor(r):
+            if r == 0:
+                return "#DDDDDD"
+            frac = r / maxr
+            g = int(230 - frac * 140)
+            return f"#{g:02x}{int(120-frac*60):02x}{g-40:02x}"
+
+        for _, row in ucs.iterrows():
+            especies_lista = especies_por_uc.get(row["nome_uc"], [])
+            popup_html = f"<b>{row['nome_uc']}</b><br>Categoria: {row['categoria']}<br>" \
+                          f"Riqueza de primatas (evidência GBIF): <b>{row['riqueza_primatas']}</b>"
+            if especies_lista:
+                popup_html += "<br><br>" + "<br>".join(f"• <i>{e}</i>" for e in especies_lista[:15])
+                if len(especies_lista) > 15:
+                    popup_html += f"<br>... e mais {len(especies_lista)-15}"
+            folium.GeoJson(
+                row["geometry"],
+                style_function=lambda x, c=cor(row["riqueza_primatas"]): {
+                    "fillColor": c, "color": "#1F4E3D", "weight": 0.8, "fillOpacity": 0.75,
+                },
+                tooltip=f"{row['nome_uc']} — {row['riqueza_primatas']} espécies",
+                popup=folium.Popup(popup_html, max_width=300),
+            ).add_to(m)
+
+        st_folium(m, use_container_width=True, height=560, returned_objects=[])
+
+    else:
+        st.subheader("Mapa — ocorrências de uma espécie")
+        especies_disponiveis = sorted(pontos_com_uc["species"].dropna().unique().tolist())
+        col_a, col_b = st.columns([2, 1])
+        with col_a:
+            especie_mapa = st.selectbox("Espécie", especies_disponiveis, key="especie_mapa")
+        with col_b:
+            mostrar_fora = st.toggle("Incluir pontos fora das UCs", value=True)
+
+        pts_especie = pontos_com_uc[pontos_com_uc["species"] == especie_mapa]
+        n_dentro = int(pts_especie["dentro_de_uc"].sum())
+        n_fora = int((~pts_especie["dentro_de_uc"]).sum())
+        if not mostrar_fora:
+            pts_especie = pts_especie[pts_especie["dentro_de_uc"]]
+
+        st.caption(f"**{especie_mapa}**: {n_dentro} registro(s) dentro das UCs · {n_fora} fora (mesma região de busca)")
+
+        m2 = folium.Map(location=[-7, -65], zoom_start=5, tiles="OpenStreetMap")
+        # UCs como contorno de referencia, sem preenchimento por riqueza
         folium.GeoJson(
-            row["geometry"],
-            style_function=lambda x, c=cor(row["riqueza_primatas"]): {
-                "fillColor": c, "color": "#1F4E3D", "weight": 0.8, "fillOpacity": 0.75,
-            },
-            tooltip=f"{row['nome_uc']} — {row['riqueza_primatas']} espécies",
-            popup=folium.Popup(popup_html, max_width=300),
-        ).add_to(m)
+            ucs[["nome_uc", "geometry"]],
+            style_function=lambda x: {"fillColor": "#E8F0EC", "color": "#1F4E3D", "weight": 0.6, "fillOpacity": 0.25},
+            tooltip=folium.GeoJsonTooltip(fields=["nome_uc"]),
+        ).add_to(m2)
 
-    st_folium(m, use_container_width=True, height=560, returned_objects=[])
+        for _, p in pts_especie.iterrows():
+            dentro = bool(p["dentro_de_uc"])
+            folium.CircleMarker(
+                location=[p["decimalLatitude"], p["decimalLongitude"]],
+                radius=5 if dentro else 4,
+                color="white", weight=1,
+                fill=True, fill_color=("#1F4E3D" if dentro else "#B08D57"), fill_opacity=0.85,
+                popup=folium.Popup(
+                    f"<b>{especie_mapa}</b><br>"
+                    f"{'Dentro de: ' + p['nome_uc'] if dentro else 'Fora das UCs de estudo'}<br>"
+                    f"Ano: {p.get('year', '—')}<br>Tipo: {p.get('basisOfRecord', '—')}",
+                    max_width=260,
+                ),
+            ).add_to(m2)
+
+        st.markdown(
+            "🟢 dentro de UC &nbsp;&nbsp; 🟤 fora das UCs de estudo",
+            unsafe_allow_html=False,
+        )
+        st_folium(m2, use_container_width=True, height=520, returned_objects=[])
 
 st.divider()
 

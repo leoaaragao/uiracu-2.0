@@ -275,6 +275,28 @@ Estes dados **não têm DOI** — foram obtidos via API de busca (`occurrence/se
 
 ---
 
+## 2026-09-24 — Etapa 8: Coordenadas completas + dashboard interativo
+
+### Exportação de coordenadas (pedido do autor)
+`Scripts/16_coordenadas_especies_identificadas.py`: para as **68 espécies** com pelo menos 1 registro confirmado dentro de alguma UC, extraídas **todas** as coordenadas conhecidas (dentro e fora das UCs, dentro da caixa geográfica de busca) — não só os pontos internos às UCs. Resultado: **12.438 pontos** (792 dentro das UCs + 11.646 fora, mesma espécie). Cada linha marca se caiu dentro de UC (e qual). Saída: `Referencias/Coordenadas_Especies_Identificadas_UCs.csv`.
+
+### Dashboard interativo em Streamlit
+`Dashboard/dashboard_primatas.py` — primeiro dashboard do projeto (protótipo, antes do modelo SDM do *Lagothrix* estar pronto). Mostra:
+- Mapa (Folium) das 85 UCs coloridas por riqueza de primatas (evidência GBIF), com popup por UC listando as espécies.
+- Ranking interativo (Plotly) por número de UCs com registro.
+- Duas abas de exploração: por espécie (em quais UCs ocorre) e por UC (quais espécies ocorrem nela).
+- Nota metodológica embutida (mesma ressalva de DOI/ausência de restrição política já documentada).
+
+**Problemas resolvidos na configuração:**
+- `.claude/launch.json` precisa ficar na raiz do **workspace** (`Docs Melagem_2026_ENBT/`), não na pasta do projeto (`Aluno/Uiracu-2.0/`) — caminhos no launch.json são relativos à raiz do workspace.
+- O executável `.venv/Scripts/streamlit.exe` está quebrado nesta instalação (falha silenciosa, exit code 1, sem mensagem de erro) — contornado rodando via `python -m streamlit` em vez do `.exe` direto.
+- Tiles do CartoDB (`CartoDB positron`) passaram a exigir chave de API — trocado para `OpenStreetMap` (gratuito, sem cadastro).
+- Script do dashboard ajustado para resolver caminhos de dados relativos à própria localização do arquivo (`__file__`), não ao diretório de trabalho — funciona independente de onde o Streamlit for iniciado.
+
+Testado interativamente (mapa, popup, clique, aba de exploração) — funcionando. Como rodar: ver `README.md`.
+
+---
+
 ## Próximos passos (ainda não feitos)
 - [x] Auditoria completa dos registros (geografia, precisão, tempo, viés amostral — camadas 3 a 7 da Ficha 01).
 - [x] Excluir Roraima do recorte de estudo (motivo ecológico) — 92 → 85 UCs.

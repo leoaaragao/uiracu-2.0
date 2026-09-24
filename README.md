@@ -39,6 +39,14 @@ pip install -r requirements.txt
 
 Scripts em ordem de execução em `Scripts/` (numerados). Cada um documenta, no cabeçalho, a qual bloco da Ficha operacional da disciplina corresponde.
 
+### Dashboard interativo
+
+```bash
+.venv\Scripts\python.exe -m streamlit run Dashboard\dashboard_primatas.py
+```
+
+Abre em `http://localhost:8501`. Mostra o cruzamento primatas × UCs (Etapa "Referências"): mapa de riqueza por UC, ranking por incidência, e exploração filtrável por espécie ou por UC. (Use `python -m streamlit`, não o `streamlit.exe` direto — o executável do pacote está quebrado nesta instalação.)
+
 ## Estrutura
 
 ```

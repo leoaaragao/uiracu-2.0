@@ -1,0 +1,169 @@
+﻿genero,genusKey,taxonKey,canonicalName,scientificName,family
+Alouatta,2436647,2436648,Alouatta seniculus,"Alouatta seniculus (Linnaeus, 1766)",Atelidae
+Alouatta,2436647,2436649,Alouatta palliata,"Alouatta palliata (Gray, 1849)",Atelidae
+Alouatta,2436647,2436651,Alouatta sara,"Alouatta sara Elliot, 1910",Atelidae
+Alouatta,2436647,2436652,Alouatta caraya,"Alouatta caraya (Humboldt, 1812)",Atelidae
+Alouatta,2436647,2436653,Alouatta pigra,"Alouatta pigra Lawrence, 1933",Atelidae
+Alouatta,2436647,2436655,Alouatta belzebul,"Alouatta belzebul (Linnaeus, 1766)",Atelidae
+Alouatta,2436647,4267236,Alouatta nigerrima,"Alouatta nigerrima Lönnberg, 1941",Atelidae
+Alouatta,2436647,4827329,Alouatta arctoidea,"Alouatta arctoidea Cabrera, 1940",Atelidae
+Alouatta,2436647,5786091,Alouatta discolor,"Alouatta discolor (Spix, 1823)",Atelidae
+Alouatta,2436647,5786093,Alouatta puruensis,"Alouatta puruensis Lönnberg, 1941",Atelidae
+Alouatta,2436647,5786098,Alouatta ululata,"Alouatta ululata Elliot, 1912",Atelidae
+Alouatta,2436647,7262055,Alouatta guariba,"Alouatta guariba (Humboldt, 1812)",Atelidae
+Alouatta,2436647,7913455,Alouatta macconnelli,"Alouatta macconnelli Elliot, 1910",Atelidae
+Alouatta,2436647,8644641,Alouatta mauroi,"Alouatta mauroi Tejedor et al., 2008",Atelidae
+Ateles,2436640,2436641,Ateles fusciceps,"Ateles fusciceps Gray, 1866",Atelidae
+Ateles,2436640,2436642,Ateles belzebuth,"Ateles belzebuth É.Geoffroy Saint-Hilaire, 1806",Atelidae
+Ateles,2436640,2436643,Ateles geoffroyi,"Ateles geoffroyi Kuhl, 1820",Atelidae
+Ateles,2436640,2436644,Ateles marginatus,"Ateles marginatus É.Geoffroy Saint-Hilaire, 1809",Atelidae
+Ateles,2436640,2436645,Ateles paniscus,"Ateles paniscus (Linnaeus, 1758)",Atelidae
+Ateles,2436640,2436646,Ateles chamek,"Ateles chamek (Humboldt, 1812)",Atelidae
+Ateles,2436640,4267251,Ateles hybridus,"Ateles hybridus I.Geoffroy Saint-Hilaire, 1829",Atelidae
+Ateles,2436640,9213729,Ateles grisescens,"Ateles grisescens Gray, 1866",Atelidae
+Lagothrix,2436656,2436657,Lagothrix flavicauda,"Lagothrix flavicauda (Humboldt, 1812)",Atelidae
+Lagothrix,2436656,5786085,Lagothrix lagothricha,"Lagothrix lagothricha (Humboldt, 1812)",Atelidae
+Pithecia,2436370,2436371,Pithecia aequatorialis,"Pithecia aequatorialis Hershkovitz, 1987",Pitheciidae
+Pithecia,2436370,2436372,Pithecia irrorata,"Pithecia irrorata Gray, 1842",Pitheciidae
+Pithecia,2436370,2436373,Pithecia pithecia,"Pithecia pithecia (Linnaeus, 1766)",Pitheciidae
+Pithecia,2436370,2436374,Pithecia albicans,"Pithecia albicans Gray, 1860",Pitheciidae
+Pithecia,2436370,2436375,Pithecia monachus,"Pithecia monachus (É.Geoffroy Saint-Hilaire, 1812)",Pitheciidae
+Pithecia,2436370,8452481,Pithecia isabela,"Pithecia isabela Marsh, 2014",Pitheciidae
+Pithecia,2436370,8469554,Pithecia napensis,"Pithecia napensis Lönnberg, 1938",Pitheciidae
+Pithecia,2436370,8480241,Pithecia mittermeieri,"Pithecia mittermeieri Marsh, 2014",Pitheciidae
+Pithecia,2436370,8495760,Pithecia pissinattii,"Pithecia pissinattii Marsh, 2014",Pitheciidae
+Pithecia,2436370,8526794,Pithecia chrysocephala,"Pithecia chrysocephala I.Geoffroy Saint-Hilaire, 1850",Pitheciidae
+Pithecia,2436370,8591872,Pithecia vanzolinii,"Pithecia vanzolinii Hershkovitz, 1987",Pitheciidae
+Pithecia,2436370,8594043,Pithecia milleri,"Pithecia milleri Allen, 1914",Pitheciidae
+Pithecia,2436370,8605892,Pithecia inusta,"Pithecia inusta Spix, 1823",Pitheciidae
+Pithecia,2436370,8623151,Pithecia cazuzai,"Pithecia cazuzai Marsh, 2014",Pitheciidae
+Pithecia,2436370,8674990,Pithecia hirsuta,"Pithecia hirsuta Spix, 1823",Pitheciidae
+Pithecia,2436370,8677259,Pithecia rylandsi,"Pithecia rylandsi Marsh, 2014",Pitheciidae
+Chiropotes,2436405,5219526,Chiropotes albinasus,"Chiropotes albinasus (I.Geoffroy Saint-Hilaire & Deville, 1848)",Pitheciidae
+Chiropotes,2436405,5219527,Chiropotes satanas,"Chiropotes satanas (Hoffmannsegg, 1807)",Pitheciidae
+Chiropotes,2436405,5707305,Chiropotes israelita,"Chiropotes israelita (Spix, 1823)",Pitheciidae
+Chiropotes,2436405,5707307,Chiropotes chiropotes,"Chiropotes chiropotes (Humboldt, 1811)",Pitheciidae
+Chiropotes,2436405,8091165,Chiropotes sagulatus,"Chiropotes sagulatus (Traill, 1821)",Pitheciidae
+Chiropotes,2436405,11186152,Chiropotes utahicki,"Chiropotes utahicki Hershkovitz, 1985",Pitheciidae
+Cacajao,2436408,2436409,Cacajao melanocephalus,"Cacajao melanocephalus (Humboldt, 1812)",Pitheciidae
+Cacajao,2436408,2436410,Cacajao calvus,"Cacajao calvus (I.Geoffroy Saint-Hilaire, 1847)",Pitheciidae
+Cacajao,2436408,5786471,Cacajao ayresi,"Cacajao ayresi Boubli, Silva, Amado, Hrbek, Pontual & Farias, 2008",Pitheciidae
+Cacajao,2436408,5786473,Cacajao hosomi,"Cacajao hosomi Boubli, Silva, Amado, Hrbek, Pontual & Farias, 2008",Pitheciidae
+Plecturocebus,8755067,9234391,Plecturocebus discolor,"Plecturocebus discolor (I.Geoffroy Saint-Hilaire & Deville, 1848)",Pitheciidae
+Plecturocebus,8755067,9250812,Plecturocebus ornatus,"Plecturocebus ornatus (Gray, 1866)",Pitheciidae
+Plecturocebus,8755067,9258545,Plecturocebus stephennashi,"Plecturocebus stephennashi (M.van Roosmalen, T.van Roosmalen & Mittermeier, 2002)",Pitheciidae
+Plecturocebus,8755067,9291744,Plecturocebus oenanthe,"Plecturocebus oenanthe (Thomas, 1924)",Pitheciidae
+Plecturocebus,8755067,9318736,Plecturocebus vieirai,"Plecturocebus vieirai (Gualda-Barros, Nascimento & Amaral, 2012)",Pitheciidae
+Plecturocebus,8755067,9331673,Plecturocebus urubambensis,"Plecturocebus urubambensis (Vermeer & Tello-Alvarado, 2015)",Pitheciidae
+Plecturocebus,8755067,9390794,Plecturocebus cinerascens,"Plecturocebus cinerascens (Spix, 1823)",Pitheciidae
+Plecturocebus,8755067,9393257,Plecturocebus caligatus,"Plecturocebus caligatus (Wagner, 1842)",Pitheciidae
+Plecturocebus,8755067,9401316,Plecturocebus pallescens,"Plecturocebus pallescens (Thomas, 1907)",Pitheciidae
+Plecturocebus,8755067,9410326,Plecturocebus brunneus,"Plecturocebus brunneus (Wagner, 1842)",Pitheciidae
+Plecturocebus,8755067,9418473,Plecturocebus bernhardi,"Plecturocebus bernhardi (M.van Roosmalen, T.van Roosmalen & Mittermeier, 2002)",Pitheciidae
+Plecturocebus,8755067,9438354,Plecturocebus caquetensis,"Plecturocebus caquetensis (Defler, Bueno & Garcia, 2010)",Pitheciidae
+Plecturocebus,8755067,9481435,Plecturocebus miltoni,"Plecturocebus miltoni (Dalponte, Silva & Silva-Júnior, 2014)",Pitheciidae
+Plecturocebus,8755067,9483946,Plecturocebus toppini,"Plecturocebus toppini (Thomas, 1914)",Pitheciidae
+Plecturocebus,8755067,9494739,Plecturocebus aureipalatii,"Plecturocebus aureipalatii (Wallace, Gómez, A.M.Felton & A.Felton, 2006)",Pitheciidae
+Plecturocebus,8755067,9509736,Plecturocebus modestus,"Plecturocebus modestus (Lönnberg, 1939)",Pitheciidae
+Plecturocebus,8755067,9523044,Plecturocebus moloch,"Plecturocebus moloch (Hoffmannsegg, 1807)",Pitheciidae
+Plecturocebus,8755067,9584627,Plecturocebus hoffmannsi,"Plecturocebus hoffmannsi (Thomas, 1908)",Pitheciidae
+Plecturocebus,8755067,9595642,Plecturocebus baptista,"Plecturocebus baptista (Lönnberg, 1939)",Pitheciidae
+Plecturocebus,8755067,9605093,Plecturocebus donacophilus,"Plecturocebus donacophilus (d'Orbigny, 1836)",Pitheciidae
+Plecturocebus,8755067,9613557,Plecturocebus olallae,"Plecturocebus olallae (Lönnberg, 1939)",Pitheciidae
+Plecturocebus,8755067,9634081,Plecturocebus cupreus,"Plecturocebus cupreus (Spix, 1823)",Pitheciidae
+Plecturocebus,8755067,10399958,Plecturocebus grovesi,"Plecturocebus grovesi Boubli, Byrne, Silva, Silva-Júnior, Costa Araujo, Bertuol, Gonçalves, Melo, Rylands et al., 2019",Pitheciidae
+Plecturocebus,8755067,11187243,Plecturocebus parecis,"Plecturocebus parecis Gusmão, Messias, Carneiro, Schneider, de Alencar, Caluro, Dalponte, Mattos, Ferrari et al., 2019",Pitheciidae
+Cheracebus,9057356,9264949,Cheracebus torquatus,"Cheracebus torquatus (Hoffmannsegg, 1807)",Pitheciidae
+Cheracebus,9057356,9335792,Cheracebus lugens,"Cheracebus lugens (Humboldt, 1811)",Pitheciidae
+Cheracebus,9057356,9407885,Cheracebus medemi,"Cheracebus medemi (Hershkovitz, 1963)",Pitheciidae
+Cheracebus,9057356,9527247,Cheracebus lucifer,"Cheracebus lucifer (Thomas, 1914)",Pitheciidae
+Cheracebus,9057356,9580395,Cheracebus regulus,"Cheracebus regulus (Thomas, 1927)",Pitheciidae
+Cebus,2436635,2436636,Cebus albifrons,"Cebus albifrons (Humboldt, 1812)",Cebidae
+Cebus,2436635,2436637,Cebus capucinus,"Cebus capucinus (Linnaeus, 1758)",Cebidae
+Cebus,2436635,2436638,Cebus olivaceus,"Cebus olivaceus Schomburgk, 1848",Cebidae
+Cebus,2436635,4266912,Cebus kaapori,"Cebus kaapori Queiroz, 1992",Cebidae
+Cebus,2436635,7361386,Cebus malitiosus,"Cebus malitiosus Elliot, 1909",Cebidae
+Cebus,2436635,7378785,Cebus castaneus,"Cebus castaneus I.Geoffroy Saint-Hilaire, 1851",Cebidae
+Cebus,2436635,7450444,Cebus leucocephalus,"Cebus leucocephalus Gray, 1865",Cebidae
+Cebus,2436635,7740017,Cebus unicolor,"Cebus unicolor Spix, 1823",Cebidae
+Cebus,2436635,7832196,Cebus versicolor,"Cebus versicolor Pucheran, 1845",Cebidae
+Cebus,2436635,7981053,Cebus yuracus,"Cebus yuracus Hershkovitz, 1949",Cebidae
+Cebus,2436635,8028197,Cebus imitator,"Cebus imitator Thomas, 1903",Cebidae
+Cebus,2436635,8075047,Cebus aequatorialis,"Cebus aequatorialis J.A.Allen, 1914",Cebidae
+Cebus,2436635,8179505,Cebus brunneus,"Cebus brunneus Allen, 1914",Cebidae
+Cebus,2436635,8275011,Cebus cuscinus,"Cebus cuscinus Thomas, 1901",Cebidae
+Cebus,2436635,8400654,Cebus cesarae,"Cebus cesarae Hershkovitz, 1949",Cebidae
+Cebus,2436635,9066426,Cebus beelzebul,"Cebus beelzebul Zimmermann, 1780",Cebidae
+Cebus,2436635,11372775,Cebus trinitatis,"Cebus trinitatis von Pusch, 1942",Cebidae
+Sapajus,4827386,7477334,Sapajus apella,"Sapajus apella (Linnaeus, 1758)",Cebidae
+Sapajus,4827386,7519053,Sapajus nigritus,"Sapajus nigritus (Goldfuss, 1809)",Cebidae
+Sapajus,4827386,7549160,Sapajus xanthosternos,"Sapajus xanthosternos (Wied-Neuwied, 1826)",Cebidae
+Sapajus,4827386,7669874,Sapajus flavius,"Sapajus flavius (Schreber, 1799)",Cebidae
+Sapajus,4827386,7785578,Sapajus libidinosus,"Sapajus libidinosus (Spix, 1823)",Cebidae
+Sapajus,4827386,7906704,Sapajus cay,"Sapajus cay (Illiger, 1815)",Cebidae
+Sapajus,4827386,8227596,Sapajus robustus,"Sapajus robustus (Kuhl, 1820)",Cebidae
+Sapajus,4827386,11182799,Sapajus cucullatus,"Sapajus cucullatus (Spix, 1823)",Cebidae
+Saimiri,2436659,2436660,Saimiri vanzolinii,"Saimiri vanzolinii Ayres, 1985",Cebidae
+Saimiri,2436659,2436661,Saimiri sciureus,"Saimiri sciureus (Linnaeus, 1758)",Cebidae
+Saimiri,2436659,2436663,Saimiri boliviensis,"Saimiri boliviensis (I.Geoffroy Saint-Hilaire & de Blainville, 1834)",Cebidae
+Saimiri,2436659,2436664,Saimiri oerstedii,"Saimiri oerstedii (Reinhardt, 1872)",Cebidae
+Saimiri,2436659,7576788,Saimiri cassiquiarensis,"Saimiri cassiquiarensis (Lesson, 1840)",Cebidae
+Saimiri,2436659,7888324,Saimiri macrodon,"Saimiri macrodon Elliot, 1907",Cebidae
+Saimiri,2436659,8524789,Saimiri collinsi,"Saimiri collinsi Osgood, 1916",Cebidae
+Saimiri,2436659,8556290,Neosaimiri fieldsi,"Neosaimiri fieldsi Stirton, 1951",Cebidae
+Saimiri,2436659,8689513,Neosaimiri annectens,"Neosaimiri annectens Kay & Meldrum, 1997",Cebidae
+Saimiri,2436659,8885431,Saimiri ustus,"Saimiri ustus (I.Geoffroy Saint-Hilaire, 1843)",Cebidae
+Aotus,2436667,5219590,Aotus trivirgatus,"Aotus trivirgatus (Humboldt, 1811)",Aotidae
+Aotus,2436667,5219591,Aotus lemurinus,"Aotus lemurinus I.Geoffroy Saint-Hilaire, 1843",Aotidae
+Aotus,2436667,5219592,Aotus miconax,"Aotus miconax Thomas, 1927",Aotidae
+Aotus,2436667,5219593,Aotus brumbacki,"Aotus brumbacki Hershkovitz, 1983",Aotidae
+Aotus,2436667,5219595,Aotus nigriceps,"Aotus nigriceps Dollman, 1909",Aotidae
+Aotus,2436667,5219597,Aotus vociferans,"Aotus vociferans (Spix, 1823)",Aotidae
+Aotus,2436667,5707409,Aotus azarae,"Aotus azarae (Humboldt, 1812)",Aotidae
+Aotus,2436667,5786069,Aotus griseimembra,"Aotus griseimembra Elliot, 1912",Aotidae
+Aotus,2436667,5786070,Aotus zonalis,"Aotus zonalis Goldman, 1914",Aotidae
+Aotus,2436667,5786071,Aotus jorgehernandezi,"Aotus jorgehernandezi Defler & Bueno, 2007",Aotidae
+Aotus,2436667,5936372,Aotus dindensis,"Aotus dindensis Setoguchi & Rosenberger, 1987",Aotidae
+Aotus,2436667,11215067,Aotus nancymai,"Aotus nancymai Hershkovitz, 1983",Aotidae
+Saguinus,2436465,2436466,Saguinus geoffroyi,"Saguinus geoffroyi (Pucheran, 1845)",Callitrichidae
+Saguinus,2436465,2436468,Saguinus midas,"Saguinus midas (Linnaeus, 1758)",Callitrichidae
+Saguinus,2436465,2436469,Saguinus oedipus,"Saguinus oedipus (Linnaeus, 1758)",Callitrichidae
+Saguinus,2436465,2436470,Saguinus bicolor,"Saguinus bicolor (Spix, 1823)",Callitrichidae
+Saguinus,2436465,2436471,Saguinus imperator,"Saguinus imperator (Goeldi, 1907)",Callitrichidae
+Saguinus,2436465,2436472,Saguinus mystax,"Saguinus mystax (Spix, 1823)",Callitrichidae
+Saguinus,2436465,2436475,Saguinus inustus,"Saguinus inustus (Schwarz, 1951)",Callitrichidae
+Saguinus,2436465,2436476,Saguinus leucopus,"Saguinus leucopus (Günther, 1877)",Callitrichidae
+Saguinus,2436465,4266893,Saguinus niger,"Saguinus niger (É.Geoffroy Saint-Hilaire, 1803)",Callitrichidae
+Saguinus,2436465,7261987,Saguinus martinsi,"Saguinus martinsi (Thomas, 1912)",Callitrichidae
+Saguinus,2436465,9178968,Saguinus labiatus,"Saguinus labiatus (É.Geoffroy Saint-Hilaire, 1812)",Callitrichidae
+Saguinus,2436465,9598128,Hapale geoffroyi,"Hapale geoffroyi (Pucheran, 1845)",Callitrichidae
+Saguinus,2436465,11011727,Saguinus ursula,"Saguinus ursula Hoffmannsegg, 1807",Callitrichidae
+Leontocebus,5428933,8493215,Leontocebus fuscicollis,"Leontocebus fuscicollis (Spix, 1823)",Callitrichidae
+Leontocebus,5428933,8570398,Leontocebus cruzlimai,"Leontocebus cruzlimai (Hershkovitz, 1966)",Callitrichidae
+Leontocebus,5428933,8628111,Leontocebus nigricollis,"Leontocebus nigricollis (Spix, 1823)",Callitrichidae
+Leontocebus,5428933,9278135,Leontocebus illigeri,"Leontocebus illigeri (Pucheran, 1845)",Callitrichidae
+Leontocebus,5428933,9509098,Leontocebus nigrifrons,"Leontocebus nigrifrons (I.Geoffroy Saint-Hilaire, 1850)",Callitrichidae
+Leontocebus,5428933,9512820,Leontocebus tripartitus,"Leontocebus tripartitus (A.Milne-Edwards, 1878)",Callitrichidae
+Leontocebus,5428933,9523674,Leontocebus fuscus,"Leontocebus fuscus (Lesson, 1840)",Callitrichidae
+Leontocebus,5428933,9530430,Leontocebus weddelli,"Leontocebus weddelli (Deville, 1849)",Callitrichidae
+Leontocebus,5428933,9583990,Leontocebus leucogenys,"Leontocebus leucogenys (Gray, 1866)",Callitrichidae
+Leontocebus,5428933,9634740,Leontocebus lagonotus,"Leontocebus lagonotus (Jiménez de la Espada, 1870)",Callitrichidae
+Mico,7826251,5786452,Mico humilis,"Mico humilis (M.van Roosmalen, T.van Roosmalen, Mittermeier & de Fonseca, 1998)",Callitrichidae
+Mico,7826251,5786453,Mico acariensis,"Mico acariensis (M.van Roosmalen, T.van Roosmalen, Mittermeier & Rylands, 2000)",Callitrichidae
+Mico,7826251,5786454,Mico leucippe,"Mico leucippe Thomas, 1922",Callitrichidae
+Mico,7826251,5786456,Mico argentatus,"Mico argentatus (Linnaeus, 1771)",Callitrichidae
+Mico,7826251,5786457,Mico saterei,"Mico saterei (Silva Jr. & Noronha, 1998)",Callitrichidae
+Mico,7826251,5786458,Mico rondoni,"Mico rondoni Ferrari, Sena, Schneider & Silva Jr., 2010",Callitrichidae
+Mico,7826251,5786461,Mico nigriceps,"Mico nigriceps (Ferrari & Lopes, 1992)",Callitrichidae
+Mico,7826251,5786462,Mico melanurus,"Mico melanurus (É.Geoffroy Saint-Hilaire, 1812)",Callitrichidae
+Mico,7826251,5786463,Mico humeralifer,"Mico humeralifer (É.Geoffroy Saint-Hilaire, 1812)",Callitrichidae
+Mico,7826251,5786464,Mico mauesi,"Mico mauesi (Mittermeier, Schwarz & Ayres, 1992)",Callitrichidae
+Mico,7826251,5786465,Mico intermedius,"Mico intermedius (Hershkovitz, 1977)",Callitrichidae
+Mico,7826251,5786466,Mico marcai,"Mico marcai (Alperin, 1993)",Callitrichidae
+Mico,7826251,5786467,Mico emiliae,"Mico emiliae (Thomas, 1920)",Callitrichidae
+Mico,7826251,7905120,Mico chrysoleucos,"Mico chrysoleucos (Wagner, 1842)",Callitrichidae
+Mico,7826251,10805668,Mico munduruku,"Mico munduruku Costa-Araújo, Farias & Hrbek, 2019",Callitrichidae
+Mico,7826251,11539537,Mico schneideri,"Mico schneideri Costa-Araújo, Silva-Jr., Boubli, Rossi, Hrbek & Farias, 2021",Callitrichidae
+Cebuella,8214404,4827382,Cebuella pygmaea,"Cebuella pygmaea (Spix, 1823)",Callitrichidae
+Cebuella,8214404,9680321,Cebuella niveiventris,"Cebuella niveiventris Lönnberg, 1940",Callitrichidae
+Callimico,2436463,2436464,Callimico goeldii,"Callimico goeldii (Thomas, 1904)",Callitrichidae

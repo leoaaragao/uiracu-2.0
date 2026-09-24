@@ -245,6 +245,36 @@ A pedido, produzida uma lista curada de primatas amazônicos (134 espécies, 18 
 
 ---
 
+## 2026-09-24 — Etapa 7: Cruzamento de todos os primatas amazônicos com as 85 UCs
+
+### Pedido
+Cruzar a checklist de 134/168 espécies de primatas amazônicos com as 85 UCs de estudo, usando evidência de ocorrência (registros GBIF), **sem restrição político-geográfica** — decisão explícita para não repetir o erro do campo `countryCode` (caso "Loreto").
+
+### Pipeline (3 scripts)
+1. `Scripts/12_listar_especies_por_genero.py` — busca no backbone do GBIF todas as espécies aceitas dos 18 gêneros de primatas amazônicos (evita listar nomes de memória). Resultado: **168 espécies**.
+2. `Scripts/13_baixar_ocorrencias_todas_especies.py` — baixa ocorrências por espécie usando filtro **geográfico puro** (bounding box das 85 UCs + margem de 1°, via parâmetro `geometry` da API), não por país declarado. **Corrigido para salvar incrementalmente e mostrar progresso em tempo real** (a primeira versão só salvava no final — risco real de perda total se interrompida; log com buffer não aparecia em tempo real). Resultado: **14.588 registros, 123/168 espécies com pelo menos 1 ocorrência na região**.
+3. `Scripts/14_cruzar_especies_ucs.py` — junção espacial real (ponto dentro do polígono da UC), corrigindo também um mismatch de CRS (SIRGAS2000 dos polígonos x WGS84 dos pontos GBIF). Resultado: **792 ocorrências confirmadas dentro de alguma das 85 UCs**.
+
+### Sobre DOI
+Estes dados **não têm DOI** — foram obtidos via API de busca (`occurrence/search`), que é síncrona e não gera DOI, diferente do download oficial (`occurrence/download`) usado para *Lagothrix lagothricha*. É uma varredura exploratória para identificar espécies com mais incidência, não um dataset final citável. Documentado explicitamente na planilha final.
+
+### Top espécies por incidência (n° de UCs distintas com registro confirmado)
+1. *Sapajus apella* — 24 UCs (97 registros)
+2. *Ateles chamek* — 14 UCs (81 registros)
+3. *Alouatta seniculus* — 14 UCs (26 registros)
+4. *Leontocebus fuscicollis* — 11 UCs
+5. *Saimiri ustus* — 10 UCs
+6. *Cebus albifrons* — 10 UCs
+7. ***Lagothrix lagothricha*** — 9 UCs (25 registros) — nossa espécie-foco, confirma presença sólida na área de estudo
+8. *Pithecia irrorata* — 9 UCs
+9. *Cacajao calvus* — 4 UCs (23 registros)
+10. *Chiropotes albinasus* (Em Perigo) — 3 UCs
+
+### Produto final
+`Referencias/Primatas_x_UCs_GBIF.xlsx` — 4 abas: Resumo/metodologia, Ranking por UC, Matriz Espécie×UC, Espécie×País (contagem de registros por país, todas as 168 espécies, toda a caixa geográfica — não só os dentro das UCs).
+
+---
+
 ## Próximos passos (ainda não feitos)
 - [x] Auditoria completa dos registros (geografia, precisão, tempo, viés amostral — camadas 3 a 7 da Ficha 01).
 - [x] Excluir Roraima do recorte de estudo (motivo ecológico) — 92 → 85 UCs.

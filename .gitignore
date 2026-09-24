@@ -20,3 +20,6 @@ Dados/worldclim*/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Arquivos temporarios de programas Office (criados ao abrir planilhas/docs)
+~$*

@@ -47,6 +47,7 @@ Uiracu-2.0/
 ├── Scripts/            # pipeline em Python, numerado por etapa
 ├── Resultados/         # saidas de modelo, mapas
 ├── Evidencias/         # capturas de tela do processo (auditoria/reprodutibilidade)
+├── Referencias/         # material de apoio curado (ex.: checklist de primatas da Pan-Amazônia)
 ├── DIARIO_DE_BORDO.md  # registro cronológico de decisões e uso de IA
 └── requirements.txt
 ```

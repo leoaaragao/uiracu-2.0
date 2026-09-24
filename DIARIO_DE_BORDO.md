@@ -228,6 +228,23 @@ Questionamento levantado durante a conversa: a rarefação espacial (Etapa 4) n�
 
 ---
 
+## 2026-09-24 — Etapa 6: Conversa com a professora (em andamento) + material de apoio
+
+### Mapas diagnósticos gerados para a discussão
+Com a professora presente na conversa, gerei dois mapas para apoiar a decisão pendente (escopo de M):
+- `Scripts/10_mapa_pontos_multipais.py` → `Evidencias/mapa_ocorrencias_multipais.png`: todas as 2.631 ocorrências coloridas por país (BR/PE/CO/EC/US/PY), com fronteiras políticas da América do Sul (reaproveitadas de `Modelagem preditiva/Dados/world_country`, material da disciplina — copiado para `Dados/paises_referencia/`) e as 85 UCs de estudo. Mostra visualmente que Colômbia/Equador formam um bloco geograficamente desconectado.
+- `Scripts/11_mapa_subespecies.py` → `Evidencias/mapa_ocorrencias_subespecies.png`: mesmos pontos, coloridos por subespécie (`infraspecificEpithet`). Confirma visualmente a segregação geográfica clara entre *cana* (Brasil), *poeppigii* (Peru/Equador), *tschudii* (sul do Peru) e nominotípica+*lugens* (Colômbia).
+
+### Pergunta adicional levantada: tratar subespécies separadamente?
+Discutido se a decisão de M deveria envolver um teste formal de **equivalência de nicho** entre subespécies, em vez de decisão só qualitativa/biogeográfica. Referência indicada: Warren, D.L., Glor, R.E., Turelli, M. (2008). *Environmental niche equivalency versus conservatism: quantitative approaches to niche evolution.* Evolution, 62(11), 2868–2883 (implementado no pacote `ENMTools`; ver também Broennimann et al. 2012, Global Ecology and Biogeography, para sobreposição de nicho via PCA ambiental). **Limitação registrada:** com apenas 48 pontos de *cana*, o teste pode ter pouco poder estatístico — considerado, mas não necessariamente decisivo sozinho.
+
+### Checklist de primatas da Pan-Amazônia
+A pedido, produzida uma lista curada de primatas amazônicos (134 espécies, 18 gêneros, fonte: Primate Specialist Group/IUCN e Mammal Diversity Database) — salva em [`Referencias/Primatas_Pan-Amazonia_Checklist.md`](Referencias/Primatas_Pan-Amazonia_Checklist.md). Útil para a Etapa 3 do projeto de doutorado (diversidade funcional/filogenética) e documenta que a instabilidade taxonômica encontrada em *Lagothrix* é comum a vários outros gêneros amazônicos (*Plecturocebus*, *Cheracebus*, *Leontocebus*, *Mico*).
+
+**Decisão do escopo de M com a professora: aguardando registro do resultado da conversa.**
+
+---
+
 ## Próximos passos (ainda não feitos)
 - [x] Auditoria completa dos registros (geografia, precisão, tempo, viés amostral — camadas 3 a 7 da Ficha 01).
 - [x] Excluir Roraima do recorte de estudo (motivo ecológico) — 92 → 85 UCs.

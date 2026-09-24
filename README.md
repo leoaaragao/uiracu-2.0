@@ -27,7 +27,10 @@ Processo completo, decisão por decisão — incluindo onde e como a IA (Claude)
 |---|---|---|
 | Unidades de Conservação (CNUC) | MMA/ICMBio, via reaproveitamento do projeto Uiraçu 1.0 | Dado público |
 | Ocorrências de *Lagothrix lagothricha* | GBIF.org, [doi.org/10.15468/dl.pxqmwc](https://doi.org/10.15468/dl.pxqmwc) (baixado em 23/09/2026) | GBIF Data User Agreement |
-| Variáveis climáticas | WorldClim v2.1 | *(a integrar)* |
+| Ocorrências de outros primatas (168 espécies, sem DOI) | GBIF.org, API `occurrence/search` (24/09/2026) | GBIF Data User Agreement |
+| Ecorregiões (base para a área M) | WWF Terrestrial Ecoregions (Olson et al. 2001), via material da disciplina | Dado público |
+| Fronteiras internacionais | ESRI World Countries, via material da disciplina | Dado público |
+| Variáveis climáticas | WorldClim v2.1 (10 min de arco), via material da disciplina | *(a integrar)* |
 
 ## Como reproduzir
 

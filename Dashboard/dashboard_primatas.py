@@ -78,6 +78,19 @@ incluir_rr = st.toggle(
 ucs, matriz, ranking, ocorrencias = carregar_dados(incluir_rr)
 pontos_com_uc = juntar_pontos_com_uc(ucs, ocorrencias)
 
+@st.cache_data
+def carregar_area_M():
+    """Area acessivel (M) do Lagothrix lagothricha - uniao de ecorregioes
+    (Scripts/20_definir_area_M.py). So referencia visual; o SDM em si ainda
+    nao foi rodado (ver DIARIO_DE_BORDO.md, Etapa 11)."""
+    try:
+        m = gpd.read_file(os.path.join(RAIZ, "Dados", "area_M_lagothrix_dissolvido.gpkg")).to_crs("EPSG:4326")
+        return m
+    except Exception:
+        return None
+
+area_M = carregar_area_M()
+
 # Riqueza por UC (n de especies com >=1 registro) e lista de especies por UC
 riqueza = (matriz > 0).sum(axis=0)  # index = nome_uc
 especies_por_uc = {
@@ -133,10 +146,30 @@ with col_mapa:
         ["Riqueza agregada por UC", "Pontos de uma espécie (dentro/fora das UCs)"],
         horizontal=True,
     )
+    mostrar_M = st.checkbox(
+        "Sobrepor área acessível (M) do Lagothrix lagothricha",
+        value=False,
+        disabled=(area_M is None),
+        help="União de 11 ecorregiões tocadas pelos 37 pontos de calibração rarefeitos (Brasil) — "
+             "estende-se a Peru, Bolívia e Colômbia. Só camada de referência: o modelo SDM em si "
+             "ainda não foi ajustado (ver DIARIO_DE_BORDO.md, Etapa 11).",
+    )
+
+    def desenhar_M(mapa):
+        if mostrar_M and area_M is not None:
+            folium.GeoJson(
+                area_M,
+                style_function=lambda x: {
+                    "fillColor": "#B08D57", "color": "#B08D57", "weight": 1.5,
+                    "fillOpacity": 0.08, "dashArray": "5,5",
+                },
+                tooltip="Área acessível (M) — Lagothrix lagothricha (união de ecorregiões, Brasil+Peru+Bolívia+Colômbia)",
+            ).add_to(mapa)
 
     if modo_mapa == "Riqueza agregada por UC":
         st.subheader("Mapa — riqueza de primatas por UC")
         m = folium.Map(location=[-7, -65], zoom_start=5, tiles="OpenStreetMap")
+        desenhar_M(m)
         maxr = max(int(ucs["riqueza_primatas"].max()), 1)
 
         def cor(r):
@@ -183,6 +216,7 @@ with col_mapa:
         st.caption(f"**{especie_mapa}**: {n_dentro} registro(s) dentro das UCs · {n_fora} fora (mesma região de busca)")
 
         m2 = folium.Map(location=[-7, -65], zoom_start=5, tiles="OpenStreetMap")
+        desenhar_M(m2)
         # UCs como contorno de referencia, sem preenchimento por riqueza
         folium.GeoJson(
             ucs[["nome_uc", "geometry"]],

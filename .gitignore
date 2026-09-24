@@ -5,6 +5,7 @@ __pycache__/
 
 # Dado bruto de terceiros, grande, reobtenivel pela fonte documentada no README
 Dados/ucs_cnuc_bruto/
+Dados/ecoregioes_bruto/
 
 # Downloads brutos do GBIF (grandes; o DOI garante a reprodutibilidade sem
 # precisar versionar o zip no git)

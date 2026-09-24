@@ -345,6 +345,35 @@ Saída: `Referencias/ucs_distancia_fronteira.csv`.
 1. SDM aprofundado do *Lagothrix lagothricha* (85 UCs) — rigor metodológico, cumpre a exigência específica da disciplina.
 2. Painel de diversidade multiespécie (92 UCs, 68 espécies) — abrangência, conecta diretamente com o debate de bônus de biodiversidade da tese.
 
+## 2026-09-24 — Etapa 11: Área acessível (M) formalizada — *Lagothrix lagothricha*
+
+### Método
+Seguindo exatamente a técnica ensinada na aula (união de ecorregiões WWF que tocam os pontos de ocorrência — o mesmo método usado por trás de `limite_M.shp`, o exemplo da professora para Ocotea/Brosimum): `Scripts/20_definir_area_M.py` cruza os **37 pontos rarefeitos** de *Lagothrix lagothricha* (Brasil, pós-Etapa 4 — presença "pura", só a subespécie *cana*/espécie, sem misturar *tschudii*/*poeppigii*/nominotípica) contra a camada de ecorregiões Neotropicais do material da disciplina.
+
+### Resultado — confirma a evidência de fronteira com dados reais
+**11 ecorregiões tocadas**, união total de **3.235.510 km²**, distribuídos por país:
+
+| País | Área (km²) | % |
+|---|---|---|
+| Brasil | 2.433.421 | 75,2% |
+| Peru | 424.659 | 13,1% |
+| Bolívia | 233.399 | 7,2% |
+| Colômbia | 144.022 | 4,5% |
+
+**Isso resolve a pendência do escopo de M de forma elegante:** o polígono se estende naturalmente a Peru, Bolívia e Colômbia porque as ecorregiões cruzam a fronteira — sem precisar importar nenhum ponto de ocorrência de outra subespécie (*tschudii*, *poeppigii*, nominotípica) para dentro da calibração. A presença usada para calibrar continua sendo só os 37 pontos "puros" do Brasil; o que se estende é o **domínio ambiental de fundo (M)**, não a presença.
+
+### Verificação de sensibilidade (Ficha 02, Bloco B — obrigatória: "ao menos 2 delimitações plausíveis")
+Um único ponto (2008, Apuí/AM, "Rio Tapajós") caiu na ecorregião **"Mato Grosso seasonal forests"** — fisionomia sazonal/mais seca, distinta do restante de M. Um só ponto puxando uma ecorregião inteira, climaticamente diferente, é o tipo de caso que a ficha pede para testar:
+
+| Versão de M | Ecorregiões | Área | Diferença |
+|---|---|---|---|
+| **Principal** (com Mato Grosso seasonal forests) | 11 | 3.235.510 km² | — |
+| **Alternativa** (sem essa ecorregião) | 10 | 2.822.593 km² | −412.918 km² (−12,8%) |
+
+**Decisão em aberto (registrada, não resolvida unilateralmente):** manter a ecorregião "Mato Grosso seasonal forests" em M mantém consistência interna com o ponto de Apuí (presença dentro de M, como deveria ser), mas infla o domínio com uma fisionomia atípica por causa de 1 registro. Excluir a ecorregião de M exigiria, por consistência, também remover esse ponto da calibração (37 → 36). **Ainda não decidido — perguntar ao autor/professora antes de seguir para o WorldClim.**
+
+Saídas: `Dados/area_M_lagothrix_ecorregioes.gpkg` (ecorregiões individuais), `Dados/area_M_lagothrix_dissolvido.gpkg` (M principal, polígono único), `Dados/area_M_lagothrix_dissolvido_alt_sem_MT.gpkg` (alternativa).
+
 **Sugestões registradas para próximas iterações (ainda não implementadas):**
 - Colorir/filtrar por status de ameaça (IUCN) — precisaria de mais uma consulta por espécie.
 - Um índice simples de biodiversidade por UC (riqueza + peso por espécie ameaçada) — pré-visualização do IPBB usando só os dados já coletados, sem esperar o SDM do *Lagothrix*.
@@ -362,8 +391,9 @@ Saída: `Referencias/ucs_distancia_fronteira.csv`.
 - [x] Dashboard interativo v1 e v2 (riqueza por UC, ranking, pontos por espécie dentro/fora de UC).
 - [x] Verificar UCs em fronteira internacional (evidência: 18/85 UCs a até 50 km de Peru/Bolívia/Colômbia/Venezuela) — embasa a decisão de M com dados, não suposição.
 - [x] Restaurar Roraima (92 UCs) para o produto multiespécie, mantendo exclusão só no SDM do *Lagothrix* — dois universos de UC documentados e no dashboard.
-- [ ] **Formalizar decisão de M do *Lagothrix*** com base na evidência de fronteira: Brasil + Peru + Bolívia + Colômbia (ampliar além do "Brasil+Peru" cogitado antes).
-- [ ] Definir área acessível (M) por ecorregião/bacia hidrográfica (não por estado) e baixar/recortar WorldClim (10 min de arco).
+- [x] **Área M formalizada** por união de ecorregiões (37 pontos rarefeitos → 11 ecorregiões → 3,24 milhões km², Brasil/Peru/Bolívia/Colômbia) — confirma e amplia a evidência de fronteira (Etapa 10).
+- [ ] **Decidir:** manter ou excluir a ecorregião "Mato Grosso seasonal forests" de M (1 ponto de borda, Apuí/AM) — afeta também se o ponto some da calibração (37→36).
+- [ ] Baixar/recortar WorldClim (10 min de arco, já disponível em `Modelagem preditiva/Dados/wc2.1_10m_bio.zip`) para a extensão de M.
 - [ ] Refazer rarefação espacial sobre a base final decidida.
 - [ ] PCA das variáveis bioclimáticas (eixos com >90% da variância).
 - [ ] Background / pseudo-ausências aleatórias em M.

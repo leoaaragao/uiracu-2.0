@@ -306,6 +306,45 @@ Tecnicamente: criada uma função cacheada (`juntar_pontos_com_uc`) que faz a ju
 
 Testado: seleção de espécie, alternância dentro/fora, contagens corretas exibidas (ex.: *Alouatta belzebul* — 1 dentro / 140 fora). Sem erros de console.
 
+## 2026-09-24 — Etapa 10: Roraima de volta (produto multiespécie) + fronteiras internacionais
+
+### Decisão do autor: Roraima volta para o produto multiespécie
+A exclusão de Roraima (Etapa 3) foi uma decisão **específica do *Lagothrix lagothricha*** (Rio Negro/Branco como limite de distribuição documentado para essa espécie). O autor apontou, corretamente, que isso não se aplica ao **produto multiespécie**: outras espécies de primata podem — e de fato ocorrem — em Roraima, e o debate de diversidade funcional/filogenética do bônus de biodiversidade (núcleo do projeto de doutorado) é sobre a comunidade, não sobre uma espécie isolada.
+
+**Verificação:** refeito o cruzamento espacial com um novo recorte de **92 UCs** (`Scripts/18_ucs_92_multiespecie.py`, `Scripts/19_cruzar_especies_ucs_92.py`), incluindo Roraima. Resultado: **825 ocorrências confirmadas** (era 792 sem RR) — **8 espécies documentadas** no Parque Nacional do Viruá e na Resex Baixo Rio Branco-Jauaperi (*Alouatta macconnelli*, *Aotus trivirgatus*, *Ateles paniscus*, *Chiropotes chiropotes*, *Chiropotes sagulatus*, *Saguinus midas*, *Saimiri sciureus*, *Sapajus apella*) — todas espécies **diferentes** das que dominam em AM/AC/RO, confirmando fauna distinta do Escudo das Guianas.
+
+**Dois universos de UC mantidos em paralelo, cada um com justificativa própria:**
+- **85 UCs** (AM/AC/RO) — SDM do *Lagothrix lagothricha*.
+- **92 UCs** (AM/AC/RO/RR) — produto multiespécie/diversidade.
+
+Nada foi "desfeito" — as duas decisões (excluir RR para uma espécie, incluir para a comunidade) são simultaneamente corretas, cada uma no seu contexto. Arquivos separados (`ucs_federais_amazonia_ocidental.gpkg` vs. `ucs_federais_92_multiespecie.gpkg`) para não misturar.
+
+**Dashboard atualizado:** interruptor "Incluir Roraima (produto multiespécie — 92 UCs)" no topo, alterna entre os dois conjuntos de dados em tempo real (testado: 92/825 ligado, 85/792 desligado).
+
+### Verificação de fronteiras internacionais (resolve a pendência do escopo de M)
+A pedido, verificado com dados reais (não suposição) quais das 85 UCs tocam ou ficam próximas da fronteira internacional (`Scripts/17_checar_fronteiras_ucs.py`, camada de países do material da disciplina):
+
+**8 UCs tocam a fronteira diretamente:**
+| UC | Estado | Fronteira com |
+|---|---|---|
+| Parque Nacional da Serra do Divisor | Acre | Peru |
+| Reserva Extrativista do Alto Juruá | Acre | Peru |
+| Reserva Extrativista Chico Mendes | Acre | Peru |
+| Estação Ecológica Rio Acre | Acre | Peru |
+| Floresta Nacional de Santa Rosa do Purus | Acre | Peru |
+| Parque Nacional do Pico da Neblina | Amazonas | Colômbia/Venezuela |
+| Reserva Biológica do Guaporé | Rondônia | Bolívia |
+
+Mais **10 UCs a menos de 50 km** da fronteira (sem tocar diretamente). No total, **18 de 85 UCs (21%)** estão a até 50 km de um país vizinho.
+
+**Conclusão, com evidência, para a pendência da Etapa 5:** a inclusão de países fronteiriços na definição de M não é apenas defensável — é **metodologicamente necessária**, dado que mais de 1 em cada 5 UCs do recorte tem vizinhança direta ou muito próxima com Peru, Bolívia, Colômbia ou Venezuela (não só Peru, como havíamos cogitado antes). Isso amplia a resposta anterior: ao retomar a definição de M do *Lagothrix*, considerar Brasil + Peru + Bolívia + Colômbia (não só Peru), com a fronteira Amazonas/Roraima-Venezuela/Colômbia como caso adicional via Pico da Neblina.
+
+Saída: `Referencias/ucs_distancia_fronteira.csv`.
+
+### Confirmado: dois produtos finais
+1. SDM aprofundado do *Lagothrix lagothricha* (85 UCs) — rigor metodológico, cumpre a exigência específica da disciplina.
+2. Painel de diversidade multiespécie (92 UCs, 68 espécies) — abrangência, conecta diretamente com o debate de bônus de biodiversidade da tese.
+
 **Sugestões registradas para próximas iterações (ainda não implementadas):**
 - Colorir/filtrar por status de ameaça (IUCN) — precisaria de mais uma consulta por espécie.
 - Um índice simples de biodiversidade por UC (riqueza + peso por espécie ameaçada) — pré-visualização do IPBB usando só os dados já coletados, sem esperar o SDM do *Lagothrix*.
@@ -321,7 +360,9 @@ Testado: seleção de espécie, alternância dentro/fora, contagens corretas exi
 - [x] Segunda coleta GBIF sem filtro de país + diagnóstico (achado: mistura de subespécies).
 - [x] Cruzamento de 168 espécies de primatas × 85 UCs (evidência GBIF) + planilha + coordenadas completas.
 - [x] Dashboard interativo v1 e v2 (riqueza por UC, ranking, pontos por espécie dentro/fora de UC).
-- [ ] **⏸️ AINDA PENDENTE — decidir com a professora: escopo geográfico de M** (Brasil / Brasil+Peru / outra abordagem) para o SDM do *Lagothrix*. A conversa em 24/09 migrou para o cruzamento multiespécie antes de fechar esse ponto — retomar na próxima oportunidade.
+- [x] Verificar UCs em fronteira internacional (evidência: 18/85 UCs a até 50 km de Peru/Bolívia/Colômbia/Venezuela) — embasa a decisão de M com dados, não suposição.
+- [x] Restaurar Roraima (92 UCs) para o produto multiespécie, mantendo exclusão só no SDM do *Lagothrix* — dois universos de UC documentados e no dashboard.
+- [ ] **Formalizar decisão de M do *Lagothrix*** com base na evidência de fronteira: Brasil + Peru + Bolívia + Colômbia (ampliar além do "Brasil+Peru" cogitado antes).
 - [ ] Definir área acessível (M) por ecorregião/bacia hidrográfica (não por estado) e baixar/recortar WorldClim (10 min de arco).
 - [ ] Refazer rarefação espacial sobre a base final decidida.
 - [ ] PCA das variáveis bioclimáticas (eixos com >90% da variância).

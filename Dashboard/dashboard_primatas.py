@@ -20,10 +20,30 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # ---------------- Dados ----------------
 @st.cache_data
-def carregar_dados():
-    ucs = gpd.read_file(os.path.join(RAIZ, "Dados", "ucs_federais_amazonia_ocidental.gpkg")).to_crs("EPSG:4326")
-    matriz = pd.read_csv(os.path.join(RAIZ, "Referencias", "matriz_especies_x_ucs_gbif.csv")).set_index("species")
-    ranking = pd.read_csv(os.path.join(RAIZ, "Referencias", "ranking_especies_por_incidencia_ucs.csv")).set_index("species")
+def carregar_dados(incluir_rr: bool):
+    """
+    Dois universos de UC no projeto, por motivo conceitual (ver DIARIO_DE_BORDO.md):
+    - 85 UCs (AM/AC/RO): usado para o SDM do Lagothrix lagothricha - Roraima
+      excluida por limite biogeografico documentado (Rio Negro/Branco).
+    - 92 UCs (AM/AC/RO/RR): usado para o produto multiespecie/diversidade -
+      nao ha motivo para excluir Roraima quando se trata da comunidade de
+      primatas como um todo (base do debate de bonus de biodiversidade).
+    """
+    if incluir_rr:
+        arq_uc, arq_matriz, arq_ranking = (
+            "ucs_federais_92_multiespecie.gpkg",
+            "matriz_especies_x_ucs92_gbif.csv",
+            "ranking_especies_por_incidencia_ucs92.csv",
+        )
+    else:
+        arq_uc, arq_matriz, arq_ranking = (
+            "ucs_federais_amazonia_ocidental.gpkg",
+            "matriz_especies_x_ucs_gbif.csv",
+            "ranking_especies_por_incidencia_ucs.csv",
+        )
+    ucs = gpd.read_file(os.path.join(RAIZ, "Dados", arq_uc)).to_crs("EPSG:4326")
+    matriz = pd.read_csv(os.path.join(RAIZ, "Referencias", arq_matriz)).set_index("species")
+    ranking = pd.read_csv(os.path.join(RAIZ, "Referencias", arq_ranking)).set_index("species")
     ocorrencias = pd.read_csv(os.path.join(RAIZ, "Referencias", "ocorrencias_primatas_brasil_gbif.csv"))
     ocorrencias = ocorrencias.dropna(subset=["decimalLatitude", "decimalLongitude"])
     return ucs, matriz, ranking, ocorrencias
@@ -31,7 +51,7 @@ def carregar_dados():
 @st.cache_data
 def juntar_pontos_com_uc(_ucs, ocorrencias):
     """Marca, para TODAS as ocorrencias baixadas (168 especies), se cada ponto
-    cai dentro de alguma das 85 UCs (join geometrico real, nao por pais)."""
+    cai dentro de alguma UC do recorte ativo (join geometrico real, nao por pais)."""
     pontos = gpd.GeoDataFrame(
         ocorrencias,
         geometry=gpd.points_from_xy(ocorrencias["decimalLongitude"], ocorrencias["decimalLatitude"]),
@@ -43,7 +63,19 @@ def juntar_pontos_com_uc(_ucs, ocorrencias):
     j["nome_uc"] = j["nome_uc"].fillna("(fora das UCs de estudo)")
     return j.drop(columns="geometry")
 
-ucs, matriz, ranking, ocorrencias = carregar_dados()
+# ---------------- Cabecalho ----------------
+st.title("🐒 Primatas da Pan-Amazônia x Unidades de Conservação")
+
+incluir_rr = st.toggle(
+    "Incluir Roraima (produto multiespécie — 92 UCs)",
+    value=True,
+    help="Ligado: 92 UCs (AM/AC/RO/RR), para o painel de diversidade multiespécie — não há "
+         "motivo biogeográfico para excluir Roraima quando o assunto é a comunidade de primatas "
+         "como um todo. Desligado: 85 UCs (AM/AC/RO), o mesmo recorte usado no SDM do Lagothrix "
+         "lagothricha, que tem o Rio Negro/Branco como limite de distribuição documentado.",
+)
+
+ucs, matriz, ranking, ocorrencias = carregar_dados(incluir_rr)
 pontos_com_uc = juntar_pontos_com_uc(ucs, ocorrencias)
 
 # Riqueza por UC (n de especies com >=1 registro) e lista de especies por UC
@@ -54,8 +86,6 @@ especies_por_uc = {
 }
 ucs["riqueza_primatas"] = ucs["nome_uc"].map(riqueza).fillna(0).astype(int)
 
-# ---------------- Cabecalho ----------------
-st.title("🐒 Primatas da Pan-Amazônia x Unidades de Conservação")
 st.caption(
     "Projeto Uiraçu 2.0 — disciplina Análise espacial da biodiversidade, mudanças globais e IA (ENBT/JBRJ 2026-2) · "
     "Piloto da Etapa 2/3 do projeto de doutorado (IPBB)"
@@ -197,7 +227,7 @@ with tab_esp:
         }).sort_values("Registros", ascending=False)
         st.dataframe(tabela, use_container_width=True, hide_index=True)
     else:
-        st.info("Nenhuma ocorrência confirmada dentro das 85 UCs para esta espécie (pode ocorrer na região, fora dos limites das UCs).")
+        st.info(f"Nenhuma ocorrência confirmada dentro das {len(ucs)} UCs para esta espécie (pode ocorrer na região, fora dos limites das UCs).")
 
 with tab_uc:
     uc_sel = st.selectbox("Escolha uma UC", sorted(matriz.columns.tolist()))

@@ -370,7 +370,9 @@ Um único ponto (2008, Apuí/AM, "Rio Tapajós") caiu na ecorregião **"Mato Gro
 | **Principal** (com Mato Grosso seasonal forests) | 11 | 3.235.510 km² | — |
 | **Alternativa** (sem essa ecorregião) | 10 | 2.822.593 km² | −412.918 km² (−12,8%) |
 
-**Decisão em aberto (registrada, não resolvida unilateralmente):** manter a ecorregião "Mato Grosso seasonal forests" em M mantém consistência interna com o ponto de Apuí (presença dentro de M, como deveria ser), mas infla o domínio com uma fisionomia atípica por causa de 1 registro. Excluir a ecorregião de M exigiria, por consistência, também remover esse ponto da calibração (37 → 36). **Ainda não decidido — perguntar ao autor/professora antes de seguir para o WorldClim.**
+**Decisão (25/09/2026): MANTER.** Antes de decidir, o autor perguntou se o ponto de Apuí está geograficamente dentro do Amazonas — verificado com uma segunda fonte independente (não só o texto da localidade, mas o campo `level1Name` do GBIF, geocodificado a partir da própria coordenada, mesmo procedimento usado para auditar o caso "Loreto"): **confirmado, Amazonas** (coordenada -6,98/-58,36). O nome da ecorregião ("Mato Grosso seasonal forests") reflete só a fisionomia vegetal — ecorregiões não seguem limite estadual, e essa se estende ao sul do Amazonas nessa faixa de transição. Não é erro de local nem de fronteira.
+
+**M oficial do projeto: a versão PRINCIPAL** (11 ecorregiões, 3.235.510 km², calibração com os 37 pontos rarefeitos, incluindo o de Apuí). A versão alternativa (`area_M_lagothrix_dissolvido_alt_sem_MT.gpkg`, 10 ecorregiões) fica registrada como material de análise de sensibilidade já disponível, não como M ativo.
 
 Saídas: `Dados/area_M_lagothrix_ecorregioes.gpkg` (ecorregiões individuais), `Dados/area_M_lagothrix_dissolvido.gpkg` (M principal, polígono único), `Dados/area_M_lagothrix_dissolvido_alt_sem_MT.gpkg` (alternativa).
 
@@ -392,9 +394,9 @@ Saídas: `Dados/area_M_lagothrix_ecorregioes.gpkg` (ecorregiões individuais), `
 - [x] Verificar UCs em fronteira internacional (evidência: 18/85 UCs a até 50 km de Peru/Bolívia/Colômbia/Venezuela) — embasa a decisão de M com dados, não suposição.
 - [x] Restaurar Roraima (92 UCs) para o produto multiespécie, mantendo exclusão só no SDM do *Lagothrix* — dois universos de UC documentados e no dashboard.
 - [x] **Área M formalizada** por união de ecorregiões (37 pontos rarefeitos → 11 ecorregiões → 3,24 milhões km², Brasil/Peru/Bolívia/Colômbia) — confirma e amplia a evidência de fronteira (Etapa 10).
-- [ ] **Decidir:** manter ou excluir a ecorregião "Mato Grosso seasonal forests" de M (1 ponto de borda, Apuí/AM) — afeta também se o ponto some da calibração (37→36).
+- [x] **Decidido (25/09): manter** a ecorregião "Mato Grosso seasonal forests" e o ponto de Apuí/AM — confirmado geograficamente dentro do Amazonas (2ª fonte: `level1Name` do GBIF). M oficial = versão principal, 11 ecorregiões, 3.235.510 km², calibração com os 37 pontos.
 - [ ] Baixar/recortar WorldClim (10 min de arco, já disponível em `Modelagem preditiva/Dados/wc2.1_10m_bio.zip`) para a extensão de M.
-- [ ] Refazer rarefação espacial sobre a base final decidida.
+- [ ] Rarefação espacial já está sobre a base final (37 pontos, Brasil) — nenhuma nova rodada necessária.
 - [ ] PCA das variáveis bioclimáticas (eixos com >90% da variância).
 - [ ] Background / pseudo-ausências aleatórias em M.
 - [ ] Ajuste dos modelos (GLM, Maxent, Random Forest) com validação cruzada (K-fold).

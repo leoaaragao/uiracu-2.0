@@ -91,6 +91,53 @@ def carregar_area_M():
 
 area_M = carregar_area_M()
 
+@st.cache_data
+def carregar_nomes_fotos():
+    """Nome popular e foto por especie (Scripts/21) - fonte: GBIF (vernacularNames
+    + occurrence media), nada inventado. Species sem foto/nome ficam em branco."""
+    try:
+        df = pd.read_csv(os.path.join(RAIZ, "Referencias", "especies_nomes_populares_fotos.csv"))
+        return df.set_index("canonicalName").to_dict("index")
+    except Exception:
+        return {}
+
+INFO_ESPECIE = carregar_nomes_fotos()
+
+def rotulo(especie: str) -> str:
+    """'Lagothrix lagothricha' -> 'Lagothrix lagothricha — Macaco-barrigudo'"""
+    nome = INFO_ESPECIE.get(especie, {}).get("nome_popular", "")
+    return f"{especie} — {nome}" if isinstance(nome, str) and nome else especie
+
+def html_hover_especie(especie: str) -> str:
+    """Span com nome cientifico+popular; se houver foto, aparece ao passar o mouse (CSS puro)."""
+    info = INFO_ESPECIE.get(especie, {})
+    nome = info.get("nome_popular", "") if isinstance(info.get("nome_popular"), str) else ""
+    foto = info.get("foto_url", "") if isinstance(info.get("foto_url"), str) else ""
+    texto = f"<i>{especie}</i>" + (f" — {nome}" if nome else "")
+    if foto:
+        return (
+            f'<span class="tt">{texto}'
+            f'<span class="tt-img"><img src="{foto}" onerror="this.parentElement.style.display=\'none\'"/></span>'
+            f'</span>'
+        )
+    return f'<span class="tt-sem-foto">{texto}</span>'
+
+CSS_TOOLTIP = """
+<style>
+.tt { position: relative; display: inline-block; cursor: help; border-bottom: 1px dotted #B08D57; }
+.tt-sem-foto { color: inherit; }
+.tt .tt-img {
+    visibility: hidden; opacity: 0; position: absolute; z-index: 999;
+    bottom: 125%; left: 0; transition: opacity 0.15s ease-in-out;
+    background: #0e1117; border: 2px solid #1F4E3D; border-radius: 6px; padding: 3px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.6);
+}
+.tt .tt-img img { width: 180px; height: auto; border-radius: 4px; display: block; }
+.tt:hover .tt-img { visibility: visible; opacity: 1; }
+</style>
+"""
+st.markdown(CSS_TOOLTIP, unsafe_allow_html=True)
+
 # Riqueza por UC (n de especies com >=1 registro) e lista de especies por UC
 riqueza = (matriz > 0).sum(axis=0)  # index = nome_uc
 especies_por_uc = {
@@ -130,11 +177,14 @@ with col_lateral:
     st.subheader("Ranking por incidência")
     top_n = st.slider("Mostrar top N espécies", 5, 50, 20)
     rank_plot = ranking.sort_values("n_ucs_com_registro", ascending=False).head(top_n).reset_index()
+    rank_plot["nome_popular"] = rank_plot["species"].map(
+        lambda e: INFO_ESPECIE.get(e, {}).get("nome_popular", "") or "(sem nome popular no GBIF)"
+    )
     fig = px.bar(
         rank_plot, x="n_ucs_com_registro", y="species", orientation="h",
         labels={"n_ucs_com_registro": "Nº de UCs com registro", "species": ""},
         color="n_ucs_com_registro", color_continuous_scale="Greens",
-        hover_data={"n_registros_totais": True},
+        hover_data={"n_registros_totais": True, "nome_popular": True},
     )
     fig.update_layout(yaxis={"categoryorder": "total ascending"}, height=max(400, top_n * 22),
                        coloraxis_showscale=False, margin=dict(l=0, r=0, t=10, b=0))
@@ -184,7 +234,12 @@ with col_mapa:
             popup_html = f"<b>{row['nome_uc']}</b><br>Categoria: {row['categoria']}<br>" \
                           f"Riqueza de primatas (evidência GBIF): <b>{row['riqueza_primatas']}</b>"
             if especies_lista:
-                popup_html += "<br><br>" + "<br>".join(f"• <i>{e}</i>" for e in especies_lista[:15])
+                popup_html += "<br><br>" + "<br>".join(
+                    f"• <i>{e}</i>" + (f" — {INFO_ESPECIE.get(e, {}).get('nome_popular', '')}"
+                                        if isinstance(INFO_ESPECIE.get(e, {}).get("nome_popular"), str)
+                                        and INFO_ESPECIE.get(e, {}).get("nome_popular") else "")
+                    for e in especies_lista[:15]
+                )
                 if len(especies_lista) > 15:
                     popup_html += f"<br>... e mais {len(especies_lista)-15}"
             folium.GeoJson(
@@ -203,7 +258,7 @@ with col_mapa:
         especies_disponiveis = sorted(pontos_com_uc["species"].dropna().unique().tolist())
         col_a, col_b = st.columns([2, 1])
         with col_a:
-            especie_mapa = st.selectbox("Espécie", especies_disponiveis, key="especie_mapa")
+            especie_mapa = st.selectbox("Espécie", especies_disponiveis, format_func=rotulo, key="especie_mapa")
         with col_b:
             mostrar_fora = st.toggle("Incluir pontos fora das UCs", value=True)
 
@@ -250,29 +305,61 @@ st.divider()
 # ---------------- Explorar por especie ou por UC ----------------
 tab_esp, tab_uc = st.tabs(["🔍 Explorar por espécie", "🔍 Explorar por UC"])
 
+def tabela_html_com_foto(pares_especie_registros, col2_titulo="Registros"):
+    """Renderiza uma tabelinha HTML onde cada especie tem hover-tooltip com foto (CSS puro)."""
+    linhas = "".join(
+        f"<tr><td style='padding:4px 10px 4px 0'>{html_hover_especie(e)}</td>"
+        f"<td style='padding:4px; text-align:right; opacity:0.8'>{n}</td></tr>"
+        for e, n in pares_especie_registros
+    )
+    st.markdown(
+        f"<table style='width:100%; border-collapse:collapse'>"
+        f"<tr><th style='text-align:left; padding:4px 10px 4px 0'>Espécie</th>"
+        f"<th style='text-align:right; padding:4px'>{col2_titulo}</th></tr>{linhas}</table>",
+        unsafe_allow_html=True,
+    )
+    st.caption("Passe o mouse sobre uma espécie para ver a foto (quando disponível — fonte: GBIF).")
+
 with tab_esp:
-    especie_sel = st.selectbox("Escolha uma espécie", sorted(matriz.index.tolist()))
+    especie_sel = st.selectbox("Escolha uma espécie", sorted(matriz.index.tolist()), format_func=rotulo, key="especie_sel_tab")
     ucs_da_especie = matriz.columns[matriz.loc[especie_sel] > 0].tolist()
-    st.write(f"**{especie_sel}** tem registro confirmado em **{len(ucs_da_especie)}** UC(s):")
-    if ucs_da_especie:
-        tabela = pd.DataFrame({
-            "UC": ucs_da_especie,
-            "Registros": [int(matriz.loc[especie_sel, uc]) for uc in ucs_da_especie],
-        }).sort_values("Registros", ascending=False)
-        st.dataframe(tabela, use_container_width=True, hide_index=True)
-    else:
-        st.info(f"Nenhuma ocorrência confirmada dentro das {len(ucs)} UCs para esta espécie (pode ocorrer na região, fora dos limites das UCs).")
+
+    col_foto, col_info = st.columns([1, 3])
+    info_sel = INFO_ESPECIE.get(especie_sel, {})
+    with col_foto:
+        foto_url = info_sel.get("foto_url", "")
+        if isinstance(foto_url, str) and foto_url:
+            st.image(foto_url, use_container_width=True)
+            creditos = info_sel.get("foto_creditos", "")
+            licenca = info_sel.get("foto_licenca", "")
+            if isinstance(creditos, str) and creditos:
+                st.caption(f"📷 {creditos} · {licenca if isinstance(licenca, str) else ''}")
+        else:
+            st.caption("Sem foto disponível no GBIF para esta espécie.")
+    with col_info:
+        nome_pop = info_sel.get("nome_popular", "")
+        if isinstance(nome_pop, str) and nome_pop:
+            st.markdown(f"**Nome popular:** {nome_pop}")
+        st.write(f"**{especie_sel}** tem registro confirmado em **{len(ucs_da_especie)}** UC(s):")
+        if ucs_da_especie:
+            tabela = pd.DataFrame({
+                "UC": ucs_da_especie,
+                "Registros": [int(matriz.loc[especie_sel, uc]) for uc in ucs_da_especie],
+            }).sort_values("Registros", ascending=False)
+            st.dataframe(tabela, use_container_width=True, hide_index=True)
+        else:
+            st.info(f"Nenhuma ocorrência confirmada dentro das {len(ucs)} UCs para esta espécie (pode ocorrer na região, fora dos limites das UCs).")
 
 with tab_uc:
     uc_sel = st.selectbox("Escolha uma UC", sorted(matriz.columns.tolist()))
     especies_da_uc = matriz.index[matriz[uc_sel] > 0].tolist()
     st.write(f"**{uc_sel}** tem **{len(especies_da_uc)}** espécie(s) de primata com registro confirmado:")
     if especies_da_uc:
-        tabela2 = pd.DataFrame({
-            "Espécie": especies_da_uc,
-            "Registros": [int(matriz.loc[e, uc_sel]) for e in especies_da_uc],
-        }).sort_values("Registros", ascending=False)
-        st.dataframe(tabela2, use_container_width=True, hide_index=True)
+        pares = sorted(
+            ((e, int(matriz.loc[e, uc_sel])) for e in especies_da_uc),
+            key=lambda x: -x[1],
+        )
+        tabela_html_com_foto(pares)
     else:
         st.info("Nenhuma ocorrência confirmada dentro desta UC nos dados atuais.")
 

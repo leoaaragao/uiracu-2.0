@@ -376,6 +376,18 @@ Um único ponto (2008, Apuí/AM, "Rio Tapajós") caiu na ecorregião **"Mato Gro
 
 Saídas: `Dados/area_M_lagothrix_ecorregioes.gpkg` (ecorregiões individuais), `Dados/area_M_lagothrix_dissolvido.gpkg` (M principal, polígono único), `Dados/area_M_lagothrix_dissolvido_alt_sem_MT.gpkg` (alternativa).
 
+## 2026-09-25 — Etapa 12: Dashboard v3 — nomes populares + foto ao passar o mouse
+
+A pedido, adicionados nome popular e foto por espécie em todo o dashboard:
+
+- **Fonte:** `Scripts/21_nomes_populares_e_fotos.py` — consulta o GBIF (`vernacularNames` para nome popular, preferência português; `occurrence/search` com `mediaType=StillImage` para foto) para cada uma das 168 espécies. Nada inventado; mesmo salvamento incremental do `Scripts/13`. Resultado: **160/168 com nome popular, 151/168 com foto**.
+- **Onde aparece:**
+  - Seletores de espécie (dropdowns) mostram "Nome científico — Nome popular".
+  - Aba "Explorar por espécie": foto grande + crédito/licença exibidos ao lado da tabela.
+  - Aba "Explorar por UC": tabela com **hover CSS puro** — passar o mouse sobre o nome da espécie mostra a foto num box flutuante (espécies sem foto ficam sem o sublinhado pontilhado, sem tooltip).
+  - Popup do mapa de riqueza e hover do gráfico de ranking: nome popular incluído no texto.
+- Testado interativamente (Parque Nacional de Anavilhanas, 16 espécies confirmadas — bate com o cálculo manual; hover funcionando, foto aparece corretamente).
+
 **Sugestões registradas para próximas iterações (ainda não implementadas):**
 - Colorir/filtrar por status de ameaça (IUCN) — precisaria de mais uma consulta por espécie.
 - Um índice simples de biodiversidade por UC (riqueza + peso por espécie ameaçada) — pré-visualização do IPBB usando só os dados já coletados, sem esperar o SDM do *Lagothrix*.

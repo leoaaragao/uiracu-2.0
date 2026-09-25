@@ -419,5 +419,24 @@ A pedido, adicionados nome popular e foto por espécie em todo o dashboard:
 - [ ] *(sugestão nova, não decidida)* Índice simples de biodiversidade por UC combinando riqueza multiespécie + peso por status de ameaça (IUCN) — prévia do IPBB sem depender do SDM.
 - [ ] Montar apresentação em PPT a partir deste diário.
 
+## 2026-09-25 — Etapa 13: Decisão de escopo do projeto + dashboard reorganizado em 2 partes
+
+**Prazo de entrega: 02/10/2026.** Diante disso, o autor decidiu fechar o formato final do projeto agora, para poder pausar/retomar com segurança.
+
+**Decisão:** o projeto passa a ter **duas partes claramente separadas** (não mais "produto principal x produto secundário"):
+- **Parte 1 — Riqueza de primatas (92 UCs, com Roraima):** já está completa. Vira o resultado "base" do projeto — verificação de riqueza por evidência de ocorrência, sem modelagem.
+- **Parte 2 — Modelagem SDM do *Lagothrix lagothricha* (85 UCs, sem Roraima):** o estudo de caso aprofundado que cumpre o exercício de modelagem exigido pela disciplina (Fichas 2.6-2.9). Continua em andamento (falta WorldClim, ajuste dos modelos, mapas de consenso/incerteza).
+
+Confirmado que a modelagem inteira pode ser feita em Python, sem softwares externos: GLM (`statsmodels`/`sklearn`), Maxent via **`elapid`** (reimplementação Python, testada e instalada — não é o software original de Phillips et al., isso precisa ficar na declaração de ferramentas do projeto final), Random Forest (`sklearn`), validação cruzada K-fold (`sklearn`, conforme a própria orientação da professora em aula para poucos pontos), e mapa de incerteza via `numpy`/`rasterio`.
+
+### Dashboard reorganizado (app Streamlit multi-página)
+- `Dashboard/Inicio.py` — página de entrada, explica as duas partes.
+- `Dashboard/pages/1_Riqueza_de_Especies.py` — conteúdo completo que antes era `dashboard_primatas.py` (renomeado/movido; RAIZ recalculada para a nova profundidade de pastas).
+- `Dashboard/pages/2_Modelagem_Lagothrix.py` — página nova, mostra o progresso atual da Parte 2 (37 pontos de calibração, 11 ecorregiões, mapa de M) e a lista do que falta — não é o modelo final, é o status.
+- `.claude/launch.json` atualizado para apontar para `Inicio.py`.
+- Testado: as 3 páginas carregam e navegam corretamente, sem erros de console reais (só um aviso interno benigno do Streamlit em rotas de health-check).
+
+Saída: `Dashboard/dashboard_primatas.py` removido (conteúdo migrado para `pages/1_...py`).
+
 ## Documentos de apoio
 - [Anotações da aula (Gemini), 22-23/09/2026](https://drive.google.com/drive/folders/1RgYTo5Ki5dCN0r64YvgQBRm3Cfrw0HHj) — referenciadas na seção "Aprendizados da aula" acima.

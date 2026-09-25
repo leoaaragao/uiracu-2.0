@@ -12,11 +12,12 @@ import folium
 from streamlit_folium import st_folium
 import plotly.express as px
 
-st.set_page_config(page_title="Uiraçu 2.0 — Primatas x UCs", layout="wide", page_icon="🐒")
+st.set_page_config(page_title="Uiraçu 2.0 — Parte 1: Riqueza de Espécies", layout="wide", page_icon="🐒")
 
 # Raiz do projeto = pasta pai de Dashboard/ — resolvido pelo caminho do proprio
-# arquivo, para funcionar independente de onde o streamlit for iniciado.
-RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# arquivo (Dashboard/pages/1_..py -> sobe 3 niveis), para funcionar
+# independente de onde o streamlit for iniciado.
+RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # ---------------- Dados ----------------
 @st.cache_data
@@ -64,15 +65,17 @@ def juntar_pontos_com_uc(_ucs, ocorrencias):
     return j.drop(columns="geometry")
 
 # ---------------- Cabecalho ----------------
-st.title("🐒 Primatas da Pan-Amazônia x Unidades de Conservação")
+st.title("🐒 Parte 1 — Riqueza de Primatas nas UCs da Amazônia")
+st.caption("Todas as espécies de primata, todas as UCs (Amazonas, Acre, Rondônia e Roraima) — verificação de riqueza por evidência de ocorrência.")
 
 incluir_rr = st.toggle(
-    "Incluir Roraima (produto multiespécie — 92 UCs)",
+    "Incluir Roraima (92 UCs — escopo padrão desta parte do projeto)",
     value=True,
-    help="Ligado: 92 UCs (AM/AC/RO/RR), para o painel de diversidade multiespécie — não há "
-         "motivo biogeográfico para excluir Roraima quando o assunto é a comunidade de primatas "
-         "como um todo. Desligado: 85 UCs (AM/AC/RO), o mesmo recorte usado no SDM do Lagothrix "
-         "lagothricha, que tem o Rio Negro/Branco como limite de distribuição documentado.",
+    help="Escopo padrão: 92 UCs (AM/AC/RO/RR) — Roraima tem espécies próprias de primata "
+         "documentadas (ex.: Alouatta macconnelli, Ateles paniscus) e entra na verificação de "
+         "riqueza normalmente. Desligue só para comparar com o recorte de 85 UCs (AM/AC/RO) usado "
+         "na Parte 2 (modelagem do Lagothrix lagothricha, espécie que não ocorre em Roraima por "
+         "limite biogeográfico documentado — Rio Negro/Branco).",
 )
 
 ucs, matriz, ranking, ocorrencias = carregar_dados(incluir_rr)

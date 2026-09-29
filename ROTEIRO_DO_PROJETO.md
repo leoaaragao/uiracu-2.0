@@ -656,5 +656,11 @@ Como o campo "About" do GitHub aceita só um idioma por vez, a versão em inglê
 um bloco de resumo no topo do `README.md` (logo abaixo do título), não substituindo o conteúdo em
 português do resto do documento.
 
-## Documentos de apoio
-- [Anotações da aula (Gemini), 22-23/09/2026](https://drive.google.com/drive/folders/1RgYTo5Ki5dCN0r64YvgQBRm3Cfrw0HHj) — referenciadas na seção "Aprendizados da aula" acima.
+## 2026-09-29 — Etapa 24: roteiro do projeto direto no dashboard
+
+Pedido: quem acessar o site não deveria precisar ir ao GitHub para ler o roteiro completo.
+Criada `Dashboard/pages/3_Roteiro_do_Projeto.py` — lê e renderiza `ROTEIRO_DO_PROJETO.md` direto
+do repositório (sempre atualizado, não é uma cópia manual). Inclui um seletor "Ir para a seção"
+que divide o documento pelos cabeçalhos de nível 2 (27 seções), para não precisar rolar o
+documento inteiro (~660 linhas) para achar uma etapa específica — testado ao vivo, filtra
+corretamente. Link para o GitHub mantido no rodapé como fonte com histórico de commits.

@@ -73,7 +73,9 @@ Processo completo, decisão por decisão, incluindo os erros e ajustes no caminh
 em [`ROTEIRO_DO_PROJETO.md`](https://github.com/leoaaragao/uiracu-2.0/blob/main/ROTEIRO_DO_PROJETO.md).
     """)
 
-st.markdown("Use o menu à esquerda para navegar entre as duas partes.")
+st.markdown("Use o menu à esquerda para navegar entre as duas partes — e a página "
+            "**Roteiro do Projeto** traz o registro completo de decisões, direto aqui no site, "
+            "sem precisar abrir o GitHub.")
 
 col1, col2 = st.columns(2)
 

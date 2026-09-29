@@ -46,7 +46,7 @@ Todo o pipeline em **Python** (sem QGIS, sem R, sem software Maxent original —
 
 ## Uso de IA
 
-Assistência de IA (Claude/Anthropic) em todas as etapas — programação, organização de dados, auditoria assistida — com decisão científica e verificação sempre humanas, conforme Protocolos 01 e 02 da disciplina. Registro completo, decisão por decisão, em [`DIARIO_DE_BORDO.md`](DIARIO_DE_BORDO.md).
+Assistência de IA (Claude/Anthropic) em todas as etapas — programação, organização de dados, auditoria assistida — com decisão científica e verificação sempre humanas, conforme Protocolos 01 e 02 da disciplina. Registro completo, decisão por decisão, em [`ROTEIRO_DO_PROJETO.md`](ROTEIRO_DO_PROJETO.md).
 
 ## Resumo visual
 

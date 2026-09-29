@@ -47,4 +47,4 @@ Preparei o código para as três opções, mas **não rodei o passo de definiç�
 - Regras de ouro (não esconder incerteza, não mascarar extrapolação, etc.) — guia para todas as próximas etapas
 
 ---
-*Detalhe técnico completo, comando por comando: [`DIARIO_DE_BORDO.md`](DIARIO_DE_BORDO.md)*
+*Detalhe técnico completo, comando por comando: [`ROTEIRO_DO_PROJETO.md`](ROTEIRO_DO_PROJETO.md)*

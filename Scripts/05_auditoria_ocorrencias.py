@@ -20,10 +20,10 @@ OUT_AUDITADAS = "Dados/FO01_03_ocorrencias_auditadas.csv"
 OUT_SINTESE = "Dados/FO01_05_sintese_auditoria.md"
 
 # Brasil: area de estudo (recorte politico do projeto) x "vizinhanca amazonica" plausivel
-ESTADOS_ALVO = {"Amazonas", "Acre", "Rondônia"}  # Roraima removida - ver DIARIO_DE_BORDO.md
+ESTADOS_ALVO = {"Amazonas", "Acre", "Rondônia"}  # Roraima removida - ver ROTEIRO_DO_PROJETO.md
 ESTADOS_AMAZONIA_PLAUSIVEL = ESTADOS_ALVO | {"Pará", "Mato Grosso"}
 # Peru: incluido deliberadamente (2026-09-23) para dar mais contraste ambiental a M,
-# mesmo misturando subespecies vizinhas (tschudii/poeppigii) - ver DIARIO_DE_BORDO.md
+# mesmo misturando subespecies vizinhas (tschudii/poeppigii) - ver ROTEIRO_DO_PROJETO.md
 DEPARTAMENTOS_PERU_PLAUSIVEL = {
     "Loreto", "Ucayali", "Madre de Dios", "Cusco", "Puno", "Junín", "Pasco",
     "San Martín", "Huánuco", "Amazonas",  # "Amazonas" tambem existe como depto peruano

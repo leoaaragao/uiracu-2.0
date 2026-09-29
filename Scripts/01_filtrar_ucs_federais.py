@@ -9,7 +9,7 @@ DECISAO (2026-09-23): Roraima foi excluida do recorte administrativo inicial.
 Motivo ECOLOGICO, nao apenas ausencia de registros: o Rio Negro/Rio Branco e
 um limite de distribuicao documentado para Lagothrix lagothricha (a especie
 ocorre a oeste/norte do Rio Negro; Roraima fica do outro lado, na bacia do
-Rio Branco / Escudo das Guianas). Ver DIARIO_DE_BORDO.md, secao "Por que
+Rio Branco / Escudo das Guianas). Ver ROTEIRO_DO_PROJETO.md, secao "Por que
 Roraima ficou de fora". Esta e uma simplificacao por estado (proxy); o
 recorte definitivo da area acessivel M (ficha 2.1) usara ecorregioes, nao
 limites administrativos - podera refinar esta lista.

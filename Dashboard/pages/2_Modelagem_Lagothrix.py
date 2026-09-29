@@ -196,4 +196,4 @@ with abas[5]:
         st.error(f"Não foi possível carregar a camada: {e}")
 
 st.divider()
-st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · gerado com apoio de Claude (Anthropic) — ver DIARIO_DE_BORDO.md")
+st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · gerado com apoio de Claude (Anthropic) — ver ROTEIRO_DO_PROJETO.md")

@@ -33,10 +33,11 @@ conservada — na tese de doutorado, o painel interativo que resulta desta linha
 será batizado com esse nome.
     """)
 with col_foto:
-    caminho_foto = os.path.join(RAIZ, "Dashboard", "assets", "gaviao_real_carajas_amazonia.jpg")
+    caminho_foto = os.path.join(RAIZ, "Dashboard", "assets", "gaviao_real_juruena_amazonas.jpg")
     if os.path.exists(caminho_foto):
-        st.image(caminho_foto, use_container_width=True, caption="Gavião-real (Harpia harpyja), livre na Amazônia")
-        st.caption("Foto: Hector Bottai, Floresta Nacional de Carajás (Pará) · CC BY-SA 4.0, via Wikimedia Commons")
+        st.image(caminho_foto, use_container_width=True, caption="Gavião-real (Harpia harpyja), Parque Nacional do Juruena (AM)")
+        st.caption("Foto: Vinícius Pires Nogueira · CC BY-SA 4.0, via Wikimedia Commons · a mesma UC aparece "
+                   "no ranking de adequabilidade da Parte 2")
 
 st.divider()
 
@@ -49,7 +50,7 @@ regional do projeto de doutorado:
 - **Verificação de riqueza (Parte 1):** varredura de ocorrências via API do GBIF
   (`occurrence/search`), sem restrição por país/estado declarado — associação a cada UC feita por
   geometria real (ponto dentro do polígono), não por rótulo textual, que pode estar incorreto
-  (ver o caso documentado no `DIARIO_DE_BORDO.md`).
+  (ver o caso documentado no `ROTEIRO_DO_PROJETO.md`).
 - **Modelagem de distribuição — SDM (Parte 2):** GLM, Maxent (via biblioteca Python `elapid`,
   substituindo o software Maxent original de Phillips et al.) e Random Forest, ajustados sobre
   eixos de PCA das variáveis WorldClim, com validação cruzada K-fold, mapa de consenso e de
@@ -61,7 +62,7 @@ regional do projeto de doutorado:
   por falta de dado.
 
 Processo completo, decisão por decisão, incluindo os erros e ajustes no caminho, está registrado
-em [`DIARIO_DE_BORDO.md`](https://github.com/leoaaragao/uiracu-2.0/blob/main/DIARIO_DE_BORDO.md).
+em [`ROTEIRO_DO_PROJETO.md`](https://github.com/leoaaragao/uiracu-2.0/blob/main/ROTEIRO_DO_PROJETO.md).
     """)
 
 st.markdown("Use o menu à esquerda para navegar entre as duas partes.")
@@ -122,7 +123,7 @@ with st.expander("Ferramentas e uso de IA"):
 - **pygbif** — acesso programático à API do GBIF
 
 Lista completa e versões exatas em [`requirements.txt`](https://github.com/leoaaragao/uiracu-2.0/blob/main/requirements.txt).
-Detalhes completos, decisão por decisão, em [`DIARIO_DE_BORDO.md`](https://github.com/leoaaragao/uiracu-2.0/blob/main/DIARIO_DE_BORDO.md).
+Detalhes completos, decisão por decisão, em [`ROTEIRO_DO_PROJETO.md`](https://github.com/leoaaragao/uiracu-2.0/blob/main/ROTEIRO_DO_PROJETO.md).
     """)
 
-st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · ver DIARIO_DE_BORDO.md")
+st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · ver ROTEIRO_DO_PROJETO.md")

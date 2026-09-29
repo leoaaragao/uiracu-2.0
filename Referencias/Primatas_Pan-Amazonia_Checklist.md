@@ -45,7 +45,7 @@ Levantamento de apoio ao projeto Uiraçu 2.0, produzido em 24/09/2026 com base e
 
 ## Nota sobre instabilidade taxonômica
 
-Vários gêneros amazônicos (*Lagothrix*, *Plecturocebus*, *Cheracebus*, *Leontocebus*, *Mico*) têm o **mesmo problema de instabilidade taxonômica** que encontramos com *Lagothrix cana* (Etapa da auditoria taxonômica, ver `DIARIO_DE_BORDO.md`): divergência entre backbones (GBIF vs. Mammal Diversity Database vs. IUCN) e muitas espécies descritas recentemente com poucos registros em bases públicas de ocorrência. Isso não é peculiaridade do nosso caso — é a regra no grupo, e deve ser levado em conta em qualquer estudo futuro (incluindo a Etapa 3 do projeto de doutorado) que use esses gêneros.
+Vários gêneros amazônicos (*Lagothrix*, *Plecturocebus*, *Cheracebus*, *Leontocebus*, *Mico*) têm o **mesmo problema de instabilidade taxonômica** que encontramos com *Lagothrix cana* (Etapa da auditoria taxonômica, ver `ROTEIRO_DO_PROJETO.md`): divergência entre backbones (GBIF vs. Mammal Diversity Database vs. IUCN) e muitas espécies descritas recentemente com poucos registros em bases públicas de ocorrência. Isso não é peculiaridade do nosso caso — é a regra no grupo, e deve ser levado em conta em qualquer estudo futuro (incluindo a Etapa 3 do projeto de doutorado) que use esses gêneros.
 
 ## Fontes
 

@@ -10,7 +10,7 @@ Projeto desenvolvido para a disciplina **Análise espacial da biodiversidade, mu
 
 **Pergunta:** quais Unidades de Conservação federais da Amazônia têm mais espécies de primata?
 
-- **168 espécies** pan-amazônicas (todos os gêneros de primata), **92 UCs** (Amazonas, Acre, Rondônia **e Roraima** — não há motivo biogeográfico para excluir Roraima quando o assunto é a comunidade toda; ver `DIARIO_DE_BORDO.md`).
+- **168 espécies** pan-amazônicas (todos os gêneros de primata), **92 UCs** (Amazonas, Acre, Rondônia **e Roraima** — não há motivo biogeográfico para excluir Roraima quando o assunto é a comunidade toda; ver `ROTEIRO_DO_PROJETO.md`).
 - Baseado em evidência de ocorrência (GBIF), com nome popular e foto por espécie.
 - Dashboard interativo pronto (mapa de riqueza, ranking, exploração por espécie/UC).
 
@@ -22,7 +22,7 @@ Estudo de caso aprofundado de **1 espécie**, cumprindo o exercício de modelage
 
 Pipeline completo: auditoria taxonômica → rarefação espacial (37 pontos de calibração) → área acessível M (3,24 milhões km², união de 11 ecorregiões) → variáveis climáticas (WorldClim, recortadas para M) → background (5.000 pontos) + PCA (4 eixos, 91,8% da variância) → **GLM, Maxent (`elapid`) e Random Forest**, com validação cruzada 5-fold (AUC médio 0,57–0,60 — amostra pequena, resultado reportado com transparência) → mapa de consenso + mapa de incerteza → explicabilidade (importância dos eixos de PCA) → pós-processamento cruzando adequabilidade × MapBiomas (Formação Florestal) × 85 UCs. Tudo integrado ao dashboard interativo.
 
-Processo completo, decisão por decisão — incluindo onde e como a IA (Claude) ajudou — está documentado em [`DIARIO_DE_BORDO.md`](DIARIO_DE_BORDO.md).
+Processo completo, decisão por decisão — incluindo onde e como a IA (Claude) ajudou — está documentado em [`ROTEIRO_DO_PROJETO.md`](ROTEIRO_DO_PROJETO.md).
 
 ## Dados e fontes
 
@@ -65,13 +65,13 @@ Uiracu-2.0/
 ├── Resultados/          # saidas de modelo, mapas
 ├── Evidencias/          # capturas de tela do processo (auditoria/reprodutibilidade)
 ├── Referencias/         # material de apoio curado (checklist de primatas, cruzamentos, nomes/fotos)
-├── DIARIO_DE_BORDO.md   # registro cronológico de decisões e uso de IA
+├── ROTEIRO_DO_PROJETO.md   # registro cronológico de decisões e uso de IA
 └── requirements.txt
 ```
 
 ## Uso de IA e ferramentas
 
-Este projeto (Uiraçu 2.0) foi desenvolvido com apoio de IA generativa (Claude/Anthropic), sob supervisão humana em cada decisão científica, conforme os Protocolos 01 e 02 da disciplina. O protótipo anterior, Uiraçu 1.0 — cuja interface e conceito de painel foram reaproveitados aqui —, foi desenvolvido com apoio do Google Antigravity. Todos os dados de ocorrência vêm diretamente das APIs do GBIF (`occurrence/search` e `occurrence/download`), sem intermediários. Detalhes completos, decisão por decisão, em [`DIARIO_DE_BORDO.md`](DIARIO_DE_BORDO.md).
+Este projeto (Uiraçu 2.0) foi desenvolvido com apoio de IA generativa (Claude/Anthropic), sob supervisão humana em cada decisão científica, conforme os Protocolos 01 e 02 da disciplina. O protótipo anterior, Uiraçu 1.0 — cuja interface e conceito de painel foram reaproveitados aqui —, foi desenvolvido com apoio do Google Antigravity. Todos os dados de ocorrência vêm diretamente das APIs do GBIF (`occurrence/search` e `occurrence/download`), sem intermediários. Detalhes completos, decisão por decisão, em [`ROTEIRO_DO_PROJETO.md`](ROTEIRO_DO_PROJETO.md).
 
 ## Autor
 

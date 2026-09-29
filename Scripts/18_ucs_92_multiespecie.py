@@ -8,7 +8,7 @@ Lagothrix: a exclusao de Roraima foi uma decisao ESPECIFICA daquela especie
 multiespecie - que e sobre a comunidade de primatas como um todo, base do
 debate de bonus de biodiversidade (diversidade funcional e filogenetica) do
 projeto de doutorado - nao ha motivo biogeografico para excluir Roraima:
-outras especies de primata podem ocorrer la. Ver DIARIO_DE_BORDO.md.
+outras especies de primata podem ocorrer la. Ver ROTEIRO_DO_PROJETO.md.
 
 NAO sobrescreve o arquivo de 85 UCs (usado pelo Lagothrix) - gera um
 arquivo separado.

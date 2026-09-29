@@ -58,7 +58,7 @@ linhas = [
     ("Data de geração", "24/09/2026"),
     ("Fonte dos dados", "GBIF.org — API pública occurrence/search (https://api.gbif.org/v1/occurrence/search)"),
     ("Espécies consultadas", "168 (todas as espécies aceitas em 18 gêneros de primatas amazônicos, obtidas do backbone do GBIF)"),
-    ("Filtro geográfico", "Caixa delimitadora (WKT) ao redor das 85 UCs + margem de ~1 grau — SEM filtro de país (countryCode do GBIF pode estar incorreto; ver caso 'Loreto' no Diário de Bordo). A inclusão/exclusão real é decidida geometricamente contra o polígono de cada UC."),
+    ("Filtro geográfico", "Caixa delimitadora (WKT) ao redor das 85 UCs + margem de ~1 grau — SEM filtro de país (countryCode do GBIF pode estar incorreto; ver caso 'Loreto' no Roteiro do Projeto). A inclusão/exclusão real é decidida geometricamente contra o polígono de cada UC."),
     ("Estas ocorrências têm DOI citável?",
      "NÃO. Foram obtidas via API de busca (occurrence/search), que é síncrona e não gera DOI — diferente do download oficial usado para Lagothrix lagothricha (que tem DOI, via occurrence/download). Esta é uma varredura exploratória para identificar quais espécies têm mais incidência registrada nas UCs, não um dataset final citável. Se alguma espécie aqui identificada for usada de forma central em um relatório/artigo, gerar um download oficial específico para ela (mesmo processo já feito duas vezes para Lagothrix)."),
     ("Reprodutibilidade", "Scripts/12 (lista de espécies por gênero), Scripts/13 (download por espécie), Scripts/14 (cruzamento espacial com as UCs) — parâmetros exatos registrados em cada script."),

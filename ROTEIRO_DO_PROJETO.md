@@ -1,4 +1,4 @@
-# Diário de bordo — Uiraçu 2.0
+# Roteiro do projeto — Uiraçu 2.0
 
 Projeto da disciplina *Análise espacial da biodiversidade, mudanças globais e inteligência artificial* (ENBT/JBRJ, 2026-2), piloto reprodutível da Etapa 2 (SDM) do projeto de doutorado (IPBB).
 
@@ -417,7 +417,7 @@ A pedido, adicionados nome popular e foto por espécie em todo o dashboard:
 - [x] Pós-processamento: cruzar adequabilidade × MapBiomas (classe 3) × as 85 UCs — Etapa 14.
 - [x] Integrar resultado do SDM do *Lagothrix* ao dashboard — Etapa 14 (6 abas: consenso, incerteza, ranking de UCs, desempenho dos modelos, importância das variáveis, pontos/M).
 - [ ] *(sugestão nova, não decidida)* Índice simples de biodiversidade por UC combinando riqueza multiespécie + peso por status de ameaça (IUCN) — prévia do IPBB sem depender do SDM.
-- [ ] Montar apresentação em PPT a partir deste diário.
+- [ ] Montar apresentação em PPT a partir deste roteiro.
 
 ## 2026-09-25 — Etapa 13: Decisão de escopo do projeto + dashboard reorganizado em 2 partes
 
@@ -518,6 +518,17 @@ Dois ajustes rápidos após revisão do dashboard:
   e mais 3 dependências (`colorama`, `rtree`, `tqdm`) nunca tinham sido adicionadas ao arquivo —
   ou seja, quem tentasse reproduzir o projeto do zero com `pip install -r requirements.txt` não
   conseguiria rodar a modelagem. Corrigido regenerando o arquivo a partir do ambiente real.
+
+## 2026-09-29 — Etapa 17: renomeação do arquivo + foto do gavião-real no Amazonas
+
+- **Arquivo renomeado:** `DIARIO_DE_BORDO.md` → **`ROTEIRO_DO_PROJETO.md`** (a pedido do autor, nome
+  mais formal para o documento final). Todas as referências no dashboard, README e scripts foram
+  atualizadas (git registrou como rename, histórico preservado).
+- **Foto trocada de novo:** a foto do gavião-real na página inicial passou a ser uma tirada
+  especificamente no **Estado do Amazonas** — Parque Nacional do Juruena, a mesma UC que aparece
+  no topo do ranking de adequabilidade da Parte 2 (ver aba "Adequabilidade × Floresta"). Fonte:
+  Vinícius Pires Nogueira, Wikimedia Commons, CC BY-SA 4.0. Arquivo:
+  `Dashboard/assets/gaviao_real_juruena_amazonas.jpg` (a foto anterior, de Carajás/PA, foi removida).
 
 ## Documentos de apoio
 - [Anotações da aula (Gemini), 22-23/09/2026](https://drive.google.com/drive/folders/1RgYTo5Ki5dCN0r64YvgQBRm3Cfrw0HHj) — referenciadas na seção "Aprendizados da aula" acima.

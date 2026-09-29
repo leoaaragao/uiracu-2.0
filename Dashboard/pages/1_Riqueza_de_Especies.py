@@ -23,7 +23,7 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 @st.cache_data
 def carregar_dados(incluir_rr: bool):
     """
-    Dois universos de UC no projeto, por motivo conceitual (ver DIARIO_DE_BORDO.md):
+    Dois universos de UC no projeto, por motivo conceitual (ver ROTEIRO_DO_PROJETO.md):
     - 85 UCs (AM/AC/RO): usado para o SDM do Lagothrix lagothricha - Roraima
       excluida por limite biogeografico documentado (Rio Negro/Branco).
     - 92 UCs (AM/AC/RO/RR): usado para o produto multiespecie/diversidade -
@@ -85,7 +85,7 @@ pontos_com_uc = juntar_pontos_com_uc(ucs, ocorrencias)
 def carregar_area_M():
     """Area acessivel (M) do Lagothrix lagothricha - uniao de ecorregioes
     (Scripts/20_definir_area_M.py). So referencia visual; o SDM em si ainda
-    nao foi rodado (ver DIARIO_DE_BORDO.md, Etapa 11)."""
+    nao foi rodado (ver ROTEIRO_DO_PROJETO.md, Etapa 11)."""
     try:
         m = gpd.read_file(os.path.join(RAIZ, "Dados", "area_M_lagothrix_dissolvido.gpkg")).to_crs("EPSG:4326")
         return m
@@ -165,7 +165,7 @@ with st.expander("Nota metodológica — leia antes de interpretar os números")
 - **Fonte:** GBIF.org, via API de busca (`occurrence/search`) — **não é um dataset com DOI**, é uma varredura
   exploratória. Ver `Referencias/Primatas_x_UCs_GBIF.xlsx`, aba "Resumo e metodologia", para o processo completo.
 - **Sem restrição política:** os pontos foram filtrados por uma caixa geográfica ao redor das UCs, não pelo país
-  declarado no GBIF (que pode estar incorreto — ver caso "Loreto" no `DIARIO_DE_BORDO.md`). A associação a cada
+  declarado no GBIF (que pode estar incorreto — ver caso "Loreto" no `ROTEIRO_DO_PROJETO.md`). A associação a cada
   UC é feita por geometria real (ponto dentro do polígono).
 - **Ausência de registro ≠ ausência da espécie.** Baixa incidência pode refletir esforço de amostragem, não
   biologia. Não usar este painel como prova definitiva de ocorrência/não ocorrência.
@@ -205,7 +205,7 @@ with col_mapa:
         disabled=(area_M is None),
         help="União de 11 ecorregiões tocadas pelos 37 pontos de calibração rarefeitos (Brasil) — "
              "estende-se a Peru, Bolívia e Colômbia. Só camada de referência: o modelo SDM em si "
-             "ainda não foi ajustado (ver DIARIO_DE_BORDO.md, Etapa 11).",
+             "ainda não foi ajustado (ver ROTEIRO_DO_PROJETO.md, Etapa 11).",
     )
 
     def desenhar_M(mapa):
@@ -367,4 +367,4 @@ with tab_uc:
     else:
         st.info("Nenhuma ocorrência confirmada dentro desta UC nos dados atuais.")
 
-st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · gerado com apoio de Claude (Anthropic) — ver DIARIO_DE_BORDO.md")
+st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · gerado com apoio de Claude (Anthropic) — ver ROTEIRO_DO_PROJETO.md")

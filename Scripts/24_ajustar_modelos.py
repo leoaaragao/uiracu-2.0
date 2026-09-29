@@ -10,11 +10,17 @@ Ajusta 3 algoritmos sobre os eixos de PCA (script 23):
 
 Validação cruzada K-fold (5 folds, estratificada por presença/background —
 conforme orientação da disciplina para amostras pequenas, sem bloqueio
-espacial). Depois, ajusta cada modelo com todos os dados e prevê a
-adequabilidade em toda a grade de M, gerando:
-  - Resultados/lagothrix_consenso.tif   (média dos 3 modelos, 0-1)
-  - Resultados/lagothrix_incerteza.tif  (desvio padrão entre os 3 modelos)
-  - Resultados/lagothrix_<modelo>.tif   (predição individual de cada modelo)
+espacial). Métricas: AUC e TSS (True Skill Statistic) — as duas citadas
+explicitamente na metodologia do projeto de doutorado (Etapa 2, seção 4.3).
+
+Depois, ajusta cada modelo com todos os dados e prevê a adequabilidade em
+toda a grade de M, gerando:
+  - Resultados/lagothrix_<modelo>.tif        (predição individual, 0-1)
+  - Resultados/lagothrix_consenso.tif        (média ponderada pelo AUC —
+    ensemble de consenso conforme Araújo & New, 2007, citado na tese)
+  - Resultados/lagothrix_incerteza.tif       (desvio padrão entre os 3 modelos)
+  - Resultados/lagothrix_binario_consenso.tif (apto/não apto por voto
+    majoritário, usando o limiar que maximiza o TSS de cada modelo)
 """
 import json
 import os
@@ -26,7 +32,7 @@ import rasterio
 from elapid import MaxentModel
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score, roc_curve
 from sklearn.model_selection import StratifiedKFold
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -62,12 +68,28 @@ def novo_rf():
 
 MODELOS = {"GLM": novo_glm, "Maxent": novo_maxent, "RandomForest": novo_rf}
 
+
+def prever(modelo, X_):
+    if hasattr(modelo, "predict_proba"):
+        return modelo.predict_proba(X_)[:, 1]
+    return modelo.predict(X_)
+
+
+def tss_maximo(y_verd, pred):
+    """TSS = sensibilidade + especificidade - 1, no limiar que maximiza esse valor
+    (regra padrão em SDM — Allouche et al. 2006)."""
+    fpr, tpr, limiares = roc_curve(y_verd, pred)
+    tss_por_limiar = tpr - fpr
+    i = int(np.argmax(tss_por_limiar))
+    return float(tss_por_limiar[i]), float(limiares[i])
+
+
 # ---------------------------------------------------------------------------
-# 2) Validação cruzada K-fold estratificada
+# 2) Validação cruzada K-fold estratificada (AUC + TSS)
 # ---------------------------------------------------------------------------
 print(f"\nValidação cruzada ({N_FOLDS}-fold estratificado)...")
 skf = StratifiedKFold(n_splits=N_FOLDS, shuffle=True, random_state=SEED)
-resultados_cv = {nome: [] for nome in MODELOS}
+resultados_cv = {nome: {"auc": [], "tss": []} for nome in MODELOS}
 
 for fold, (idx_treino, idx_teste) in enumerate(skf.split(X, y), start=1):
     X_treino, X_teste = X[idx_treino], X[idx_teste]
@@ -75,36 +97,56 @@ for fold, (idx_treino, idx_teste) in enumerate(skf.split(X, y), start=1):
     for nome, construtor in MODELOS.items():
         modelo = construtor()
         modelo.fit(X_treino, y_treino)
-        if hasattr(modelo, "predict_proba"):
-            pred = modelo.predict_proba(X_teste)[:, 1]
-        else:
-            pred = modelo.predict(X_teste)
+        pred = prever(modelo, X_teste)
         auc = roc_auc_score(y_teste, pred)
-        resultados_cv[nome].append(auc)
-        print(f"  fold {fold} · {nome:12s} AUC = {auc:.3f}")
+        tss, _ = tss_maximo(y_teste, pred)
+        resultados_cv[nome]["auc"].append(auc)
+        resultados_cv[nome]["tss"].append(tss)
+        print(f"  fold {fold} · {nome:12s} AUC = {auc:.3f}  TSS = {tss:.3f}")
 
-print("\nResumo da validação cruzada (AUC médio ± desvio padrão):")
+print("\nResumo da validação cruzada (média ± desvio padrão):")
 resumo_cv = []
-for nome, aucs in resultados_cv.items():
-    media, dp = np.mean(aucs), np.std(aucs)
-    resumo_cv.append({"modelo": nome, "auc_medio": media, "auc_dp": dp})
-    print(f"  {nome:12s} {media:.3f} ± {dp:.3f}")
-pd.DataFrame(resumo_cv).to_csv(os.path.join(RESULTADOS, "lagothrix_cv_auc.csv"), index=False)
+for nome, vals in resultados_cv.items():
+    auc_m, auc_dp = np.mean(vals["auc"]), np.std(vals["auc"])
+    tss_m, tss_dp = np.mean(vals["tss"]), np.std(vals["tss"])
+    resumo_cv.append({
+        "modelo": nome, "auc_medio": auc_m, "auc_dp": auc_dp,
+        "tss_medio": tss_m, "tss_dp": tss_dp,
+    })
+    print(f"  {nome:12s} AUC {auc_m:.3f} ± {auc_dp:.3f}   TSS {tss_m:.3f} ± {tss_dp:.3f}")
+resumo_cv_df = pd.DataFrame(resumo_cv)
+resumo_cv_df.to_csv(os.path.join(RESULTADOS, "lagothrix_cv_metricas.csv"), index=False)
 
 # ---------------------------------------------------------------------------
 # 3) Ajustar cada modelo com TODOS os dados (para gerar o mapa final)
 # ---------------------------------------------------------------------------
 print("\nAjustando modelos finais (100% dos dados)...")
 modelos_finais = {}
+limiares_finais = {}
 for nome, construtor in MODELOS.items():
     modelo = construtor()
     modelo.fit(X, y)
     modelos_finais[nome] = modelo
-    print(f"  {nome} ajustado.")
+    pred_treino = prever(modelo, X)
+    _, limiar = tss_maximo(y, pred_treino)
+    limiares_finais[nome] = limiar
+    print(f"  {nome} ajustado. Limiar (máx. TSS, dados completos): {limiar:.3f}")
 
 os.makedirs(os.path.join(RESULTADOS, "modelos"), exist_ok=True)
 for nome, modelo in modelos_finais.items():
     joblib.dump(modelo, os.path.join(RESULTADOS, "modelos", f"{nome.lower()}.joblib"))
+
+# Pesos do ensemble = AUC médio da validação cruzada, normalizado (Araújo & New, 2007)
+pesos = {nome: resumo_cv_df.set_index("modelo").loc[nome, "auc_medio"] for nome in MODELOS}
+soma_pesos = sum(pesos.values())
+pesos = {nome: w / soma_pesos for nome, w in pesos.items()}
+print(f"\nPesos do ensemble (AUC médio normalizado): "
+      + ", ".join(f"{n}={w:.3f}" for n, w in pesos.items()))
+
+pd.DataFrame([
+    {"modelo": nome, "peso_ensemble_auc": pesos[nome], "limiar_max_tss": limiares_finais[nome]}
+    for nome in MODELOS
+]).to_csv(os.path.join(RESULTADOS, "lagothrix_pesos_limiares.csv"), index=False)
 
 # ---------------------------------------------------------------------------
 # 4) Prever em toda a grade de M
@@ -126,37 +168,52 @@ perfil_saida = {
 }
 
 predicoes = {}
+binarios = {}
 for nome, modelo in modelos_finais.items():
-    if hasattr(modelo, "predict_proba"):
-        pred = modelo.predict_proba(X_grade)[:, 1]
-    else:
-        pred = modelo.predict(X_grade)
+    pred = prever(modelo, X_grade)
     raster = np.full((altura, largura), -9999.0, dtype="float32")
     raster[linha_idx, coluna_idx] = pred
     predicoes[nome] = raster
+
+    binario = np.full((altura, largura), -9999.0, dtype="float32")
+    binario[linha_idx, coluna_idx] = (pred >= limiares_finais[nome]).astype("float32")
+    binarios[nome] = binario
+
     with rasterio.open(os.path.join(RESULTADOS, f"lagothrix_{nome.lower()}.tif"), "w", **perfil_saida) as dst:
         dst.write(raster, 1)
     print(f"  salvo: Resultados/lagothrix_{nome.lower()}.tif "
           f"(min={pred.min():.3f}, média={pred.mean():.3f}, máx={pred.max():.3f})")
 
 # ---------------------------------------------------------------------------
-# 5) Consenso (média) e incerteza (desvio padrão entre os 3 modelos)
+# 5) Consenso ponderado, incerteza e mapa binário (voto majoritário)
 # ---------------------------------------------------------------------------
 pilha_pred = np.stack(list(predicoes.values()))  # (3, altura, largura)
+pesos_array = np.array([pesos[nome] for nome in predicoes.keys()]).reshape(-1, 1, 1)
 mascara_valida = pilha_pred[0] != -9999.0
 
 consenso = np.full((altura, largura), -9999.0, dtype="float32")
 incerteza = np.full((altura, largura), -9999.0, dtype="float32")
-consenso[mascara_valida] = pilha_pred[:, mascara_valida].mean(axis=0)
+consenso[mascara_valida] = (pilha_pred * pesos_array).sum(axis=0)[mascara_valida]
 incerteza[mascara_valida] = pilha_pred[:, mascara_valida].std(axis=0)
 
-with rasterio.open(os.path.join(RESULTADOS, "lagothrix_consenso.tif"), "w", **perfil_saida) as dst:
-    dst.write(consenso, 1)
-with rasterio.open(os.path.join(RESULTADOS, "lagothrix_incerteza.tif"), "w", **perfil_saida) as dst:
-    dst.write(incerteza, 1)
+pilha_bin = np.stack(list(binarios.values()))
+binario_consenso = np.full((altura, largura), -9999.0, dtype="float32")
+votos = pilha_bin[:, mascara_valida].sum(axis=0)  # 0 a 3 modelos concordando
+binario_consenso[mascara_valida] = (votos >= 2).astype("float32")  # maioria (>=2 de 3)
 
-print(f"\nConsenso salvo: Resultados/lagothrix_consenso.tif "
+for nome_arq, array in [
+    ("lagothrix_consenso.tif", consenso),
+    ("lagothrix_incerteza.tif", incerteza),
+    ("lagothrix_binario_consenso.tif", binario_consenso),
+]:
+    with rasterio.open(os.path.join(RESULTADOS, nome_arq), "w", **perfil_saida) as dst:
+        dst.write(array, 1)
+
+area_apta_pct = 100 * (binario_consenso[mascara_valida] == 1).mean()
+print(f"\nConsenso ponderado salvo: Resultados/lagothrix_consenso.tif "
       f"(média={consenso[mascara_valida].mean():.3f})")
 print(f"Incerteza salva: Resultados/lagothrix_incerteza.tif "
       f"(desvio padrão médio={incerteza[mascara_valida].mean():.3f})")
+print(f"Mapa binário salvo: Resultados/lagothrix_binario_consenso.tif "
+      f"({area_apta_pct:.1f}% de M classificada como apta por maioria dos modelos)")
 print("\nConcluído.")

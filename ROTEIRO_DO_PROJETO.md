@@ -555,5 +555,43 @@ Preparado para deploy no Railway (builder Nixpacks, detecta `Procfile` automatic
   gerar domínio) — a conexão da conta Railway/GitHub e o clique em "Deploy" são passos que só o
   autor pode fazer (login em serviço de terceiros).
 
+## 2026-09-29 — Etapa 19: checagem de escopo contra as Fichas oficiais 2.6-2.9
+
+Antes de publicar, o autor pediu para melhorar a Parte 2 e adicionar "o que for exigido na
+disciplina e no projeto de doutorado". Como primeira tentativa, a IA usou o texto da própria
+proposta de doutorado (o documento `projeto.docx`) como referência — mas o autor interrompeu e
+pediu para **confirmar direto com o material da disciplina**, não inferir pela tese.
+
+Lidas as 4 fichas oficiais (`Modelagem preditiva/Fichas completas/Ficha_2_6...` a `Ficha_2_9...`).
+Achado importante: as fichas descrevem um protocolo de pesquisa muito mais rigoroso do que o
+que este projeto tem condições de fazer no prazo — validação cruzada **aninhada** (folds externos
++ internos), auditoria de colinearidade (VIF), diagnóstico de resíduos (deviance, Cook), curvas de
+calibração e Brier score, blocos espaciais, e arquivos de saída com nomenclatura exata
+(`MC26_01...` até `MC29_05...`). Esse padrão foi desenhado para o estudo de caso da professora
+(*Ocotea catharinensis*, com bem mais pontos de ocorrência) — replicá-lo à risca com 37 pontos em
+1-2 dias seria desproporcional, e contradiria a própria orientação verbal da professora em aula
+de que validação cruzada simples (sem bloqueio espacial) é aceitável para amostras pequenas.
+
+**Decisão do autor, apresentada as opções:** não perseguir a fidelidade literal às fichas —
+finalizar apenas o que já estava em andamento e seguir para a publicação.
+
+**O que foi finalizado (já estava em execução quando a pergunta chegou, mantido por serem
+correções/melhorias baratas sobre o que já existia, não escopo novo):**
+- **TSS** (True Skill Statistic) calculado junto do AUC na validação cruzada — métrica citada
+  explicitamente na Ficha 2.9 e na metodologia da tese. Resultado: TSS 0,28-0,34 (moderado,
+  coerente com o AUC).
+- **Consenso ponderado pelo AUC** de cada modelo (em vez de média simples) — método de ensemble
+  citado em Araújo & New (2007), referência da própria tese.
+- **Mapa binário (apto/não apto)** por voto majoritário, usando o limiar que maximiza o TSS de
+  cada modelo — 30,8% de M classificado como apto.
+- Dashboard atualizado (abas "Mapa de consenso" e "Desempenho dos modelos") para refletir essas
+  métricas, com nota honesta sobre a limitação da amostra.
+
+**O que foi conscientemente deixado de fora** (registrado aqui para constar na declaração
+metodológica do relatório final, não por omissão): validação cruzada aninhada, diagnóstico de
+colinearidade (VIF) e resíduos, curvas de calibração/Brier, bloqueio espacial dos folds,
+curvas de resposta por variável, comparação de hiperparâmetros/regularização entre configurações,
+e os arquivos `MC26-MC29` com nomenclatura exata da ficha.
+
 ## Documentos de apoio
 - [Anotações da aula (Gemini), 22-23/09/2026](https://drive.google.com/drive/folders/1RgYTo5Ki5dCN0r64YvgQBRm3Cfrw0HHj) — referenciadas na seção "Aprendizados da aula" acima.

@@ -76,13 +76,24 @@ abas = st.tabs([
 # --- Aba 1: consenso -------------------------------------------------------
 with abas[0]:
     st.markdown("**Adequabilidade ambiental (0 = pouco adequado, 1 = muito adequado)** — "
-                "média dos 3 modelos (GLM, Maxent, Random Forest).")
+                "média dos 3 modelos (GLM, Maxent, Random Forest), **ponderada pelo AUC** de cada um "
+                "na validação cruzada (ensemble de consenso, conforme Araújo & New, 2007).")
     try:
         rgba, bounds, valores = raster_para_rgba(os.path.join(RESULTADOS, "lagothrix_consenso.tif"), "YlGn", 0, 1)
         m = mapa_base_ucs()
         folium.raster_layers.ImageOverlay(image=rgba, bounds=bounds, opacity=0.85, name="Consenso").add_to(m)
         st_folium(m, use_container_width=True, height=520, returned_objects=[], key="mapa_consenso")
         st.caption(f"Adequabilidade média em M: {valores.mean():.2f} · máxima: {valores.max():.2f}")
+        try:
+            with rasterio.open(os.path.join(RESULTADOS, "lagothrix_binario_consenso.tif")) as src_bin:
+                arr_bin = src_bin.read(1)
+                nod_bin = src_bin.nodata
+                validos_bin = arr_bin != nod_bin
+                pct_apto = 100 * (arr_bin[validos_bin] == 1).mean()
+            st.caption(f"Classificando com o limiar que maximiza o TSS de cada modelo (voto majoritário, "
+                       f"≥2 de 3 modelos concordando): **{pct_apto:.1f}% de M** é classificada como apta.")
+        except Exception:
+            pass
     except Exception as e:
         st.error(f"Não foi possível carregar o mapa de consenso: {e}")
 
@@ -136,17 +147,28 @@ with abas[2]:
 # --- Aba 4: desempenho dos modelos -----------------------------------------
 with abas[3]:
     try:
-        cv = pd.read_csv(os.path.join(RESULTADOS, "lagothrix_cv_auc.csv"))
-        fig = px.bar(
-            cv, x="modelo", y="auc_medio", error_y="auc_dp",
-            labels={"auc_medio": "AUC médio (validação cruzada 5-fold)", "modelo": ""},
-            title="Desempenho dos 3 modelos (validação cruzada)", range_y=[0, 1],
-        )
-        fig.add_hline(y=0.5, line_dash="dash", line_color="gray", annotation_text="AUC=0,5 (aleatório)")
-        st.plotly_chart(fig, use_container_width=True)
-        st.info("**Leitura honesta:** os valores de AUC (0,57–0,60) são moderados, não excelentes. "
-                "Isso é esperado com uma amostra pequena (37 pontos de calibração) — é uma limitação do "
-                "dado disponível, não um erro de ajuste. Reportar isso com transparência é parte do método.")
+        cv = pd.read_csv(os.path.join(RESULTADOS, "lagothrix_cv_metricas.csv"))
+        col_auc, col_tss = st.columns(2)
+        with col_auc:
+            fig_auc = px.bar(
+                cv, x="modelo", y="auc_medio", error_y="auc_dp",
+                labels={"auc_medio": "AUC médio (5-fold)", "modelo": ""},
+                title="AUC (discriminação)", range_y=[0, 1],
+            )
+            fig_auc.add_hline(y=0.5, line_dash="dash", line_color="gray", annotation_text="0,5 = aleatório")
+            st.plotly_chart(fig_auc, use_container_width=True)
+        with col_tss:
+            fig_tss = px.bar(
+                cv, x="modelo", y="tss_medio", error_y="tss_dp",
+                labels={"tss_medio": "TSS médio (5-fold)", "modelo": ""},
+                title="TSS (sensibilidade + especificidade - 1)", range_y=[0, 1],
+            )
+            fig_tss.add_hline(y=0, line_dash="dash", line_color="gray", annotation_text="0 = aleatório")
+            st.plotly_chart(fig_tss, use_container_width=True)
+        st.info("**Leitura honesta:** os valores de AUC (0,57–0,60) e TSS (0,28–0,34) são moderados, não "
+                "excelentes. Isso é esperado com uma amostra pequena (37 pontos de calibração) — é uma "
+                "limitação do dado disponível, não um erro de ajuste. Reportar isso com transparência é "
+                "parte do método.")
         st.dataframe(cv.round(3), use_container_width=True, hide_index=True)
     except Exception as e:
         st.error(f"Não foi possível carregar os resultados da validação cruzada: {e}")

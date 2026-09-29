@@ -414,8 +414,8 @@ A pedido, adicionados nome popular e foto por espécie em todo o dashboard:
 - [x] Ajuste dos modelos (GLM, Maxent, Random Forest) com validação cruzada (K-fold) — Etapa 14.
 - [x] Mapa de consenso + mapa de incerteza (desvio padrão entre algoritmos) — Etapa 14.
 - [x] Explicabilidade (importância de variáveis) — Etapa 14.
-- [ ] Pós-processamento: cruzar adequabilidade × MapBiomas (classe 3) × as 85 UCs — dado baixado (Etapa 14), recorte/cruzamento pendente.
-- [ ] Integrar resultado do SDM do *Lagothrix* ao dashboard (hoje só mostra a camada multiespécie).
+- [x] Pós-processamento: cruzar adequabilidade × MapBiomas (classe 3) × as 85 UCs — Etapa 14.
+- [x] Integrar resultado do SDM do *Lagothrix* ao dashboard — Etapa 14 (6 abas: consenso, incerteza, ranking de UCs, desempenho dos modelos, importância das variáveis, pontos/M).
 - [ ] *(sugestão nova, não decidida)* Índice simples de biodiversidade por UC combinando riqueza multiespécie + peso por status de ameaça (IUCN) — prévia do IPBB sem depender do SDM.
 - [ ] Montar apresentação em PPT a partir deste diário.
 

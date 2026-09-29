@@ -707,3 +707,32 @@ Caption deixa explícito que é contagem de espécies confirmadas por evidência
 uma medida de heterogeneidade ambiental ou potencial de espécies (isso exigiria uma camada
 ambiental nova, fora do escopo da Parte 1 — mais próximo do que a Parte 2 faz para 1 espécie, ou
 da Etapa 3 do doutorado). Testado ao vivo, renderiza corretamente.
+
+## 2026-09-29 — Etapa 27: revisão crítica (rigor científico + clareza para tomador de decisão)
+
+Pedido: revisão de tudo, com olhar crítico e técnico, mas também inteligível para um tomador de
+decisão (não especialista) — coerente com o público-alvo real do IPBB (gestores de UC,
+financiadores). Achados e correções:
+
+1. **"IA" expandido para "inteligência artificial"** nos subtítulos (Início e Parte 1), por
+   consistência com o nome oficial da disciplina usado no resto do texto.
+2. **Erro de citação real: DOI do GBIF desatualizado no README.** A tabela "Dados e fontes"
+   citava `dl.pxqmwc` — mas esse foi o **primeiro** download (só Brasil), substituído logo depois
+   por um novo download sem filtro de país (`dl.r8eynx`, 2.631 registros), conforme já registrado
+   na Etapa 5 deste roteiro ("o arquivo do primeiro download... foi removido da pasta de trabalho").
+   Confirmado nos scripts (`Scripts/09_filtrar_brasil_peru.py` e downstream) que `r8eynx` é o DOI
+   realmente usado nos dados finais de calibração do Lagothrix. README corrigido — citar o DOI
+   errado seria um erro de rastreabilidade científica real, não cosmético.
+3. **Gap de clareza para não especialista:** nenhuma página explicava o que AUC, TSS, SDM,
+   "consenso" ou "incerteza" significam de fato — um gestor via "AUC 0,57" sem nenhuma âncora
+   para julgar se é bom ou ruim. Adicionado expander "Como interpretar estas métricas (leitura
+   para não especialistas)" na Parte 2, com: o que é um SDM em 1 frase, por que 3 algoritmos,
+   tabela AUC/TSS com escala de leitura comum na literatura, e o que fazer na prática com
+   consenso × incerteza para uma decisão de alocação de recursos.
+4. **Nota metodológica da Parte 1 atualizada** para citar o achado da Etapa 25 (qualidade de
+   coordenada) e deixar explícito que os números-resumo (UCs, espécies, ocorrências) **não**
+   passam pelo filtro de confiabilidade — só a visualização de pontos por espécie passa.
+5. **README desatualizado:** ainda dizia "Dashboard interativo (2 páginas)" — corrigido para 3,
+   com menção à página Roteiro do Projeto (criada na Etapa 24).
+
+Tudo testado ao vivo (Parte 1 e Parte 2), sem erros de console reais.

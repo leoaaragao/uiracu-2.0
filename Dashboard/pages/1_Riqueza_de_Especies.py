@@ -163,7 +163,7 @@ especies_por_uc = {
 ucs["riqueza_primatas"] = ucs["nome_uc"].map(riqueza).fillna(0).astype(int)
 
 st.caption(
-    "Projeto Uiraçu 2.0 — disciplina Análise espacial da biodiversidade, mudanças globais e IA (ENBT/JBRJ 2026-2) · "
+    "Projeto Uiraçu 2.0 — disciplina Análise espacial da biodiversidade, mudanças globais e inteligência artificial (ENBT/JBRJ 2026-2) · "
     "Piloto da Etapa 2/3 do projeto de doutorado (IPBB)"
 )
 
@@ -182,6 +182,14 @@ with st.expander("Nota metodológica — leia antes de interpretar os números")
   UC é feita por geometria real (ponto dentro do polígono).
 - **Ausência de registro ≠ ausência da espécie.** Baixa incidência pode refletir esforço de amostragem, não
   biologia. Não usar este painel como prova definitiva de ocorrência/não ocorrência.
+- **Qualidade de coordenada:** parte dos registros do GBIF tem coordenada de baixa precisão (raio de incerteza
+  acima de 10 km) ou administrativa/genérica (ex.: 6 registros de *Saguinus bicolor* num ponto redondo idêntico,
+  do Programa de Resgate de Fauna da Linha de Transmissão Manaus–Boa Vista) — em alguns casos, a fonte original
+  (ex.: iNaturalist, agregado pelo GBIF) embaralha de propósito a coordenada de espécies ameaçadas para
+  proteção contra tráfico ("geoprivacidade"). No modo **"Pontos de uma espécie"**, o toggle **"Ocultar coordenadas pouco confiáveis"**
+  filtra esses casos na visualização. **Os números acima** (UCs, espécies, ocorrências) **não passam por esse
+  filtro** — são a contagem bruta de registros com pelo menos 1 coincidência geométrica ponto-dentro-da-UC,
+  sem exigir precisão mínima de coordenada. Ver `ROTEIRO_DO_PROJETO.md`, Etapa 25, para o caso investigado.
     """)
 
 st.divider()

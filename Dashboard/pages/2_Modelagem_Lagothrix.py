@@ -80,6 +80,34 @@ c2.metric("Eixos de PCA usados (>90% variância)", 4)
 c3.metric("Background (pseudo-ausência)", "5.000")
 c4.metric("UCs de estudo", 85)
 
+with st.expander("Como interpretar estas métricas (leitura para não especialistas)", expanded=False):
+    st.markdown("""
+**O que é este mapa, em uma frase:** um modelo estatístico aprendeu, a partir de onde a espécie
+já foi confirmada (37 pontos), quais combinações de clima se parecem com esses locais — e aplicou
+esse padrão a toda a região para estimar **onde as condições ambientais são parecidas com as
+áreas conhecidas** (não é uma contagem de animais, é uma estimativa de adequação climática).
+
+**Por que 3 modelos (GLM, Maxent, Random Forest) e não 1:** cada algoritmo tem vieses diferentes;
+usar os três e combiná-los por desempenho (ensemble) reduz o risco de uma conclusão errada vir de
+uma única técnica — é a mesma lógica de pedir uma segunda opinião médica.
+
+**AUC e TSS — as notas de desempenho do modelo:**
+| Métrica | O que mede | Como ler |
+|---|---|---|
+| AUC | Chance do modelo separar corretamente um ponto onde a espécie ocorre de um ponto aleatório | 0,5 = acerto ao acaso · 1,0 = perfeito · referência comum na literatura: <0,7 fraco, 0,7–0,8 razoável, 0,8–0,9 bom, >0,9 excelente (não é um padrão universal, mas ajuda a calibrar expectativa) |
+| TSS | Sensibilidade + especificidade − 1 (acerta presença **e** acerta ausência) | 0 = acerto ao acaso · 1,0 = perfeito · pode ser negativo (pior que aleatório) |
+
+Os valores deste estudo (AUC 0,57–0,60, TSS 0,28–0,34) ficam abaixo da faixa "boa" — **o motivo
+mais provável é a amostra pequena (37 pontos)**, não um erro de método. Reportamos isso de forma
+transparente em vez de esconder ou inflar a métrica.
+
+**Consenso e incerteza, na prática:** o mapa de **consenso** é a melhor estimativa (média dos 3
+modelos); o mapa de **incerteza** mostra onde eles discordam entre si. Para uma decisão de
+alocação de recursos, áreas com **consenso alto e incerteza baixa** são as apostas mais seguras;
+áreas com consenso alto mas incerteza também alta merecem verificação de campo antes de qualquer
+decisão — o modelo sozinho não é suficiente ali.
+    """)
+
 st.subheader("O que já foi feito")
 st.markdown("""
 1. Auditoria taxonômica e de ocorrências (139 → 85 registros úteis, Brasil)

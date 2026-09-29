@@ -1,6 +1,6 @@
 # Uiraçu 2.0
 
-Duas partes independentes, biodiversidade de primatas na Amazônia Ocidental, usando dados abertos e IA.
+Duas partes independentes, biodiversidade de primatas na Amazônia Ocidental, usando dados abertos e inteligência artificial.
 
 > **English summary:** Amazon primate biodiversity project with two independent parts — (1)
 > species richness across 168 primate species in 92 federal protected areas, based on GBIF
@@ -41,7 +41,7 @@ Processo completo, decisão por decisão — incluindo onde e como a IA (Claude)
 | Dado | Fonte | Licença/uso |
 |---|---|---|
 | Unidades de Conservação (CNUC) | MMA/ICMBio, via reaproveitamento do projeto Uiraçu 1.0 | Dado público |
-| Ocorrências de *Lagothrix lagothricha* | GBIF.org, [doi.org/10.15468/dl.pxqmwc](https://doi.org/10.15468/dl.pxqmwc) (23/09/2026) | GBIF Data User Agreement |
+| Ocorrências de *Lagothrix lagothricha* | GBIF.org, [doi.org/10.15468/dl.r8eynx](https://doi.org/10.15468/dl.r8eynx) (23/09/2026) | GBIF Data User Agreement |
 | Ocorrências de outros primatas (168 espécies, sem DOI) | GBIF.org, API `occurrence/search` (24/09/2026) | GBIF Data User Agreement |
 | Nomes populares e fotos | GBIF (`vernacularNames` + `occurrence` media) | Variável por registro — ver `Referencias/especies_nomes_populares_fotos.csv` |
 | Ecorregiões (base para a área M) | WWF Terrestrial Ecoregions (Olson et al. 2001), via material da disciplina | Dado público |
@@ -59,13 +59,13 @@ pip install -r requirements.txt
 
 Scripts em ordem de execução em `Scripts/` (numerados). Cada um documenta, no cabeçalho, a qual bloco da Ficha operacional da disciplina corresponde.
 
-### Dashboard interativo (2 páginas)
+### Dashboard interativo (3 páginas)
 
 ```bash
 .venv\Scripts\python.exe -m streamlit run Dashboard\Inicio.py
 ```
 
-Abre em `http://localhost:8501`, com navegação no menu lateral: **Riqueza de Espécies** (Parte 1) e **Modelagem Lagothrix** (Parte 2). Use `python -m streamlit`, não o `streamlit.exe` direto — o executável do pacote está quebrado nesta instalação.
+Abre em `http://localhost:8501`, com navegação no menu lateral: **Riqueza de Espécies** (Parte 1), **Modelagem Lagothrix** (Parte 2) e **Roteiro do Projeto** (o registro completo de decisões, renderizado direto no site). Use `python -m streamlit`, não o `streamlit.exe` direto — o executável do pacote está quebrado nesta instalação.
 
 ## Publicar o dashboard (Railway)
 

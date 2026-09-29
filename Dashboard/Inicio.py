@@ -11,7 +11,7 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 st.title("Uiraçu 2.0")
 st.caption(
-    "Projeto da disciplina Análise espacial da biodiversidade, mudanças globais e IA "
+    "Projeto da disciplina Análise espacial da biodiversidade, mudanças globais e inteligência artificial "
     "(ENBT/JBRJ, 2026-2, docente Marinez Ferreira de Siqueira) · Piloto reprodutível das "
     "Etapas 2/3 do projeto de doutorado **\"Priorização Espacial para Bônus de Biodiversidade "
     "em Unidades de Conservação da Amazônia\" (IPBB)** — Leonardo Andrade Aragão, ENBT/JBRJ, "

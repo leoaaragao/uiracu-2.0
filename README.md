@@ -69,9 +69,11 @@ Abre em `http://localhost:8501`, com navegação no menu lateral: **Riqueza de E
 
 ## Publicar o dashboard (Railway)
 
-O repositório já está pronto para deploy no [Railway](https://railway.app) — inclui `Procfile` e
-`.python-version`. Não há nenhum arquivo `.env` nem dado sensível no projeto (sem chaves de API:
-o GBIF é consultado via API pública, sem autenticação).
+O repositório já está pronto para deploy no [Railway](https://railway.app) — inclui `Procfile`,
+`.python-version` e `nixpacks.toml` (este último instala a biblioteca de sistema `expat`, exigida
+pelo `rasterio`/GDAL em tempo de execução — sem ele o deploy quebra com `ImportError:
+libexpat.so.1: cannot open shared object file`). Não há nenhum arquivo `.env` nem dado sensível no
+projeto (sem chaves de API: o GBIF é consultado via API pública, sem autenticação).
 
 Passo a passo:
 1. Em [railway.app](https://railway.app), **New Project → Deploy from GitHub repo** e selecione

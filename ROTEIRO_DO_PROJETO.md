@@ -736,3 +736,21 @@ financiadores). Achados e correções:
    com menção à página Roteiro do Projeto (criada na Etapa 24).
 
 Tudo testado ao vivo (Parte 1 e Parte 2), sem erros de console reais.
+
+## 2026-09-29 — Etapa 28: erro de deploy no Railway (biblioteca de sistema faltando)
+
+Primeiro deploy real no Railway feito pelo autor. A Parte 2 quebrou com
+`ImportError: libexpat.so.1: cannot open shared object file: No such file or directory`, ao
+importar `rasterio`. Diagnóstico: é um erro de infraestrutura, não do código Python — a imagem
+mínima que o builder do Railway (Nixpacks) usa por padrão não inclui a biblioteca de sistema
+`libexpat`, que o GDAL (usado por dentro do `rasterio`) precisa em tempo de execução. A Parte 1
+não quebrou porque não importa `rasterio` diretamente (só `geopandas`).
+
+**Correção:** criado `nixpacks.toml` na raiz do repositório, instruindo o Nixpacks a instalar o
+pacote `expat` (sintaxe `nixPkgs = ["...", "expat"]` — o `"..."` preserva os pacotes que o
+provider Python já detecta automaticamente, conforme a documentação oficial do Nixpacks,
+consultada antes de aplicar a mudança) e adicioná-lo ao `LD_LIBRARY_PATH` via `nixLibs`, para
+garantir que o linker dinâmico encontre a biblioteca em tempo de execução, não só em tempo de
+build. README atualizado explicando o porquê deste arquivo. Push feito — o Railway deve
+redetectar e rebuildar automaticamente; se não disparar sozinho, é preciso clicar em "Redeploy"
+manualmente no painel do Railway.

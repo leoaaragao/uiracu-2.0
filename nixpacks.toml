@@ -1,0 +1,6 @@
+# Corrige "ImportError: libexpat.so.1: cannot open shared object file" no deploy do
+# Railway — rasterio/GDAL precisam dessa biblioteca de sistema em tempo de execucao,
+# mas a imagem minima do Nixpacks nao a inclui por padrao.
+[phases.setup]
+nixPkgs = ["...", "expat"]
+nixLibs = ["expat"]

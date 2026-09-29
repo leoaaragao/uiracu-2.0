@@ -13,13 +13,13 @@ import rasterio
 import streamlit as st
 from streamlit_folium import st_folium
 
-st.set_page_config(page_title="Uiraçu 2.0 — Parte 2: Lagothrix", layout="wide", page_icon="🐵")
+st.set_page_config(page_title="Uiraçu 2.0 — Parte 2: Lagothrix", layout="wide")
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DADOS = os.path.join(RAIZ, "Dados")
 RESULTADOS = os.path.join(RAIZ, "Resultados")
 
-st.title("🐵 Parte 2 — Modelagem de *Lagothrix lagothricha*")
+st.title("Parte 2 — Modelagem do macaco-barrigudo (*Lagothrix lagothricha*)")
 st.caption("Estudo de caso aprofundado (SDM): GLM, Maxent, Random Forest, validação cruzada, incerteza — Fichas 2.6 a 2.9.")
 
 
@@ -57,20 +57,20 @@ c4.metric("UCs de estudo", 85)
 
 st.subheader("O que já foi feito")
 st.markdown("""
-1. ✅ Auditoria taxonômica e de ocorrências (139 → 85 registros úteis, Brasil)
-2. ✅ Rarefação espacial (thinning 50 km) → 37 pontos de calibração
-3. ✅ Área acessível (M): união de 11 ecorregiões — 75% Brasil, 13% Peru, 7% Bolívia, 5% Colômbia
-4. ✅ Variáveis climáticas (WorldClim, 10 min de arco) recortadas para M
-5. ✅ Background (5.000 pontos) + PCA (4 eixos, 91,8% da variância)
-6. ✅ Ajuste dos modelos — GLM, Maxent (`elapid`), Random Forest — com validação cruzada 5-fold
-7. ✅ Mapa de consenso e de incerteza
-8. ✅ Explicabilidade (importância dos eixos de PCA)
-9. ✅ Pós-processamento: adequabilidade × MapBiomas (Formação Florestal) × 85 UCs
+1. Auditoria taxonômica e de ocorrências (139 → 85 registros úteis, Brasil)
+2. Rarefação espacial (thinning 50 km) → 37 pontos de calibração
+3. Área acessível (M): união de 11 ecorregiões — 75% Brasil, 13% Peru, 7% Bolívia, 5% Colômbia
+4. Variáveis climáticas (WorldClim, 10 min de arco) recortadas para M
+5. Background (5.000 pontos) + PCA (4 eixos, 91,8% da variância)
+6. Ajuste dos modelos — GLM, Maxent (`elapid`), Random Forest — com validação cruzada 5-fold
+7. Mapa de consenso e de incerteza
+8. Explicabilidade (importância dos eixos de PCA)
+9. Pós-processamento: adequabilidade × MapBiomas (Formação Florestal) × 85 UCs
 """)
 
 abas = st.tabs([
-    "🗺️ Mapa de consenso", "❓ Mapa de incerteza", "🌳 Adequabilidade × Floresta (UCs)",
-    "📊 Desempenho dos modelos", "🧭 Importância das variáveis", "📍 Pontos e área M",
+    "Mapa de consenso", "Mapa de incerteza", "Adequabilidade × Floresta (UCs)",
+    "Desempenho dos modelos", "Importância das variáveis", "Pontos e área M",
 ])
 
 # --- Aba 1: consenso -------------------------------------------------------
@@ -109,7 +109,7 @@ with abas[1]:
 with abas[2]:
     caminho_ranking = os.path.join(RESULTADOS, "lagothrix_ranking_ucs.csv")
     if not os.path.exists(caminho_ranking):
-        st.warning("🔧 Pós-processamento ainda em andamento (cruzamento com MapBiomas, arquivo pesado "
+        st.warning("Pós-processamento ainda em andamento (cruzamento com MapBiomas, arquivo pesado "
                    "processado em segundo plano). Volte em instantes.")
     else:
         ranking = pd.read_csv(caminho_ranking)
@@ -130,7 +130,7 @@ with abas[2]:
             use_container_width=True, hide_index=True,
         )
         if len(sem_celula) > 0:
-            st.caption(f"⚠️ {len(sem_celula)} UCs são menores que a resolução da grade do SDM (~18,5 km) "
+            st.caption(f"{len(sem_celula)} UCs são menores que a resolução da grade do SDM (~18,5 km) "
                        "e não têm célula própria — não entram no ranking acima.")
 
 # --- Aba 4: desempenho dos modelos -----------------------------------------

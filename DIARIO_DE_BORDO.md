@@ -487,5 +487,18 @@ Saídas: `Resultados/lagothrix_importancia_pca.csv`, `Resultados/lagothrix_inter
 ### 5) Dado do MapBiomas baixado (pós-processamento, em andamento)
 Para a etapa final pendente (cruzar adequabilidade × MapBiomas classe 3 "Formação Florestal" × 85 UCs), foi localizado e baixado o raster nacional oficial do MapBiomas (Coleção 11, cobertura 2025, Landsat 30m) diretamente do link público do MapBiomas Brasil (`storage.googleapis.com/mapbiomas-public/...brazil_coverage-col11_2025.tif`, 763 MB — bem menor do que o esperado inicialmente, o que tornou viável baixar direto em vez de depender de Google Earth Engine). Salvo em `Dados/Mapbiomas/brazil_coverage-col11_2025.tif` (pasta local, fora do git pelo tamanho — ver `.gitignore`). Recorte para a extensão das 85 UCs e cruzamento com o mapa de consenso: próximo passo.
 
+## 2026-09-29 — Etapa 15: Revisão de estilo e identidade do dashboard
+
+Depois de ver o dashboard pronto, o autor pediu uma revisão de forma (não de conteúdo técnico):
+
+- **Removidos todos os emojis** das 3 páginas do dashboard (título, ícones de aba, avisos) — visual mais sóbrio.
+- **Subtítulo da página inicial** passou a citar o título completo do projeto de doutorado ("Priorização Espacial para Bônus de Biodiversidade em Unidades de Conservação da Amazônia" — IPBB) e o orientador.
+- **Explicação do nome "Uiraçu"** adicionada na página inicial: é nome popular do gavião-real (*Harpia harpyja*), maior ave de rapina das Américas e indicadora de floresta conservada — na tese de doutorado, o painel que resulta desta linha de trabalho será batizado com esse nome.
+- **Foto do gavião-real** adicionada à página inicial (`Dashboard/assets/gaviao_real_harpia.jpg`) — fonte: birdphotos.com, foto tirada no Parque das Aves (Foz do Iguaçu), licença CC BY 3.0, via Wikimedia Commons (arquivo `Harpia_harpyja_001_800.jpg`). Baixada com autorização explícita do autor.
+- **Página inicial reestruturada** em duas camadas: um resumo em linguagem acessível (o que o projeto pergunta, por que "Uiraçu") e uma seção técnica separada ("Metodologia — visão técnica", expansível) com o método de cada parte.
+- **Parte 1** agora nomeia explicitamente a região como "Amazônia Ocidental", alinhando a linguagem do projeto de disciplina com a do projeto de doutorado.
+- **Parte 2** com o título ajustado para "Modelagem do macaco-barrigudo (*Lagothrix lagothricha*)" — nome popular em destaque, não só o nome científico.
+- **Seção "Ferramentas e uso de IA"** adicionada à página inicial e expandida no `README.md`: registra que o Uiraçu 1.0 (protótipo anterior, cuja interface foi reaproveitada) usou o Google Antigravity, e que todos os dados de ocorrência vêm diretamente das APIs do GBIF — para ficar claro que há mais de uma ferramenta de IA envolvida na linha do tempo do projeto, não só o Claude.
+
 ## Documentos de apoio
 - [Anotações da aula (Gemini), 22-23/09/2026](https://drive.google.com/drive/folders/1RgYTo5Ki5dCN0r64YvgQBRm3Cfrw0HHj) — referenciadas na seção "Aprendizados da aula" acima.

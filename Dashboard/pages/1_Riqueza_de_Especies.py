@@ -12,7 +12,7 @@ import folium
 from streamlit_folium import st_folium
 import plotly.express as px
 
-st.set_page_config(page_title="Uiraçu 2.0 — Parte 1: Riqueza de Espécies", layout="wide", page_icon="🐒")
+st.set_page_config(page_title="Uiraçu 2.0 — Parte 1: Riqueza de Espécies", layout="wide")
 
 # Raiz do projeto = pasta pai de Dashboard/ — resolvido pelo caminho do proprio
 # arquivo (Dashboard/pages/1_..py -> sobe 3 niveis), para funcionar
@@ -65,7 +65,7 @@ def juntar_pontos_com_uc(_ucs, ocorrencias):
     return j.drop(columns="geometry")
 
 # ---------------- Cabecalho ----------------
-st.title("🐒 Parte 1 — Riqueza de Primatas nas UCs da Amazônia")
+st.title("Parte 1 — Riqueza de Primatas nas UCs da Amazônia Ocidental")
 st.caption("Todas as espécies de primata, todas as UCs (Amazonas, Acre, Rondônia e Roraima) — verificação de riqueza por evidência de ocorrência.")
 
 incluir_rr = st.toggle(
@@ -160,7 +160,7 @@ c2.metric("Espécies pesquisadas", 168)
 c3.metric("Espécies com registro na região", int((matriz.sum(axis=1) > 0).sum()))
 c4.metric("Ocorrências confirmadas dentro de UCs", int(matriz.values.sum()))
 
-with st.expander("⚠️ Nota metodológica — leia antes de interpretar os números"):
+with st.expander("Nota metodológica — leia antes de interpretar os números"):
     st.markdown("""
 - **Fonte:** GBIF.org, via API de busca (`occurrence/search`) — **não é um dataset com DOI**, é uma varredura
   exploratória. Ver `Referencias/Primatas_x_UCs_GBIF.xlsx`, aba "Resumo e metodologia", para o processo completo.
@@ -298,15 +298,16 @@ with col_mapa:
             ).add_to(m2)
 
         st.markdown(
-            "🟢 dentro de UC &nbsp;&nbsp; 🟤 fora das UCs de estudo",
-            unsafe_allow_html=False,
+            "<span style='color:#1F4E3D'>&#9679;</span> dentro de UC &nbsp;&nbsp; "
+            "<span style='color:#B08D57'>&#9679;</span> fora das UCs de estudo",
+            unsafe_allow_html=True,
         )
         st_folium(m2, use_container_width=True, height=520, returned_objects=[])
 
 st.divider()
 
 # ---------------- Explorar por especie ou por UC ----------------
-tab_esp, tab_uc = st.tabs(["🔍 Explorar por espécie", "🔍 Explorar por UC"])
+tab_esp, tab_uc = st.tabs(["Explorar por espécie", "Explorar por UC"])
 
 def tabela_html_com_foto(pares_especie_registros, col2_titulo="Registros"):
     """Renderiza uma tabelinha HTML onde cada especie tem hover-tooltip com foto (CSS puro)."""
@@ -336,7 +337,7 @@ with tab_esp:
             creditos = info_sel.get("foto_creditos", "")
             licenca = info_sel.get("foto_licenca", "")
             if isinstance(creditos, str) and creditos:
-                st.caption(f"📷 {creditos} · {licenca if isinstance(licenca, str) else ''}")
+                st.caption(f"{creditos} · {licenca if isinstance(licenca, str) else ''}")
         else:
             st.caption("Sem foto disponível no GBIF para esta espécie.")
     with col_info:

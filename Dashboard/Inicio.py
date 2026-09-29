@@ -2,50 +2,114 @@
 """
 Uiraçu 2.0 — Pagina inicial. Roda com: streamlit run Dashboard/Inicio.py
 """
+import os
 import streamlit as st
 
-st.set_page_config(page_title="Uiraçu 2.0", layout="wide", page_icon="🦍")
+st.set_page_config(page_title="Uiraçu 2.0", layout="wide")
 
-st.title("🦍 Uiraçu 2.0")
+RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+st.title("Uiraçu 2.0")
 st.caption(
     "Projeto da disciplina Análise espacial da biodiversidade, mudanças globais e IA "
-    "(ENBT/JBRJ 2026-2) · Piloto da Etapa 2/3 do projeto de doutorado (IPBB)"
+    "(ENBT/JBRJ, 2026-2, docente Marinez Ferreira de Siqueira) · Piloto reprodutível das "
+    "Etapas 2/3 do projeto de doutorado **\"Priorização Espacial para Bônus de Biodiversidade "
+    "em Unidades de Conservação da Amazônia\" (IPBB)** — Leonardo Andrade Aragão, ENBT/JBRJ, "
+    "orientação do Prof. Dr. Carlos Eduardo de Viveiros Grelle."
 )
 
-st.markdown("""
-O projeto tem **duas partes independentes**, cada uma respondendo a uma pergunta diferente
-— use o menu à esquerda para navegar entre elas.
-""")
+col_txt, col_foto = st.columns([3, 1])
+with col_txt:
+    st.markdown("""
+**Resumo em linguagem acessível:** este projeto pergunta, de duas formas diferentes, onde a
+biodiversidade de primatas está concentrada nas Unidades de Conservação (UCs) federais da
+Amazônia Ocidental — a mesma região e a mesma pergunta de fundo do projeto de doutorado do autor,
+que investiga como recompensar financeiramente UCs por manterem biodiversidade (um "bônus de
+biodiversidade"). Este projeto de disciplina é o primeiro piloto de dados reais dessa ideia.
+
+**Por que "Uiraçu":** é um dos nomes populares, junto de "gavião-real", da maior ave de rapina
+das Américas (*Harpia harpyja*), topo de cadeia alimentar e indicadora de floresta bem
+conservada — na tese de doutorado, o painel interativo que resulta desta linha de trabalho
+será batizado com esse nome.
+    """)
+with col_foto:
+    caminho_foto = os.path.join(RAIZ, "Dashboard", "assets", "gaviao_real_harpia.jpg")
+    if os.path.exists(caminho_foto):
+        st.image(caminho_foto, use_container_width=True, caption="Gavião-real (Harpia harpyja)")
+        st.caption("Foto: birdphotos.com, Parque das Aves (Foz do Iguaçu) · CC BY 3.0, via Wikimedia Commons")
+
+st.divider()
+
+with st.expander("Metodologia (visão técnica)", expanded=False):
+    st.markdown("""
+O projeto tem duas partes independentes, ambas cobrindo os Estados da **Amazônia Ocidental**
+(Amazonas, Acre, Rondônia — e Roraima quando o produto exige, ver nota abaixo), o mesmo recorte
+regional do projeto de doutorado:
+
+- **Verificação de riqueza (Parte 1):** varredura de ocorrências via API do GBIF
+  (`occurrence/search`), sem restrição por país/estado declarado — associação a cada UC feita por
+  geometria real (ponto dentro do polígono), não por rótulo textual, que pode estar incorreto
+  (ver o caso documentado no `DIARIO_DE_BORDO.md`).
+- **Modelagem de distribuição — SDM (Parte 2):** GLM, Maxent (via biblioteca Python `elapid`,
+  substituindo o software Maxent original de Phillips et al.) e Random Forest, ajustados sobre
+  eixos de PCA das variáveis WorldClim, com validação cruzada K-fold, mapa de consenso e de
+  incerteza, explicabilidade por importância de variáveis, e pós-processamento cruzando
+  adequabilidade com cobertura florestal (MapBiomas, classe 3).
+- **Roraima:** entra na Parte 1 (tem espécies próprias documentadas, faz parte da riqueza real da
+  Amazônia Ocidental), mas fica fora da Parte 2 especificamente para *Lagothrix lagothricha*, por
+  um limite biogeográfico real e documentado na literatura (barreira do Rio Negro/Branco) — não
+  por falta de dado.
+
+Processo completo, decisão por decisão, incluindo os erros e ajustes no caminho, está registrado
+em [`DIARIO_DE_BORDO.md`](https://github.com/leoaaragao/uiracu-2.0/blob/main/DIARIO_DE_BORDO.md).
+    """)
+
+st.markdown("Use o menu à esquerda para navegar entre as duas partes.")
 
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("🐒 Parte 1 — Riqueza de espécies")
+    st.subheader("Parte 1 — Riqueza de espécies")
     st.markdown("""
-**Pergunta:** quais Unidades de Conservação da Amazônia têm mais espécies de primata?
+**Pergunta:** quais Unidades de Conservação da Amazônia Ocidental têm mais espécies de primata?
 
 - Todas as **168 espécies** de primata pan-amazônicas pesquisadas no GBIF
 - Todas as **92 UCs federais** (Amazonas, Acre, Rondônia **e Roraima**)
 - Mapa de riqueza, ranking por incidência, nome popular e foto de cada espécie
 - Baseado em **evidência de ocorrência** (registros confirmados), não em modelagem
 
-*Status: ✅ completo e interativo.*
+*Status: completo e interativo.*
 """)
 
 with col2:
-    st.subheader("🐵 Parte 2 — Modelagem do macaco-barrigudo")
+    st.subheader("Parte 2 — Modelagem do macaco-barrigudo (Lagothrix lagothricha)")
     st.markdown("""
-**Pergunta:** onde estão as condições ambientais mais adequadas para *Lagothrix lagothricha*?
+**Pergunta:** onde estão as condições ambientais mais adequadas para o macaco-barrigudo-cinza?
 
 - Estudo de caso aprofundado de **1 espécie**, cumprindo o exercício de modelagem da disciplina
   (GLM, Maxent, Random Forest, validação cruzada, incerteza — Fichas 2.6 a 2.9)
 - Escopo: **85 UCs** (Amazonas, Acre, Rondônia) — Roraima fica fora por limite biogeográfico
   documentado (Rio Negro/Branco), não por falta de dado
-- Já feito: auditoria, rarefação espacial, área acessível (M) por união de ecorregiões
-- Falta: variáveis climáticas (WorldClim), ajuste dos modelos, mapa de consenso e incerteza
+- Modelos ajustados e validados, mapas de consenso/incerteza, explicabilidade e cruzamento com
+  cobertura florestal (MapBiomas) por UC
 
-*Status: 🔧 em andamento — ver detalhes na página.*
+*Status: completo — ver detalhes na página.*
 """)
 
 st.divider()
-st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · gerado com apoio de Claude (Anthropic) — ver DIARIO_DE_BORDO.md")
+with st.expander("Ferramentas e uso de IA"):
+    st.markdown("""
+- **Claude (Anthropic):** assistência de programação, organização de dados e auditoria assistida
+  nesta fase do projeto (Uiraçu 2.0), com decisão científica e verificação sempre humanas,
+  conforme os Protocolos 01 e 02 da disciplina.
+- **Google Antigravity:** usado no protótipo anterior, Uiraçu 1.0 (interface e conceito de painel
+  reaproveitados aqui).
+- **APIs do GBIF** (`occurrence/search` e `occurrence/download`, esta com DOI): fonte direta de
+  todos os dados de ocorrência de primatas, sem intermediários.
+- **elapid** (Python): reimplementação do algoritmo Maxent, usada no lugar do software original
+  de Phillips et al. — declarado aqui como substituição de ferramenta.
+
+Detalhes completos em [`DIARIO_DE_BORDO.md`](https://github.com/leoaaragao/uiracu-2.0/blob/main/DIARIO_DE_BORDO.md).
+    """)
+
+st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · ver DIARIO_DE_BORDO.md")

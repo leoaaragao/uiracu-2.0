@@ -69,9 +69,9 @@ Uiracu-2.0/
 └── requirements.txt
 ```
 
-## Uso de IA
+## Uso de IA e ferramentas
 
-Este projeto foi desenvolvido com apoio de IA generativa (Claude/Anthropic), sob supervisão humana em cada decisão científica, conforme os Protocolos 01 e 02 da disciplina. Detalhes em [`DIARIO_DE_BORDO.md`](DIARIO_DE_BORDO.md).
+Este projeto (Uiraçu 2.0) foi desenvolvido com apoio de IA generativa (Claude/Anthropic), sob supervisão humana em cada decisão científica, conforme os Protocolos 01 e 02 da disciplina. O protótipo anterior, Uiraçu 1.0 — cuja interface e conceito de painel foram reaproveitados aqui —, foi desenvolvido com apoio do Google Antigravity. Todos os dados de ocorrência vêm diretamente das APIs do GBIF (`occurrence/search` e `occurrence/download`), sem intermediários. Detalhes completos, decisão por decisão, em [`DIARIO_DE_BORDO.md`](DIARIO_DE_BORDO.md).
 
 ## Autor
 

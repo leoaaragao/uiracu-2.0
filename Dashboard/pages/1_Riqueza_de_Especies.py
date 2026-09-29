@@ -47,6 +47,19 @@ def carregar_dados(incluir_rr: bool):
     ranking = pd.read_csv(os.path.join(RAIZ, "Referencias", arq_ranking)).set_index("species")
     ocorrencias = pd.read_csv(os.path.join(RAIZ, "Referencias", "ocorrencias_primatas_brasil_gbif.csv"))
     ocorrencias = ocorrencias.dropna(subset=["decimalLatitude", "decimalLongitude"])
+
+    def _coordenada_redonda(serie, casas=1):
+        """Coordenada com <=1 casa decimal (~grade de 11 km) quase certamente não é uma
+        leitura de GPS real — é marcador administrativo/genérico (ex.: centroide de
+        município ou de um programa de monitoramento). Achado real: 6 registros de
+        Saguinus bicolor em (-2.0, -60.7) exatos, do Programa de Resgate de Fauna da
+        Linha de Transmissão Manaus-Boa Vista, caindo no meio do rio no mapa."""
+        arred = serie.round(casas)
+        return (serie - arred).abs() < 1e-9
+
+    incerteza_alta = ocorrencias["coordinateUncertaintyInMeters"] > 10_000  # NaN -> False (não penaliza registro sem essa info)
+    coord_redonda = _coordenada_redonda(ocorrencias["decimalLatitude"]) & _coordenada_redonda(ocorrencias["decimalLongitude"])
+    ocorrencias["coordenada_confiavel"] = ~(incerteza_alta | coord_redonda)
     return ucs, matriz, ranking, ocorrencias
 
 @st.cache_data
@@ -177,21 +190,43 @@ st.divider()
 col_mapa, col_lateral = st.columns([2, 1])
 
 with col_lateral:
-    st.subheader("Ranking por incidência")
-    top_n = st.slider("Mostrar top N espécies", 5, 50, 20)
-    rank_plot = ranking.sort_values("n_ucs_com_registro", ascending=False).head(top_n).reset_index()
-    rank_plot["nome_popular"] = rank_plot["species"].map(
-        lambda e: INFO_ESPECIE.get(e, {}).get("nome_popular", "") or "(sem nome popular no GBIF)"
-    )
-    fig = px.bar(
-        rank_plot, x="n_ucs_com_registro", y="species", orientation="h",
-        labels={"n_ucs_com_registro": "Nº de UCs com registro", "species": ""},
-        color="n_ucs_com_registro", color_continuous_scale="Greens",
-        hover_data={"n_registros_totais": True, "nome_popular": True},
-    )
-    fig.update_layout(yaxis={"categoryorder": "total ascending"}, height=max(400, top_n * 22),
-                       coloraxis_showscale=False, margin=dict(l=0, r=0, t=10, b=0))
-    st.plotly_chart(fig, use_container_width=True)
+    tab_rank_especie, tab_rank_uc = st.tabs(["Ranking por espécie", "Ranking por UC"])
+
+    with tab_rank_especie:
+        top_n = st.slider("Mostrar top N espécies", 5, 50, 20)
+        rank_plot = ranking.sort_values("n_ucs_com_registro", ascending=False).head(top_n).reset_index()
+        rank_plot["nome_popular"] = rank_plot["species"].map(
+            lambda e: INFO_ESPECIE.get(e, {}).get("nome_popular", "") or "(sem nome popular no GBIF)"
+        )
+        fig = px.bar(
+            rank_plot, x="n_ucs_com_registro", y="species", orientation="h",
+            labels={"n_ucs_com_registro": "Nº de UCs com registro", "species": ""},
+            color="n_ucs_com_registro", color_continuous_scale="Greens",
+            hover_data={"n_registros_totais": True, "nome_popular": True},
+        )
+        fig.update_layout(yaxis={"categoryorder": "total ascending"}, height=max(400, top_n * 22),
+                           coloraxis_showscale=False, margin=dict(l=0, r=0, t=10, b=0))
+        st.plotly_chart(fig, use_container_width=True)
+
+    with tab_rank_uc:
+        st.caption("Riqueza confirmada por evidência de ocorrência (GBIF) — não é uma medida de "
+                   "heterogeneidade ambiental ou potencial de espécies, só contagem de espécies "
+                   "com registro dentro de cada UC.")
+        top_n_uc = st.slider("Mostrar top N UCs", 5, 50, 20, key="top_n_uc")
+        rank_uc_plot = (
+            ucs[["nome_uc", "uf", "riqueza_primatas"]]
+            .sort_values("riqueza_primatas", ascending=False)
+            .head(top_n_uc)
+        )
+        fig_uc = px.bar(
+            rank_uc_plot, x="riqueza_primatas", y="nome_uc", orientation="h",
+            labels={"riqueza_primatas": "Nº de espécies com registro", "nome_uc": ""},
+            color="riqueza_primatas", color_continuous_scale="Greens",
+            hover_data={"uf": True},
+        )
+        fig_uc.update_layout(yaxis={"categoryorder": "total ascending"}, height=max(400, top_n_uc * 22),
+                              coloraxis_showscale=False, margin=dict(l=0, r=0, t=10, b=0))
+        st.plotly_chart(fig_uc, use_container_width=True)
 
 with col_mapa:
     modo_mapa = st.radio(
@@ -259,19 +294,34 @@ with col_mapa:
     else:
         st.subheader("Mapa — ocorrências de uma espécie")
         especies_disponiveis = sorted(pontos_com_uc["species"].dropna().unique().tolist())
-        col_a, col_b = st.columns([2, 1])
+        col_a, col_b, col_c = st.columns([2, 1, 1])
         with col_a:
             especie_mapa = st.selectbox("Espécie", especies_disponiveis, format_func=rotulo, key="especie_mapa")
         with col_b:
             mostrar_fora = st.toggle("Incluir pontos fora das UCs", value=True)
+        with col_c:
+            ocultar_imprecisos = st.toggle(
+                "Ocultar coordenadas pouco confiáveis", value=True,
+                help="Esconde pontos com incerteza de coordenada acima de 10 km (comum em "
+                     "observações do iNaturalist de espécies ameaçadas, propositalmente "
+                     "embaralhadas por geoprivacidade) ou com coordenada administrativa/genérica "
+                     "(ex.: 6 registros de Saguinus bicolor em -2,0/-60,7 exatos, caindo no meio "
+                     "do rio — ver ROTEIRO_DO_PROJETO.md, Etapa 25). Só afeta esta visualização, "
+                     "não muda a riqueza/ranking já calculados.",
+            )
 
         pts_especie = pontos_com_uc[pontos_com_uc["species"] == especie_mapa]
+        n_removidos = int((~pts_especie["coordenada_confiavel"]).sum())
+        if ocultar_imprecisos:
+            pts_especie = pts_especie[pts_especie["coordenada_confiavel"]]
         n_dentro = int(pts_especie["dentro_de_uc"].sum())
         n_fora = int((~pts_especie["dentro_de_uc"]).sum())
         if not mostrar_fora:
             pts_especie = pts_especie[pts_especie["dentro_de_uc"]]
 
-        st.caption(f"**{especie_mapa}**: {n_dentro} registro(s) dentro das UCs · {n_fora} fora (mesma região de busca)")
+        legenda_removidos = f" · {n_removidos} ocultado(s) por baixa confiabilidade" if ocultar_imprecisos and n_removidos else ""
+        st.caption(f"**{especie_mapa}**: {n_dentro} registro(s) dentro das UCs · {n_fora} fora "
+                   f"(mesma região de busca){legenda_removidos}")
 
         m2 = folium.Map(location=[-7, -65], zoom_start=5, tiles="OpenStreetMap")
         desenhar_M(m2)
@@ -284,6 +334,11 @@ with col_mapa:
 
         for _, p in pts_especie.iterrows():
             dentro = bool(p["dentro_de_uc"])
+            incerteza = p.get("coordinateUncertaintyInMeters")
+            linha_incerteza = (
+                f"<br>Incerteza da coordenada: {incerteza/1000:.1f} km"
+                if pd.notna(incerteza) else "<br>Incerteza da coordenada: não informada"
+            )
             folium.CircleMarker(
                 location=[p["decimalLatitude"], p["decimalLongitude"]],
                 radius=5 if dentro else 4,
@@ -292,7 +347,8 @@ with col_mapa:
                 popup=folium.Popup(
                     f"<b>{especie_mapa}</b><br>"
                     f"{'Dentro de: ' + p['nome_uc'] if dentro else 'Fora das UCs de estudo'}<br>"
-                    f"Ano: {p.get('year', '—')}<br>Tipo: {p.get('basisOfRecord', '—')}",
+                    f"Ano: {p.get('year', '—')}<br>Tipo: {p.get('basisOfRecord', '—')}"
+                    f"{linha_incerteza}",
                     max_width=260,
                 ),
             ).add_to(m2)

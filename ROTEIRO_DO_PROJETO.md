@@ -664,3 +664,46 @@ do repositório (sempre atualizado, não é uma cópia manual). Inclui um seleto
 que divide o documento pelos cabeçalhos de nível 2 (27 seções), para não precisar rolar o
 documento inteiro (~660 linhas) para achar uma etapa específica — testado ao vivo, filtra
 corretamente. Link para o GitHub mantido no rodapé como fonte com histórico de commits.
+
+## 2026-09-29 — Etapa 25: qualidade de coordenada no mapa por espécie (achado real: Saguinus bicolor)
+
+O autor notou, usando o próprio dashboard, que *Saguinus bicolor* mostrava pontos **no meio do
+rio** perto de Manaus, e um ponto isolado no **Juruá** — muito longe da distribuição real da
+espécie (endêmica de uma área pequena ao redor de Manaus). Investigação feita nos dados brutos
+(`Referencias/ocorrencias_primatas_brasil_gbif.csv`), não só na aparência do mapa:
+
+- **Pontos no rio:** 6 registros com coordenada **idêntica e "redonda"** (-2,000000, -60,700000),
+  todos do "Programa de Resgate e Afugentamento de Fauna da Linha de Transmissão 500 kV
+  Manaus–Boa Vista" (2023), sem incerteza de coordenada informada. Um número tão redondo repetido
+  6 vezes é a marca clássica de coordenada administrativa/genérica de um programa de
+  monitoramento, não uma leitura de GPS do animal.
+- **Ponto no Juruá:** registro do iNaturalist com `coordinateUncertaintyInMeters` = **1.253 km**.
+  É o mecanismo de geoprivacidade do iNaturalist: para espécies ameaçadas (*S. bicolor* é
+  Criticamente em Perigo, alvo de tráfico), a plataforma embaralha de propósito a coordenada
+  pública para proteger o animal — não é erro do GBIF nem nosso, é proteção deliberada. A
+  localização real quase certamente é perto de Manaus.
+- **Achado mais amplo:** 120 dos 242 pontos dessa espécie (metade) têm incerteza acima de 10 km —
+  incompatível com uma espécie de área de ocorrência tão pequena. No dataset inteiro (168
+  espécies, 14.588 pontos), 91 registros têm coordenada "redonda" (≤1 casa decimal, grade de
+  ~11 km) — 6 deles são exatamente os pontos da linha de transmissão.
+
+**Correção aplicada, com escopo deliberadamente limitado** (decisão do autor): um filtro visual
+novo em `Dashboard/pages/1_Riqueza_de_Especies.py`, só no modo "Pontos de uma espécie" — toggle
+"Ocultar coordenadas pouco confiáveis" (ligado por padrão), que esconde pontos com
+`coordinateUncertaintyInMeters` > 10 km ou coordenada "redonda" (≤1 casa decimal nas duas
+coordenadas). **Não mexe** nos números de riqueza/ranking já calculados e já reportados à
+professora (825 ocorrências, 68 espécies) — esses vêm das matrizes pré-computadas
+(`Referencias/matriz_especies_x_ucs*.csv`), não da lista bruta de pontos. Popup de cada ponto
+agora mostra a incerteza de coordenada, para transparência. Testado ao vivo com *Saguinus
+bicolor*: a contagem de pontos ocultados aparece corretamente na legenda do mapa.
+
+## 2026-09-29 — Etapa 26: ranking de UCs por riqueza
+
+Pedido: um painel equivalente ao "Ranking por incidência" (que lista espécies por nº de UCs com
+registro), mas na direção oposta — UCs ordenadas por riqueza de espécies. Adicionado como aba
+"Ranking por UC" ao lado da aba "Ranking por espécie" (que já existia), reaproveitando a coluna
+`riqueza_primatas` já calculada para colorir o mapa — nenhum dado novo precisou ser gerado.
+Caption deixa explícito que é contagem de espécies confirmadas por evidência de ocorrência, não
+uma medida de heterogeneidade ambiental ou potencial de espécies (isso exigiria uma camada
+ambiental nova, fora do escopo da Parte 1 — mais próximo do que a Parte 2 faz para 1 espécie, ou
+da Etapa 3 do doutorado). Testado ao vivo, renderiza corretamente.

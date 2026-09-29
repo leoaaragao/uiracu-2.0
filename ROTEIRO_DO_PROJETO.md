@@ -754,3 +754,20 @@ garantir que o linker dinâmico encontre a biblioteca em tempo de execução, n�
 build. README atualizado explicando o porquê deste arquivo. Push feito — o Railway deve
 redetectar e rebuildar automaticamente; se não disparar sozinho, é preciso clicar em "Redeploy"
 manualmente no painel do Railway.
+
+## 2026-09-29 — Etapa 29: 1ª tentativa não resolveu — troca para pacotes apt
+
+O autor confirmou: o deploy com `nixPkgs`/`nixLibs = ["expat"]` completou com sucesso
+("Deployment successful" no painel do Railway), mas o **mesmo erro persistiu** em tempo de
+execução. Diagnóstico mais provável: a variável de ambiente `LD_LIBRARY_PATH`, que o mecanismo
+`nixLibs` do Nixpacks configura, não chegou até o processo do site quando o Railway executa o
+comando do `Procfile` — um problema conhecido de propagação de ambiente entre fase de build e
+fase de execução em alguns builders baseados em Nix.
+
+**2ª tentativa, mecanismo diferente:** trocado `nixPkgs`/`nixLibs` por **`aptPkgs`** (pacotes
+`.deb` do Debian/Ubuntu, também suportado nativamente pelo Nixpacks) — `libexpat1`, `zlib1g`,
+`libsqlite3-0`. Pacotes apt instalam a biblioteca no caminho padrão do sistema operacional e são
+registrados via `ldconfig`, que o linker dinâmico consulta automaticamente — não depende de
+nenhuma variável de ambiente custom sobreviver entre fases. Mecanismo mais robusto para este tipo
+de problema. Também adicionados `zlib1g` e `libsqlite3-0` (dependências comuns do GDAL) de forma
+preventiva, para reduzir o número de novas tentativas se outra biblioteca faltar.

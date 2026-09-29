@@ -217,7 +217,7 @@ Testei filtrar para Brasil + Peru (`Scripts/09_filtrar_brasil_peru.py` → 639 r
 ### ⏸️ PAUSADO — decisão pendente para 24/09/2026
 Cheguei numa pergunta que não tenho segurança para decidir sozinho: **a área de calibração M deve usar só Brasil (só *cana*), Brasil+Peru (mistura *cana* com *tschudii*/*poeppigii*), ou existe uma terceira abordagem mais correta (ex.: delimitar por ecorregião e deixar a biologia decidir naturalmente quais pontos entram)?**
 
-Decisão: **parar aqui e perguntar à professora na aula de amanhã**, em vez de seguir com uma escolha que eu mesmo tenho dúvida se está certa. Resumo específico para essa conversa em [`RESUMO_PARA_PROFESSORA_24-09.md`](RESUMO_PARA_PROFESSORA_24-09.md).
+Decisão: **parar aqui e perguntar à professora na aula de amanhã**, em vez de seguir com uma escolha que eu mesmo tenho dúvida se está certa. Resumo específico para essa conversa em [`RESUMO_PARA_PROFESSORA_24-09.md`](Referencias/Historico/RESUMO_PARA_PROFESSORA_24-09.md).
 
 **Nada foi executado além da auditoria/diagnóstico acima** — a rarefação, definição de M e download do WorldClim continuam pendentes até a decisão. O script de rarefação (`07`) já foi ajustado para rodar sobre o conjunto maior quando a decisão sair, mas **não foi executado**.
 
@@ -617,6 +617,25 @@ Correções no `Dashboard/pages/2_Modelagem_Lagothrix.py`:
 
 Testado ao vivo: os dois mapas agora mostram variação espacial visível e legenda, sem erros no
 console. Projeto revisado e pronto para o autor publicar no Railway.
+
+## 2026-09-29 — Etapa 21: revisão do texto público (GitHub) antes de publicar
+
+A pedido do autor, revisão do texto visível no GitHub para checar se está atualizado com o
+projeto e os nomes de documento atuais. Achado real: a descrição do repositório (caixa "About",
+limite de 350 caracteres do GitHub) dizia "via SDM de Lagothrix lagothricha... em 92 UCs" — errado,
+92 UCs é o escopo da Parte 1 (riqueza); o SDM (Parte 2) usa 85 UCs (sem Roraima). Como a IA não
+tem acesso à conta do GitHub do autor (login necessário para editar a descrição do repositório),
+o texto corrigido foi só redigido para o autor colar manualmente:
+
+> Biodiversidade de primatas na Amazônia Ocidental: (1) riqueza de 168 espécies em 92 UCs
+> federais, via GBIF; (2) SDM (GLM, Maxent, Random Forest) de Lagothrix lagothricha em 85 UCs.
+> Pipeline Python reprodutível, dashboard Streamlit. Piloto de doutorado (IPBB), com apoio de IA.
+
+Também organizada a raiz do repositório: 3 arquivos que eram resquícios de etapas iniciais, já
+superados pelo `README.md`/`ROTEIRO_DO_PROJETO.md` atuais, movidos para `Referencias/Historico/`
+(mantidos, não apagados) — `00_Nota_Estudo_de_Caso.docx` (formulário de escolha de espécie, nunca
+preenchido), `RESUMO_PARA_PROFESSORA_24-09.md` e `STATUS_PROJETO_25-09.md` (retratos datados).
+Link interno no roteiro (linha sobre a decisão de 24/09) atualizado para o novo caminho.
 
 ## Documentos de apoio
 - [Anotações da aula (Gemini), 22-23/09/2026](https://drive.google.com/drive/folders/1RgYTo5Ki5dCN0r64YvgQBRm3Cfrw0HHj) — referenciadas na seção "Aprendizados da aula" acima.

@@ -87,6 +87,7 @@ Uiracu-2.0/
 ├── Resultados/          # saidas de modelo, mapas
 ├── Evidencias/          # capturas de tela do processo (auditoria/reprodutibilidade)
 ├── Referencias/         # material de apoio curado (checklist de primatas, cruzamentos, nomes/fotos)
+│   └── Historico/       # retratos datados e formulários de etapas iniciais, já superados
 ├── ROTEIRO_DO_PROJETO.md   # registro cronológico de decisões e uso de IA
 ├── Procfile              # comando de start para deploy (Railway/Nixpacks)
 ├── .python-version       # versao do Python para o build de deploy

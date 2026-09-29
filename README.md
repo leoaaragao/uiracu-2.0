@@ -70,16 +70,17 @@ Abre em `http://localhost:8501`, com navegação no menu lateral: **Riqueza de E
 ## Publicar o dashboard (Railway)
 
 O repositório já está pronto para deploy no [Railway](https://railway.app) — inclui `Procfile`,
-`.python-version` e `nixpacks.toml` (este último instala a biblioteca de sistema `expat`, exigida
-pelo `rasterio`/GDAL em tempo de execução — sem ele o deploy quebra com `ImportError:
-libexpat.so.1: cannot open shared object file`). Não há nenhum arquivo `.env` nem dado sensível no
-projeto (sem chaves de API: o GBIF é consultado via API pública, sem autenticação).
+`.python-version` e `railpack.json` (este último instala bibliotecas de sistema exigidas pelo
+`rasterio`/GDAL em tempo de execução — sem elas o deploy quebra com `ImportError: libexpat.so.1:
+cannot open shared object file`; ver `ROTEIRO_DO_PROJETO.md`, Etapas 28-30, para o processo de
+diagnóstico). Não há nenhum arquivo `.env` nem dado sensível no projeto (sem chaves de API: o
+GBIF é consultado via API pública, sem autenticação).
 
 Passo a passo:
 1. Em [railway.app](https://railway.app), **New Project → Deploy from GitHub repo** e selecione
    `leoaaragao/uiracu-2.0` (login com sua conta GitHub).
-2. O Railway detecta o `Procfile` automaticamente e builda com Nixpacks — nenhuma configuração
-   extra é necessária.
+2. O Railway detecta o `Procfile` automaticamente e builda com Railpack (builder padrão desde
+   meados de 2025) — nenhuma configuração extra é necessária.
 3. Em **Settings → Networking**, clique em **Generate Domain** para obter a URL pública
    (`algo.up.railway.app`).
 4. Pronto — o app sobe direto do repositório público; não precisa subir nenhum arquivo à parte.
@@ -101,8 +102,9 @@ Uiracu-2.0/
 ├── Referencias/         # material de apoio curado (checklist de primatas, cruzamentos, nomes/fotos)
 │   └── Historico/       # retratos datados e formulários de etapas iniciais, já superados
 ├── ROTEIRO_DO_PROJETO.md   # registro cronológico de decisões e uso de IA
-├── Procfile              # comando de start para deploy (Railway/Nixpacks)
+├── Procfile              # comando de start para deploy (Railway/Railpack)
 ├── .python-version       # versao do Python para o build de deploy
+├── railpack.json         # bibliotecas de sistema extras exigidas em runtime (GDAL/rasterio)
 └── requirements.txt
 ```
 

@@ -771,3 +771,46 @@ registrados via `ldconfig`, que o linker dinâmico consulta automaticamente — 
 nenhuma variável de ambiente custom sobreviver entre fases. Mecanismo mais robusto para este tipo
 de problema. Também adicionados `zlib1g` e `libsqlite3-0` (dependências comuns do GDAL) de forma
 preventiva, para reduzir o número de novas tentativas se outra biblioteca faltar.
+
+## 2026-09-29 — Etapa 30: causa raiz encontrada — Railway não usa mais Nixpacks
+
+A 2ª tentativa (`aptPkgs` no `nixpacks.toml`) também não resolveu — o autor mandou print do log
+de build/runtime do Railway mostrando o mesmo erro, com o app iniciando (`Uvicorn server started
+on 0.0.0.0:8080`) e quebrando exatamente no `import rasterio`, idêntico às duas vezes anteriores.
+
+Como duas tentativas com mecanismos diferentes (`nixPkgs`/`nixLibs` e depois `aptPkgs`) dentro do
+mesmo arquivo `nixpacks.toml` falharam do mesmo jeito exato, a hipótese mais provável deixou de
+ser "o mecanismo está errado" e passou a ser **"o arquivo nem está sendo lido"**. Pesquisado e
+confirmado: o Railway **trocou o builder padrão de Nixpacks para um novo, chamado Railpack, em
+meados de 2025** (anúncio oficial: "Why We're Moving on From Nix", blog da Railway, e changelog
+"Railpack the default builder on Railway", 5 jun. 2025). Como este projeto foi criado agora
+(2026), muito provavelmente já nasceu usando Railpack — que **ignora completamente
+`nixpacks.toml`**, porque lê um arquivo diferente: `railpack.json`.
+
+**Correção real:** removido `nixpacks.toml` (não fazia nada); criado `railpack.json`. A
+documentação oficial do Railpack (`railpack.com/config/file`), consultada diretamente antes de
+aplicar, revela uma distinção importante que provavelmente também explicaria uma eventual falha
+mesmo com o arquivo certo, se eu tivesse usado o campo errado:
+- `buildAptPackages` (raiz do arquivo) — instala pacotes **só durante a etapa de build**; o
+  Railpack monta a imagem final por camadas explícitas, então um pacote instalado aqui pode não
+  sobreviver na imagem que efetivamente roda.
+- `deploy.aptPackages` — instala pacotes **na imagem final**, a que realmente executa o site.
+  **Este é o campo certo** para o nosso caso (biblioteca exigida em tempo de execução, não em
+  tempo de build).
+
+`railpack.json` final:
+```json
+{
+  "$schema": "https://schema.railpack.com",
+  "provider": "python",
+  "deploy": {
+    "aptPackages": ["libexpat1", "zlib1g", "libsqlite3-0"]
+  }
+}
+```
+
+**Lição para o registro:** as duas primeiras tentativas foram diagnósticos plausíveis mas
+formulados sem visibilidade do log real de build (só o erro em runtime, que é idêntico
+independente da causa) — o "duas tentativas com mecanismos diferentes, mesmo resultado exato"
+foi o sinal de que a suposição de base (qual builder está rodando) estava errada, não a
+implementação de cada tentativa.

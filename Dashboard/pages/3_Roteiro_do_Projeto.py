@@ -2,6 +2,7 @@
 """Uiraçu 2.0 — Roteiro do projeto (renderizado direto no dashboard)."""
 import os
 import re
+import sys
 
 import streamlit as st
 
@@ -9,6 +10,12 @@ st.set_page_config(page_title="Uiraçu 2.0 — Roteiro do Projeto", layout="wide
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 CAMINHO_ROTEIRO = os.path.join(RAIZ, "ROTEIRO_DO_PROJETO.md")
+_DASHBOARD_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _DASHBOARD_DIR not in sys.path:
+    sys.path.insert(0, _DASHBOARD_DIR)
+from _seo import injetar_tags_og  # noqa: E402
+
+injetar_tags_og()
 
 st.title("Roteiro do Projeto")
 st.caption("Registro cronológico de decisões, erros e ajustes — a mesma fonte usada para o "

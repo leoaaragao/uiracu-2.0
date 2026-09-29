@@ -814,3 +814,29 @@ formulados sem visibilidade do log real de build (só o erro em runtime, que é 
 independente da causa) — o "duas tentativas com mecanismos diferentes, mesmo resultado exato"
 foi o sinal de que a suposição de base (qual builder está rodando) estava errada, não a
 implementação de cada tentativa.
+
+**Confirmado pelo autor:** depois de um redeploy correto (o log mostrava o container antigo,
+ainda sem a correção, quando o autor primeiro mandou o print), a Parte 2 passou a funcionar.
+
+## 2026-09-29 — Etapa 31: prévia de link (Open Graph) para WhatsApp/Discord/Telegram
+
+Pedido: o link do site, quando colado num chat, aparecia só como "Streamlit" genérico — sem
+título, descrição ou imagem. O Streamlit não gera tags Open Graph (`og:title`, `og:description`,
+`og:image`) nativamente.
+
+**Solução implementada:**
+- `.streamlit/config.toml` com `enableStaticServing = true` (opção oficial do Streamlit para
+  servir arquivos estáticos numa URL previsível: `<app>/app/static/<arquivo>`).
+- `Dashboard/static/og-image.jpg` — a foto do gavião-real (Parque Nacional do Juruena), a mesma
+  já usada na página inicial.
+- `Dashboard/_seo.py` — módulo com uma função idempotente que aplica um patch no `index.html`
+  estático do próprio pacote Streamlit instalado (adiciona as tags antes de `</head>`), chamada
+  do topo de todas as 4 páginas do dashboard — para funcionar independente de qual página alguém
+  acessa primeiro (o HTML bruto que scrapers de prévia de link leem é o mesmo em qualquer rota).
+
+**Testado localmente rodando o Streamlit a partir da raiz do repositório** (mesma pasta de
+trabalho que o Railway usa) — confirmado que `/app/static/og-image.jpg` responde como
+`image/jpeg` de verdade, e as 5 tags `og:*` aparecem no HTML servido. Um teste inicial via
+`preview_start` (ambiente local deste assistente) tinha dado falso-negativo porque a pasta de
+trabalho ali fica um nível acima da raiz do repositório — não é um problema da correção em si,
+só uma particularidade desse ambiente de preview específico.

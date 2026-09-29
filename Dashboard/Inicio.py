@@ -3,11 +3,18 @@
 Uiraçu 2.0 — Pagina inicial. Roda com: streamlit run Dashboard/Inicio.py
 """
 import os
+import sys
 import streamlit as st
 
 st.set_page_config(page_title="Uiraçu 2.0", layout="wide")
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_DASHBOARD_DIR = os.path.dirname(os.path.abspath(__file__))
+if _DASHBOARD_DIR not in sys.path:
+    sys.path.insert(0, _DASHBOARD_DIR)
+from _seo import injetar_tags_og  # noqa: E402
+
+injetar_tags_og()
 
 st.title("Uiraçu 2.0")
 st.caption(

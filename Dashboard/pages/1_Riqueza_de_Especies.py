@@ -5,6 +5,7 @@ Uiraçu 2.0 — Dashboard interativo: Primatas da Pan-Amazônia x UCs federais
 Roda com:  streamlit run Dashboard/dashboard_primatas.py
 """
 import os
+import sys
 import geopandas as gpd
 import pandas as pd
 import streamlit as st
@@ -18,6 +19,12 @@ st.set_page_config(page_title="Uiraçu 2.0 — Parte 1: Riqueza de Espécies", l
 # arquivo (Dashboard/pages/1_..py -> sobe 3 niveis), para funcionar
 # independente de onde o streamlit for iniciado.
 RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+_DASHBOARD_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _DASHBOARD_DIR not in sys.path:
+    sys.path.insert(0, _DASHBOARD_DIR)
+from _seo import injetar_tags_og  # noqa: E402
+
+injetar_tags_og()
 
 # ---------------- Dados ----------------
 @st.cache_data

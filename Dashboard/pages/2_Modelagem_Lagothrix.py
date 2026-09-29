@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Uiraçu 2.0 — Parte 2: Modelagem do Lagothrix lagothricha (SDM)."""
 import os
+import sys
 
 import branca.colormap as cmb
 import folium
@@ -19,6 +20,12 @@ st.set_page_config(page_title="Uiraçu 2.0 — Parte 2: Lagothrix", layout="wide
 RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DADOS = os.path.join(RAIZ, "Dados")
 RESULTADOS = os.path.join(RAIZ, "Resultados")
+_DASHBOARD_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if _DASHBOARD_DIR not in sys.path:
+    sys.path.insert(0, _DASHBOARD_DIR)
+from _seo import injetar_tags_og  # noqa: E402
+
+injetar_tags_og()
 
 col_titulo, col_foto = st.columns([3, 1])
 with col_titulo:

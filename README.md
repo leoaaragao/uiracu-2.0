@@ -96,7 +96,8 @@ depende deles em tempo de execução**, só dos resultados já processados (`Res
 Uiracu-2.0/
 ├── Dados/               # dados brutos e derivados (grandes ficam fora do git — ver .gitignore)
 ├── Scripts/             # pipeline em Python, numerado por etapa
-├── Dashboard/           # app Streamlit multi-página (Inicio.py + pages/)
+├── Dashboard/           # app Streamlit multi-página (Inicio.py + pages/ + static/ + _seo.py)
+├── .streamlit/          # config.toml (habilita servir arquivos estáticos)
 ├── Resultados/          # saidas de modelo, mapas
 ├── Evidencias/          # capturas de tela do processo (auditoria/reprodutibilidade)
 ├── Referencias/         # material de apoio curado (checklist de primatas, cruzamentos, nomes/fotos)

@@ -218,4 +218,5 @@ with abas[5]:
         st.error(f"Não foi possível carregar a camada: {e}")
 
 st.divider()
-st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · gerado com apoio de Claude (Anthropic) — ver ROTEIRO_DO_PROJETO.md")
+st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · gerado com Python, Claude (Anthropic), "
+           "Google Antigravity e APIs do GBIF — ver ROTEIRO_DO_PROJETO.md")

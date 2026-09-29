@@ -61,6 +61,14 @@ regional do projeto de doutorado:
   um limite biogeográfico real e documentado na literatura (barreira do Rio Negro/Branco) — não
   por falta de dado.
 
+**Este projeto de disciplina corresponde apenas à Etapa 2 (SDM, 1 espécie) do framework de
+doutorado, que tem 5 etapas no total.** As etapas seguintes, fora do escopo desta entrega, são:
+diversidade funcional e filogenética para múltiplas espécies-chave/ameaçadas (Etapa 3), o Índice
+de Prioridade de Bônus de Biodiversidade — IPBB, combinando SDM + diversidade + pressão antrópica
+via planejamento sistemático (Etapa 4), e o protocolo de suporte à decisão (Etapa 5). A validação
+dos modelos na tese também inclui cenários climáticos futuros (CMIP6) e a métrica TSS/ROC parcial
+além do AUC — parte disso (TSS) já foi incorporada aqui como primeiro passo.
+
 Processo completo, decisão por decisão, incluindo os erros e ajustes no caminho, está registrado
 em [`ROTEIRO_DO_PROJETO.md`](https://github.com/leoaaragao/uiracu-2.0/blob/main/ROTEIRO_DO_PROJETO.md).
     """)
@@ -95,6 +103,12 @@ with col2:
   cobertura florestal (MapBiomas) por UC
 
 *Status: completo — ver detalhes na página.*
+
+> Este piloto cobre **1 espécie** e a dimensão de adequabilidade ambiental (SDM). Na tese de
+> doutorado, o mesmo framework será aplicado a **múltiplas espécies-chave e ameaçadas** (não só
+> primatas), e somado a **métricas de diversidade funcional** (riqueza, equabilidade e divergência
+> funcional) e **filogenética** (índice de Faith, distinção evolutiva) — o SDM aqui é a primeira
+> das quatro camadas de informação que compõem o IPBB.
 """)
 
 st.divider()
@@ -126,4 +140,5 @@ Lista completa e versões exatas em [`requirements.txt`](https://github.com/leoa
 Detalhes completos, decisão por decisão, em [`ROTEIRO_DO_PROJETO.md`](https://github.com/leoaaragao/uiracu-2.0/blob/main/ROTEIRO_DO_PROJETO.md).
     """)
 
-st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · ver ROTEIRO_DO_PROJETO.md")
+st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · gerado com Python, Claude (Anthropic), "
+           "Google Antigravity e APIs do GBIF — ver ROTEIRO_DO_PROJETO.md")

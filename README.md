@@ -2,6 +2,16 @@
 
 Duas partes independentes, biodiversidade de primatas na Amazônia Ocidental, usando dados abertos e IA.
 
+> **English summary:** Amazon primate biodiversity project with two independent parts — (1)
+> species richness across 168 primate species in 92 federal protected areas, based on GBIF
+> occurrence evidence; (2) a species distribution model (GLM, Maxent, Random Forest, cross-validation,
+> consensus/uncertainty maps) for *Lagothrix lagothricha* across 85 protected areas. Fully
+> reproducible Python pipeline (no QGIS/R/original Maxent software), interactive Streamlit
+> dashboard, AI-assisted development (see [Uso de IA e ferramentas](#uso-de-ia-e-ferramentas)
+> below). Course project (ENBT/JBRJ) and PhD pilot (IPBB — biodiversity bonus prioritization for
+> Amazon protected areas). Full decision-by-decision log in
+> [`ROTEIRO_DO_PROJETO.md`](ROTEIRO_DO_PROJETO.md) (Portuguese).
+
 Projeto desenvolvido para a disciplina **Análise espacial da biodiversidade, mudanças globais e inteligência artificial** (ENBT/JBRJ, 2026-2, docente Marinez Ferreira de Siqueira), e usado como piloto reprodutível das Etapas 2/3 do projeto de doutorado *"Priorização Espacial para Bônus de Biodiversidade em Unidades de Conservação da Amazônia" (IPBB)*.
 
 > Continuação do protótipo de interface [Uiraçu - Biodiversity Bonus](../Uiraçu%20-%20Biodiversity%20Bonus), reaproveitando a base de Unidades de Conservação (CNUC) e o conceito de painel interativo, agora com dados reais.

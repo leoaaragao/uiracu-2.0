@@ -647,5 +647,14 @@ Amazonas** — a mesma localidade de um dos 37 pontos de calibração do dataset
 discutido e mantido na Etapa 12). Foto: Fernando Bondan (iNaturalist), CC BY 4.0.
 Salva em `Dashboard/assets/lagothrix_apui_amazonas.jpg`, adicionada ao topo da página 2.
 
+## 2026-09-29 — Etapa 23: resumo em inglês no README + checagem do About
+
+O autor confirmou ter atualizado a descrição do GitHub e pediu para deixar também em inglês.
+Checagem ao vivo (fetch sem cache) mostrou que a página do GitHub **ainda estava com o texto
+antigo** — provável que o "Save changes" não tenha sido aplicado; avisado ao autor para conferir.
+Como o campo "About" do GitHub aceita só um idioma por vez, a versão em inglês foi adicionada como
+um bloco de resumo no topo do `README.md` (logo abaixo do título), não substituindo o conteúdo em
+português do resto do documento.
+
 ## Documentos de apoio
 - [Anotações da aula (Gemini), 22-23/09/2026](https://drive.google.com/drive/folders/1RgYTo5Ki5dCN0r64YvgQBRm3Cfrw0HHj) — referenciadas na seção "Aprendizados da aula" acima.

@@ -407,14 +407,14 @@ A pedido, adicionados nome popular e foto por espécie em todo o dashboard:
 - [x] Restaurar Roraima (92 UCs) para o produto multiespécie, mantendo exclusão só no SDM do *Lagothrix* — dois universos de UC documentados e no dashboard.
 - [x] **Área M formalizada** por união de ecorregiões (37 pontos rarefeitos → 11 ecorregiões → 3,24 milhões km², Brasil/Peru/Bolívia/Colômbia) — confirma e amplia a evidência de fronteira (Etapa 10).
 - [x] **Decidido (25/09): manter** a ecorregião "Mato Grosso seasonal forests" e o ponto de Apuí/AM — confirmado geograficamente dentro do Amazonas (2ª fonte: `level1Name` do GBIF). M oficial = versão principal, 11 ecorregiões, 3.235.510 km², calibração com os 37 pontos.
-- [ ] Baixar/recortar WorldClim (10 min de arco, já disponível em `Modelagem preditiva/Dados/wc2.1_10m_bio.zip`) para a extensão de M.
-- [ ] Rarefação espacial já está sobre a base final (37 pontos, Brasil) — nenhuma nova rodada necessária.
-- [ ] PCA das variáveis bioclimáticas (eixos com >90% da variância).
-- [ ] Background / pseudo-ausências aleatórias em M.
-- [ ] Ajuste dos modelos (GLM, Maxent, Random Forest) com validação cruzada (K-fold).
-- [ ] Mapa de consenso + mapa de incerteza (desvio padrão entre algoritmos) — nunca um sem o outro.
-- [ ] Explicabilidade (importância de variáveis).
-- [ ] Pós-processamento: cruzar adequabilidade × MapBiomas (classe 3) × as 85 UCs.
+- [x] Baixar/recortar WorldClim (10 min de arco) para a extensão de M (Etapa 14).
+- [x] Rarefação espacial já está sobre a base final (37 pontos, Brasil) — nenhuma nova rodada necessária.
+- [x] PCA das variáveis bioclimáticas (eixos com >90% da variância) — Etapa 14.
+- [x] Background / pseudo-ausências aleatórias em M — Etapa 14.
+- [x] Ajuste dos modelos (GLM, Maxent, Random Forest) com validação cruzada (K-fold) — Etapa 14.
+- [x] Mapa de consenso + mapa de incerteza (desvio padrão entre algoritmos) — Etapa 14.
+- [x] Explicabilidade (importância de variáveis) — Etapa 14.
+- [ ] Pós-processamento: cruzar adequabilidade × MapBiomas (classe 3) × as 85 UCs — dado baixado (Etapa 14), recorte/cruzamento pendente.
 - [ ] Integrar resultado do SDM do *Lagothrix* ao dashboard (hoje só mostra a camada multiespécie).
 - [ ] *(sugestão nova, não decidida)* Índice simples de biodiversidade por UC combinando riqueza multiespécie + peso por status de ameaça (IUCN) — prévia do IPBB sem depender do SDM.
 - [ ] Montar apresentação em PPT a partir deste diário.
@@ -437,6 +437,55 @@ Confirmado que a modelagem inteira pode ser feita em Python, sem softwares exter
 - Testado: as 3 páginas carregam e navegam corretamente, sem erros de console reais (só um aviso interno benigno do Streamlit em rotas de health-check).
 
 Saída: `Dashboard/dashboard_primatas.py` removido (conteúdo migrado para `pages/1_...py`).
+
+## 2026-09-29 — Etapa 14: Modelagem SDM completa (GLM, Maxent, Random Forest, validação cruzada, consenso, incerteza, explicabilidade)
+
+**Prazo: 3 dias (02/10/2026).** Retomado o projeto após pausa de alguns dias — conferido que nada foi perdido (dados, scripts e git intactos) e seguido direto para os passos que faltavam da Parte 2.
+
+### 1) Variáveis climáticas (`Scripts/22_recortar_worldclim.py`)
+Extraídas as 19 variáveis bioclimáticas do WorldClim v2.1 (10 min de arco) e recortadas para a extensão da área M (união de 11 ecorregiões, script 20). Resultado: 19 rasters de 124×184 pixels em `Dados/worldclim_M/`, cobrindo só a região de interesse (evita processar o planeta inteiro).
+
+### 2) Background e PCA (`Scripts/23_background_e_pca.py`)
+- **Background (pseudo-ausência):** 5.000 pontos sorteados aleatoriamente dentre as 9.322 células válidas de M — não são "ausências reais", são pontos de referência do que é o ambiente disponível, para o modelo aprender a diferença entre onde a espécie foi registrada e o ambiente geral de M.
+- **PCA:** ajustado sobre todo o espaço ambiental de M (não só os pontos), depois projetando presença e background nesse mesmo espaço — evita viés de amostragem no PCA. **4 eixos (PC1–PC4) resumem 91,8% da variância** das 19 variáveis originais (critério: >90%, igual ao usado em aula).
+- Interpretação dos eixos (via `loadings`, ver Etapa 14 item 4): PC1 ≈ temperatura (mínima do mês mais frio, amplitude térmica); PC2 ≈ temperatura do trimestre mais quente vs. chuva; PC3 ≈ precipitação (mês/trimestre mais úmido, anual); PC4 ≈ sazonalidade da temperatura.
+- Saídas: `Dados/lagothrix_dados_modelagem.csv` (37 presença + 5.000 background × 4 eixos de PCA), `Dados/lagothrix_pca_loadings.csv`, `Dados/lagothrix_pca_variancia.csv`, `Dados/lagothrix_grade_pca.csv` (toda a grade de M projetada, para gerar o mapa contínuo depois), `Dados/lagothrix_background.gpkg`.
+
+### 3) Ajuste dos 3 modelos + validação cruzada (`Scripts/24_ajustar_modelos.py`)
+Modelos ajustados sobre os 4 eixos de PCA:
+- **GLM** — regressão logística (`sklearn.LogisticRegression`, `class_weight="balanced"` por causa do desbalanço 37 presença / 5.000 background).
+- **Maxent** — biblioteca **`elapid`** (substitui o software Maxent original de Phillips et al. — **declarar isso no relatório final como substituição de ferramenta**), features lineares+quadráticas+hinge.
+- **Random Forest** — `sklearn.RandomForestClassifier`, 500 árvores, `class_weight="balanced"`.
+
+**Validação cruzada:** 5-fold estratificado por presença/background (`StratifiedKFold`) — não bloqueio espacial, conforme orientação explícita da professora em aula para amostras pequenas (37 pontos não dá para dividir por região sem esvaziar os folds).
+
+**Resultado da validação cruzada (AUC médio ± desvio padrão entre os 5 folds):**
+
+| Modelo | AUC |
+|---|---|
+| Random Forest | 0,604 ± 0,065 |
+| GLM | 0,577 ± 0,066 |
+| Maxent | 0,570 ± 0,058 |
+
+**Leitura honesta:** são valores moderados (0,5 = aleatório, 1,0 = perfeito), não excelentes. Isso é esperado e deve constar no relatório: a amostra de calibração é pequena (37 pontos), o que limita o poder de discriminação de qualquer algoritmo — é uma limitação do dado, não um erro de código. É preferível reportar isso com transparência a esconder ou inflar artificialmente a métrica.
+
+Cada modelo foi então reajustado com 100% dos dados (presença + background) e usado para prever a adequabilidade em toda a grade de M (9.322 células), gerando:
+- `Resultados/lagothrix_glm.tif`, `lagothrix_maxent.tif`, `lagothrix_randomforest.tif` — predição individual de cada algoritmo (0 a 1).
+- `Resultados/lagothrix_consenso.tif` — **média dos 3 modelos** (adequabilidade consolidada).
+- `Resultados/lagothrix_incerteza.tif` — **desvio padrão entre os 3 modelos** (onde os algoritmos discordam mais = onde a predição é menos confiável). Gerado sempre junto do consenso, nunca isoladamente.
+- `Resultados/lagothrix_cv_auc.csv` — tabela com o resultado da validação cruzada.
+- `Resultados/modelos/*.joblib` — os 3 modelos finais salvos, para reuso sem precisar re-treinar.
+
+### 4) Explicabilidade (`Scripts/25_explicabilidade.py`)
+Como os modelos foram ajustados sobre eixos de PCA (não diretamente sobre as 19 variáveis), a explicabilidade foi feita em duas camadas:
+1. **Importância por permutação** (agnóstica ao algoritmo, `sklearn.inspection.permutation_importance`) de cada eixo PC1–PC4 para cada um dos 3 modelos — mede quanto o AUC cai quando aquele eixo é embaralhado.
+2. **Composição de cada eixo** em variáveis bioclimáticas originais (via os `loadings` do PCA), para traduzir "PC3 é importante" em algo biológico.
+
+**Resultado:** os eixos mais importantes para os modelos foram **PC3 e PC4** — ambos dominados por variáveis de **precipitação e sazonalidade** (precipitação do trimestre/mês mais úmido, precipitação anual, sazonalidade da temperatura). Isso é biologicamente coerente: *Lagothrix lagothricha* é uma espécie de floresta úmida, sensível a regimes de chuva estáveis — o modelo "aprendeu" um padrão que faz sentido ecológico, o que é uma forma indireta de validar o resultado além do AUC.
+Saídas: `Resultados/lagothrix_importancia_pca.csv`, `Resultados/lagothrix_interpretacao_pca.csv`.
+
+### 5) Dado do MapBiomas baixado (pós-processamento, em andamento)
+Para a etapa final pendente (cruzar adequabilidade × MapBiomas classe 3 "Formação Florestal" × 85 UCs), foi localizado e baixado o raster nacional oficial do MapBiomas (Coleção 11, cobertura 2025, Landsat 30m) diretamente do link público do MapBiomas Brasil (`storage.googleapis.com/mapbiomas-public/...brazil_coverage-col11_2025.tif`, 763 MB — bem menor do que o esperado inicialmente, o que tornou viável baixar direto em vez de depender de Google Earth Engine). Salvo em `Dados/Mapbiomas/brazil_coverage-col11_2025.tif` (pasta local, fora do git pelo tamanho — ver `.gitignore`). Recorte para a extensão das 85 UCs e cruzamento com o mapa de consenso: próximo passo.
 
 ## Documentos de apoio
 - [Anotações da aula (Gemini), 22-23/09/2026](https://drive.google.com/drive/folders/1RgYTo5Ki5dCN0r64YvgQBRm3Cfrw0HHj) — referenciadas na seção "Aprendizados da aula" acima.

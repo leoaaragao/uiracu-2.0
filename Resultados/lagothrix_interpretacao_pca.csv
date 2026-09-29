@@ -1,0 +1,5 @@
+eixo,importancia_media,principais_variaveis
+PC1,0.023,Temp. mínima do mês mais frio (+0.31); Amplitude térmica anual (-0.30); Amplitude diurna média (-0.29)
+PC2,0.0166,Temp. máxima do mês mais quente (+0.38); Precipitação do trimestre mais quente (-0.35); Temp. média do trimestre mais quente (+0.33)
+PC3,0.0508,Precipitação do trimestre mais úmido (+0.59); Precipitação do mês mais úmido (+0.59); Precipitação anual (+0.29)
+PC4,0.053,Sazonalidade da temperatura (+0.59); Temp. média do trimestre mais úmido (+0.49); Precipitação do trimestre mais quente (+0.41)

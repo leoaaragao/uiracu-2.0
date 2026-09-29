@@ -14,13 +14,13 @@ Projeto desenvolvido para a disciplina **Análise espacial da biodiversidade, mu
 - Baseado em evidência de ocorrência (GBIF), com nome popular e foto por espécie.
 - Dashboard interativo pronto (mapa de riqueza, ranking, exploração por espécie/UC).
 
-## Parte 2 — Modelagem de *Lagothrix lagothricha* (🔧 em andamento)
+## Parte 2 — Modelagem de *Lagothrix lagothricha* (✅ modelagem completa)
 
 **Pergunta:** onde estão as condições mais adequadas para o macaco-barrigudo-cinza?
 
 Estudo de caso aprofundado de **1 espécie**, cumprindo o exercício de modelagem da disciplina (SDM: GLM, Maxent, Random Forest, validação cruzada, incerteza — Fichas 2.6 a 2.9). Escopo: **85 UCs** (Amazonas, Acre, Rondônia) — Roraima fica fora por limite biogeográfico documentado (Rio Negro/Branco), diferente da Parte 1.
 
-Já feito: auditoria taxonômica, rarefação espacial (37 pontos de calibração), área acessível (M, 3,24 milhões km², por união de ecorregiões). Falta: variáveis climáticas, ajuste dos modelos, mapas de consenso/incerteza.
+Pipeline completo: auditoria taxonômica → rarefação espacial (37 pontos de calibração) → área acessível M (3,24 milhões km², união de 11 ecorregiões) → variáveis climáticas (WorldClim, recortadas para M) → background (5.000 pontos) + PCA (4 eixos, 91,8% da variância) → **GLM, Maxent (`elapid`) e Random Forest**, com validação cruzada 5-fold (AUC médio 0,57–0,60 — amostra pequena, resultado reportado com transparência) → mapa de consenso + mapa de incerteza → explicabilidade (importância dos eixos de PCA) → pós-processamento cruzando adequabilidade × MapBiomas (Formação Florestal) × 85 UCs. Tudo integrado ao dashboard interativo.
 
 Processo completo, decisão por decisão — incluindo onde e como a IA (Claude) ajudou — está documentado em [`DIARIO_DE_BORDO.md`](DIARIO_DE_BORDO.md).
 
@@ -34,7 +34,8 @@ Processo completo, decisão por decisão — incluindo onde e como a IA (Claude)
 | Nomes populares e fotos | GBIF (`vernacularNames` + `occurrence` media) | Variável por registro — ver `Referencias/especies_nomes_populares_fotos.csv` |
 | Ecorregiões (base para a área M) | WWF Terrestrial Ecoregions (Olson et al. 2001), via material da disciplina | Dado público |
 | Fronteiras internacionais | ESRI World Countries, via material da disciplina | Dado público |
-| Variáveis climáticas | WorldClim v2.1 (10 min de arco), via material da disciplina | *(a integrar)* |
+| Variáveis climáticas | WorldClim v2.1 (10 min de arco), via material da disciplina | Recortadas para M |
+| Cobertura da terra (Formação Florestal) | MapBiomas Brasil, Coleção 11 (2025, Landsat 30m), download público oficial | CC BY 4.0 |
 
 ## Como reproduzir
 

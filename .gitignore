@@ -12,10 +12,14 @@ Dados/ecoregioes_bruto/
 Dados/*gbif_oficial*
 Dados/**/0*-*.zip
 
-# Rasters climaticos (grandes; baixados via script, nao versionados)
+# Rasters climaticos e MapBiomas (grandes; baixados via script, nao versionados)
 Dados/worldclim*/
+Dados/Mapbiomas/
 *.tif
 *.tiff
+
+# Excecao: rasters de resultado do SDM (pequenos, ~90KB cada, versionados p/ reprodutibilidade)
+!Resultados/*.tif
 
 # Sistema
 .DS_Store

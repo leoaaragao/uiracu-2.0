@@ -367,5 +367,5 @@ with tab_uc:
     else:
         st.info("Nenhuma ocorrência confirmada dentro desta UC nos dados atuais.")
 
-st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · gerado com Python, Claude (Anthropic), "
+st.caption("Uiraçu 2.0 · [leoaaragao/uiracu-2.0](https://github.com/leoaaragao/uiracu-2.0) · gerado com Python, Claude (Anthropic), "
            "Google Antigravity e APIs do GBIF — ver ROTEIRO_DO_PROJETO.md")

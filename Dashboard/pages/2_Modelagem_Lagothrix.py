@@ -2,6 +2,7 @@
 """Uiraçu 2.0 — Parte 2: Modelagem do Lagothrix lagothricha (SDM)."""
 import os
 
+import branca.colormap as cmb
 import folium
 import geopandas as gpd
 import matplotlib as mpl
@@ -35,6 +36,20 @@ def raster_para_rgba(caminho, cmap_nome="YlGn", vmin=0.0, vmax=1.0, opacidade=0.
     rgba[..., 3] = np.where(mascara_valida, opacidade, 0.0)
     bounds_folium = [[bounds.bottom, bounds.left], [bounds.top, bounds.right]]
     return rgba, bounds_folium, arr[mascara_valida]
+
+
+def ler_stats(caminho):
+    with rasterio.open(caminho) as src:
+        arr = src.read(1)
+        nodata = src.nodata
+        validos = arr[arr != nodata] if nodata is not None else arr[~np.isnan(arr)]
+    return float(validos.min()), float(validos.max())
+
+
+def criar_legenda(cmap_nome, vmin, vmax, titulo, n_cores=9):
+    cmap = mpl.colormaps[cmap_nome]
+    cores = [mcolors.to_hex(cmap(i / (n_cores - 1))) for i in range(n_cores)]
+    return cmb.LinearColormap(colors=cores, vmin=vmin, vmax=vmax, caption=titulo)
 
 
 def mapa_base_ucs():
@@ -75,15 +90,22 @@ abas = st.tabs([
 
 # --- Aba 1: consenso -------------------------------------------------------
 with abas[0]:
-    st.markdown("**Adequabilidade ambiental (0 = pouco adequado, 1 = muito adequado)** — "
-                "média dos 3 modelos (GLM, Maxent, Random Forest), **ponderada pelo AUC** de cada um "
-                "na validação cruzada (ensemble de consenso, conforme Araújo & New, 2007).")
+    st.markdown("**Adequabilidade ambiental relativa** — média dos 3 modelos (GLM, Maxent, Random "
+                "Forest), **ponderada pelo AUC** de cada um na validação cruzada (ensemble de "
+                "consenso, conforme Araújo & New, 2007). A escala de cor abaixo é esticada entre o "
+                "mínimo e o máximo *observados* nesta área (como o \"estica mín/máx\" do QGIS), não "
+                "entre 0 e 1 fixos — isso evita que o mapa pareça uniforme quando os valores reais "
+                "ocupam só uma parte da escala teórica.")
     try:
-        rgba, bounds, valores = raster_para_rgba(os.path.join(RESULTADOS, "lagothrix_consenso.tif"), "YlGn", 0, 1)
+        caminho_consenso = os.path.join(RESULTADOS, "lagothrix_consenso.tif")
+        vmin_c, vmax_c = ler_stats(caminho_consenso)
+        rgba, bounds, valores = raster_para_rgba(caminho_consenso, "YlGn", vmin_c, vmax_c)
         m = mapa_base_ucs()
         folium.raster_layers.ImageOverlay(image=rgba, bounds=bounds, opacity=0.85, name="Consenso").add_to(m)
+        criar_legenda("YlGn", vmin_c, vmax_c, "Adequabilidade (consenso ponderado)").add_to(m)
         st_folium(m, use_container_width=True, height=520, returned_objects=[], key="mapa_consenso")
-        st.caption(f"Adequabilidade média em M: {valores.mean():.2f} · máxima: {valores.max():.2f}")
+        st.caption(f"Adequabilidade em M: mínima {valores.min():.2f} · média {valores.mean():.2f} · "
+                   f"máxima {valores.max():.2f} (escala teórica: 0 a 1).")
         try:
             with rasterio.open(os.path.join(RESULTADOS, "lagothrix_binario_consenso.tif")) as src_bin:
                 arr_bin = src_bin.read(1)
@@ -99,20 +121,21 @@ with abas[0]:
 
 # --- Aba 2: incerteza -------------------------------------------------------
 with abas[1]:
-    st.markdown("**Incerteza** = desvio padrão entre os 3 modelos. Áreas mais escuras = os algoritmos "
-                "discordam mais entre si → predição menos confiável ali.")
+    st.markdown("**Incerteza** = desvio padrão entre os 3 modelos. Cores mais escuras/intensas = os "
+                "algoritmos discordam mais entre si → predição menos confiável ali. Assim como no "
+                "mapa de consenso, a escala é esticada entre o mínimo e o máximo observados — os "
+                "valores de incerteza aqui ficam concentrados numa faixa estreita (a maioria entre "
+                "0,16 e 0,32), então esticar a partir de 0 deixaria o mapa quase todo com a mesma cor.")
     try:
-        with rasterio.open(os.path.join(RESULTADOS, "lagothrix_incerteza.tif")) as src:
-            arr_tmp = src.read(1)
-            nod_tmp = src.nodata
-            vmax_incerteza = float(arr_tmp[arr_tmp != nod_tmp].max())
-        rgba, bounds, valores = raster_para_rgba(
-            os.path.join(RESULTADOS, "lagothrix_incerteza.tif"), "Reds", 0, vmax_incerteza
-        )
+        caminho_incerteza = os.path.join(RESULTADOS, "lagothrix_incerteza.tif")
+        vmin_i, vmax_i = ler_stats(caminho_incerteza)
+        rgba, bounds, valores = raster_para_rgba(caminho_incerteza, "YlOrRd", vmin_i, vmax_i)
         m = mapa_base_ucs()
         folium.raster_layers.ImageOverlay(image=rgba, bounds=bounds, opacity=0.85, name="Incerteza").add_to(m)
+        criar_legenda("YlOrRd", vmin_i, vmax_i, "Incerteza (desvio padrão)").add_to(m)
         st_folium(m, use_container_width=True, height=520, returned_objects=[], key="mapa_incerteza")
-        st.caption(f"Incerteza média em M: {valores.mean():.2f} · máxima: {valores.max():.2f}")
+        st.caption(f"Incerteza em M: mínima {valores.min():.2f} · média {valores.mean():.2f} · "
+                   f"máxima {valores.max():.2f}.")
     except Exception as e:
         st.error(f"Não foi possível carregar o mapa de incerteza: {e}")
 
@@ -218,5 +241,5 @@ with abas[5]:
         st.error(f"Não foi possível carregar a camada: {e}")
 
 st.divider()
-st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · gerado com Python, Claude (Anthropic), "
+st.caption("Uiraçu 2.0 · [leoaaragao/uiracu-2.0](https://github.com/leoaaragao/uiracu-2.0) · gerado com Python, Claude (Anthropic), "
            "Google Antigravity e APIs do GBIF — ver ROTEIRO_DO_PROJETO.md")

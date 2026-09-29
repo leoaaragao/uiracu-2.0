@@ -593,5 +593,30 @@ colinearidade (VIF) e resíduos, curvas de calibração/Brier, bloqueio espacial
 curvas de resposta por variável, comparação de hiperparâmetros/regularização entre configurações,
 e os arquivos `MC26-MC29` com nomenclatura exata da ficha.
 
+## 2026-09-29 — Etapa 20: legibilidade dos mapas de calor + rodapé final, pronto para publicar
+
+O autor notou que o mapa de incerteza (e possivelmente outros) estava difícil de interpretar, e
+perguntou como o QGIS lida com isso. Diagnóstico real (checado nos dados, não só na aparência):
+os valores de incerteza ficam concentrados numa faixa estreita (10º ao 90º percentil: 0,16 a
+0,32, contra uma escala de cor que ia de 0 a 0,44) — esticar a cor a partir de 0 "achatava"
+visualmente quase todo o mapa na mesma tonalidade. É exatamente o problema que o "estica mín/máx"
+do QGIS resolve por padrão, e que faltava aqui.
+
+Correções no `Dashboard/pages/2_Modelagem_Lagothrix.py`:
+- **Escala de cor** dos mapas de consenso e incerteza agora estica entre o **mínimo e o máximo
+  realmente observados** em M (não mais 0/1 ou 0/máximo fixos) — mesmo princípio do stretch
+  automático do QGIS.
+- **Legenda de cores adicionada** aos dois mapas (`branca.colormap.LinearColormap`), mostrando a
+  escala numérica exata — antes não havia nenhuma legenda, então era impossível saber o que cada
+  tom de verde/vermelho significava.
+- **Colormap da incerteza trocado** de `Reds` para `YlOrRd` (amarelo→laranja→vermelho), com melhor
+  gradação perceptual nos tons intermediários do que `Reds` puro.
+- **Rodapé de todas as páginas** ganhou o link clicável para o repositório GitHub
+  (`https://github.com/leoaaragao/uiracu-2.0`), além de já citar Python/Claude/Google
+  Antigravity/GBIF.
+
+Testado ao vivo: os dois mapas agora mostram variação espacial visível e legenda, sem erros no
+console. Projeto revisado e pronto para o autor publicar no Railway.
+
 ## Documentos de apoio
 - [Anotações da aula (Gemini), 22-23/09/2026](https://drive.google.com/drive/folders/1RgYTo5Ki5dCN0r64YvgQBRm3Cfrw0HHj) — referenciadas na seção "Aprendizados da aula" acima.

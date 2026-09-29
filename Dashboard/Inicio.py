@@ -140,5 +140,5 @@ Lista completa e versões exatas em [`requirements.txt`](https://github.com/leoa
 Detalhes completos, decisão por decisão, em [`ROTEIRO_DO_PROJETO.md`](https://github.com/leoaaragao/uiracu-2.0/blob/main/ROTEIRO_DO_PROJETO.md).
     """)
 
-st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · gerado com Python, Claude (Anthropic), "
+st.caption("Uiraçu 2.0 · [leoaaragao/uiracu-2.0](https://github.com/leoaaragao/uiracu-2.0) · gerado com Python, Claude (Anthropic), "
            "Google Antigravity e APIs do GBIF — ver ROTEIRO_DO_PROJETO.md")

@@ -28,11 +28,12 @@ st.caption(
 col_txt, col_foto = st.columns([3, 1])
 with col_txt:
     st.markdown("""
-**Resumo em linguagem acessível:** este projeto pergunta, de duas formas diferentes, onde a
-biodiversidade de primatas está concentrada nas Unidades de Conservação (UCs) federais da
-Amazônia Ocidental — a mesma região e a mesma pergunta de fundo do projeto de doutorado do autor,
-que investiga como recompensar financeiramente UCs por manterem biodiversidade (um "bônus de
-biodiversidade"). Este projeto de disciplina é o primeiro piloto de dados reais dessa ideia.
+**Resumo em linguagem acessível:** este projeto pergunta, de duas formas complementares, onde a
+biodiversidade de primatas é maior e onde as condições ambientais são mais favoráveis a ela nas
+Unidades de Conservação (UCs) federais da Amazônia Ocidental. É a mesma região e o mesmo objetivo
+de fundo do projeto de doutorado do autor, que investiga como recompensar financeiramente UCs por
+manterem biodiversidade (um "bônus de biodiversidade"). Este projeto de disciplina é o primeiro
+piloto de dados reais dessa ideia.
 
 **Por que "Uiraçu":** é um dos nomes populares, junto de "gavião-real", da maior ave de rapina
 das Américas (*Harpia harpyja*), topo de cadeia alimentar e indicadora de floresta bem

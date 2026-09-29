@@ -500,5 +500,24 @@ Depois de ver o dashboard pronto, o autor pediu uma revisão de forma (não de c
 - **Parte 2** com o título ajustado para "Modelagem do macaco-barrigudo (*Lagothrix lagothricha*)" — nome popular em destaque, não só o nome científico.
 - **Seção "Ferramentas e uso de IA"** adicionada à página inicial e expandida no `README.md`: registra que o Uiraçu 1.0 (protótipo anterior, cuja interface foi reaproveitada) usou o Google Antigravity, e que todos os dados de ocorrência vêm diretamente das APIs do GBIF — para ficar claro que há mais de uma ferramenta de IA envolvida na linha do tempo do projeto, não só o Claude.
 
+## 2026-09-29 — Etapa 16: Foto do gavião-real na Amazônia + ferramentas Python detalhadas
+
+Dois ajustes rápidos após revisão do dashboard:
+
+- **Foto trocada:** a primeira foto (Parque das Aves, Foz do Iguaçu — ave em cativeiro) foi
+  substituída por uma foto de gavião-real **livre, na Floresta Nacional de Carajás (Pará,
+  Amazônia brasileira)** — mais coerente com o projeto. Fonte: Hector Bottai, Wikimedia Commons,
+  licença CC BY-SA 4.0. Arquivo antigo removido, novo salvo em
+  `Dashboard/assets/gaviao_real_carajas_amazonia.jpg`.
+- **Seção "Ferramentas e uso de IA" detalhada:** agora lista explicitamente que todo o pipeline é
+  em **Python** e quais bibliotecas fazem cada parte (geopandas/shapely/pyproj/rasterio para dados
+  espaciais; pandas/numpy para manipulação; scikit-learn para GLM/Random Forest/PCA/validação
+  cruzada; elapid para Maxent; streamlit/folium/plotly/matplotlib para o dashboard; pygbif para a
+  API do GBIF) — com link para `requirements.txt`.
+- **`requirements.txt` corrigido:** um `pip freeze` revelou que `elapid` (usado desde o script 24)
+  e mais 3 dependências (`colorama`, `rtree`, `tqdm`) nunca tinham sido adicionadas ao arquivo —
+  ou seja, quem tentasse reproduzir o projeto do zero com `pip install -r requirements.txt` não
+  conseguiria rodar a modelagem. Corrigido regenerando o arquivo a partir do ambiente real.
+
 ## Documentos de apoio
 - [Anotações da aula (Gemini), 22-23/09/2026](https://drive.google.com/drive/folders/1RgYTo5Ki5dCN0r64YvgQBRm3Cfrw0HHj) — referenciadas na seção "Aprendizados da aula" acima.

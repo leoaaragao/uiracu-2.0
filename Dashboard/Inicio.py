@@ -33,10 +33,10 @@ conservada — na tese de doutorado, o painel interativo que resulta desta linha
 será batizado com esse nome.
     """)
 with col_foto:
-    caminho_foto = os.path.join(RAIZ, "Dashboard", "assets", "gaviao_real_harpia.jpg")
+    caminho_foto = os.path.join(RAIZ, "Dashboard", "assets", "gaviao_real_carajas_amazonia.jpg")
     if os.path.exists(caminho_foto):
-        st.image(caminho_foto, use_container_width=True, caption="Gavião-real (Harpia harpyja)")
-        st.caption("Foto: birdphotos.com, Parque das Aves (Foz do Iguaçu) · CC BY 3.0, via Wikimedia Commons")
+        st.image(caminho_foto, use_container_width=True, caption="Gavião-real (Harpia harpyja), livre na Amazônia")
+        st.caption("Foto: Hector Bottai, Floresta Nacional de Carajás (Pará) · CC BY-SA 4.0, via Wikimedia Commons")
 
 st.divider()
 
@@ -99,17 +99,30 @@ with col2:
 st.divider()
 with st.expander("Ferramentas e uso de IA"):
     st.markdown("""
+**IA:**
 - **Claude (Anthropic):** assistência de programação, organização de dados e auditoria assistida
   nesta fase do projeto (Uiraçu 2.0), com decisão científica e verificação sempre humanas,
   conforme os Protocolos 01 e 02 da disciplina.
 - **Google Antigravity:** usado no protótipo anterior, Uiraçu 1.0 (interface e conceito de painel
   reaproveitados aqui).
+
+**Dados:**
 - **APIs do GBIF** (`occurrence/search` e `occurrence/download`, esta com DOI): fonte direta de
   todos os dados de ocorrência de primatas, sem intermediários.
-- **elapid** (Python): reimplementação do algoritmo Maxent, usada no lugar do software original
-  de Phillips et al. — declarado aqui como substituição de ferramenta.
+- **WorldClim v2.1** (variáveis bioclimáticas) e **MapBiomas Coleção 11** (cobertura da terra).
 
-Detalhes completos em [`DIARIO_DE_BORDO.md`](https://github.com/leoaaragao/uiracu-2.0/blob/main/DIARIO_DE_BORDO.md).
+**Python — todo o pipeline (sem QGIS, sem R, sem software Maxent original):**
+- **geopandas, shapely, pyproj, rasterio** — dados espaciais (vetor e raster)
+- **pandas, numpy** — manipulação de dados
+- **scikit-learn** — GLM (regressão logística), Random Forest, PCA, validação cruzada,
+  importância por permutação
+- **elapid** — reimplementação do algoritmo Maxent, usada no lugar do software original de
+  Phillips et al. — declarado aqui como substituição de ferramenta
+- **streamlit, streamlit-folium, folium, plotly, matplotlib** — este dashboard interativo
+- **pygbif** — acesso programático à API do GBIF
+
+Lista completa e versões exatas em [`requirements.txt`](https://github.com/leoaaragao/uiracu-2.0/blob/main/requirements.txt).
+Detalhes completos, decisão por decisão, em [`DIARIO_DE_BORDO.md`](https://github.com/leoaaragao/uiracu-2.0/blob/main/DIARIO_DE_BORDO.md).
     """)
 
 st.caption("Uiraçu 2.0 · leoaaragao/uiracu-2.0 · ver DIARIO_DE_BORDO.md")

@@ -55,6 +55,26 @@ Scripts em ordem de execução em `Scripts/` (numerados). Cada um documenta, no 
 
 Abre em `http://localhost:8501`, com navegação no menu lateral: **Riqueza de Espécies** (Parte 1) e **Modelagem Lagothrix** (Parte 2). Use `python -m streamlit`, não o `streamlit.exe` direto — o executável do pacote está quebrado nesta instalação.
 
+## Publicar o dashboard (Railway)
+
+O repositório já está pronto para deploy no [Railway](https://railway.app) — inclui `Procfile` e
+`.python-version`. Não há nenhum arquivo `.env` nem dado sensível no projeto (sem chaves de API:
+o GBIF é consultado via API pública, sem autenticação).
+
+Passo a passo:
+1. Em [railway.app](https://railway.app), **New Project → Deploy from GitHub repo** e selecione
+   `leoaaragao/uiracu-2.0` (login com sua conta GitHub).
+2. O Railway detecta o `Procfile` automaticamente e builda com Nixpacks — nenhuma configuração
+   extra é necessária.
+3. Em **Settings → Networking**, clique em **Generate Domain** para obter a URL pública
+   (`algo.up.railway.app`).
+4. Pronto — o app sobe direto do repositório público; não precisa subir nenhum arquivo à parte.
+
+**Nota sobre dados grandes:** os rasters brutos do WorldClim e do MapBiomas (centenas de MB) ficam
+fora do git (`.gitignore`) porque são reobteníveis pela fonte documentada acima — o dashboard **não
+depende deles em tempo de execução**, só dos resultados já processados (`Resultados/`, `Dados/*.csv`,
+`.gpkg`), que são pequenos e estão versionados. O deploy funciona sem eles.
+
 ## Estrutura
 
 ```
@@ -66,6 +86,8 @@ Uiracu-2.0/
 ├── Evidencias/          # capturas de tela do processo (auditoria/reprodutibilidade)
 ├── Referencias/         # material de apoio curado (checklist de primatas, cruzamentos, nomes/fotos)
 ├── ROTEIRO_DO_PROJETO.md   # registro cronológico de decisões e uso de IA
+├── Procfile              # comando de start para deploy (Railway/Nixpacks)
+├── .python-version       # versao do Python para o build de deploy
 └── requirements.txt
 ```
 

@@ -530,5 +530,30 @@ Dois ajustes rápidos após revisão do dashboard:
   Vinícius Pires Nogueira, Wikimedia Commons, CC BY-SA 4.0. Arquivo:
   `Dashboard/assets/gaviao_real_juruena_amazonas.jpg` (a foto anterior, de Carajás/PA, foi removida).
 
+## 2026-09-29 — Etapa 18: preparação para publicação (Railway)
+
+O autor perguntou se havia algum arquivo `.env` ou dado sensível antes de publicar o dashboard
+publicamente. Verificação feita nesta etapa (não só resposta de memória):
+
+- **Busca por `.env`:** nenhum arquivo desse tipo existe no projeto.
+- **Busca por segredos no código** (`grep` por api_key/secret/token/password/senha em todo o
+  código Python): nenhum encontrado. O projeto não usa nenhuma chave de API — a busca ao GBIF é
+  feita pela API pública `occurrence/search`, sem autenticação.
+- **Tamanho do repositório versionado:** 61 MB no total (`git ls-files`) — os rasters grandes
+  (WorldClim bruto, MapBiomas) ficam de fora por `.gitignore` e **não são necessários em tempo de
+  execução** do dashboard, só os resultados já processados (pequenos, já versionados).
+- **Conclusão:** repositório limpo e seguro para publicar como está, sem nenhuma etapa extra de
+  remoção de segredo.
+
+Preparado para deploy no Railway (builder Nixpacks, detecta `Procfile` automaticamente):
+- `Procfile`: comando de start (`streamlit run Dashboard/Inicio.py --server.port=$PORT
+  --server.address=0.0.0.0 --server.headless=true`) — testado localmente simulando a porta
+  dinâmica do Railway, funcionou (HTTP 200).
+- `.python-version`: fixa Python 3.13 para o build (o ambiente local usa 3.14.6, muito recente;
+  3.13 é uma versão mais conservadora e amplamente suportada por builders como o Nixpacks).
+- `README.md`: seção "Publicar o dashboard (Railway)" com o passo a passo (conectar o GitHub,
+  gerar domínio) — a conexão da conta Railway/GitHub e o clique em "Deploy" são passos que só o
+  autor pode fazer (login em serviço de terceiros).
+
 ## Documentos de apoio
 - [Anotações da aula (Gemini), 22-23/09/2026](https://drive.google.com/drive/folders/1RgYTo5Ki5dCN0r64YvgQBRm3Cfrw0HHj) — referenciadas na seção "Aprendizados da aula" acima.

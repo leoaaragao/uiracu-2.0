@@ -20,8 +20,18 @@ RAIZ = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 DADOS = os.path.join(RAIZ, "Dados")
 RESULTADOS = os.path.join(RAIZ, "Resultados")
 
-st.title("Parte 2 — Modelagem do macaco-barrigudo (*Lagothrix lagothricha*)")
-st.caption("Estudo de caso aprofundado (SDM): GLM, Maxent, Random Forest, validação cruzada, incerteza — Fichas 2.6 a 2.9.")
+col_titulo, col_foto = st.columns([3, 1])
+with col_titulo:
+    st.title("Parte 2 — Modelagem do macaco-barrigudo (*Lagothrix lagothricha*)")
+    st.caption("Estudo de caso aprofundado (SDM): GLM, Maxent, Random Forest, validação cruzada, "
+               "incerteza — Fichas 2.6 a 2.9.")
+with col_foto:
+    caminho_foto_especie = os.path.join(RAIZ, "Dashboard", "assets", "lagothrix_apui_amazonas.jpg")
+    if os.path.exists(caminho_foto_especie):
+        st.image(caminho_foto_especie, use_container_width=True,
+                  caption="Lagothrix lagothricha cana, Apuí (AM)")
+        st.caption("Foto: Fernando Bondan, iNaturalist · CC BY 4.0 · mesma localidade de um dos "
+                   "37 pontos de calibração deste estudo")
 
 
 def raster_para_rgba(caminho, cmap_nome="YlGn", vmin=0.0, vmax=1.0, opacidade=0.85):

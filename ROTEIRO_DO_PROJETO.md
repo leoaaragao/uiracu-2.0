@@ -637,5 +637,15 @@ superados pelo `README.md`/`ROTEIRO_DO_PROJETO.md` atuais, movidos para `Referen
 preenchido), `RESUMO_PARA_PROFESSORA_24-09.md` e `STATUS_PROJETO_25-09.md` (retratos datados).
 Link interno no roteiro (linha sobre a decisão de 24/09) atualizado para o novo caminho.
 
+## 2026-09-29 — Etapa 22: foto do macaco-barrigudo na Parte 2
+
+Pedido: adicionar uma foto de *Lagothrix lagothricha* na página da Parte 2, de preferência numa
+UC do escopo do projeto. Buscado via API do iNaturalist (observações "research grade", licença
+CC-BY/CC0/CC-BY-SA, dentro da caixa delimitadora das 85 UCs). Achado ótimo: uma observação
+identificada como ***Lagothrix lagothricha cana*** (a subespécie exata do projeto) em **Apuí,
+Amazonas** — a mesma localidade de um dos 37 pontos de calibração do dataset (o "ponto de Apuí"
+discutido e mantido na Etapa 12). Foto: Fernando Bondan (iNaturalist), CC BY 4.0.
+Salva em `Dashboard/assets/lagothrix_apui_amazonas.jpg`, adicionada ao topo da página 2.
+
 ## Documentos de apoio
 - [Anotações da aula (Gemini), 22-23/09/2026](https://drive.google.com/drive/folders/1RgYTo5Ki5dCN0r64YvgQBRm3Cfrw0HHj) — referenciadas na seção "Aprendizados da aula" acima.

@@ -59,13 +59,13 @@ pip install -r requirements.txt
 
 Scripts em ordem de execução em `Scripts/` (numerados). Cada um documenta, no cabeçalho, a qual bloco da Ficha operacional da disciplina corresponde.
 
-### Dashboard interativo (3 páginas)
+### Dashboard interativo (5 páginas)
 
 ```bash
 .venv\Scripts\python.exe -m streamlit run Dashboard\Inicio.py
 ```
 
-Abre em `http://localhost:8501`, com navegação no menu lateral: **Riqueza de Espécies** (Parte 1), **Modelagem Lagothrix** (Parte 2) e **Roteiro do Projeto** (o registro completo de decisões, renderizado direto no site). Use `python -m streamlit`, não o `streamlit.exe` direto — o executável do pacote está quebrado nesta instalação.
+Abre em `http://localhost:8501`, com navegação no menu lateral: **Início** (capa), **Sobre** (resumo acessível, metodologia, ferramentas), **Riqueza de Espécies** (Parte 1), **Modelagem Lagothrix** (Parte 2) e **Roteiro do Projeto** (o registro completo de decisões, renderizado direto no site). Use `python -m streamlit`, não o `streamlit.exe` direto — o executável do pacote está quebrado nesta instalação.
 
 ## Publicar o dashboard (Railway)
 

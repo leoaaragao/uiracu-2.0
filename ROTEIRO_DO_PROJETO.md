@@ -840,3 +840,25 @@ trabalho que o Railway usa) — confirmado que `/app/static/og-image.jpg` respon
 `preview_start` (ambiente local deste assistente) tinha dado falso-negativo porque a pasta de
 trabalho ali fica um nível acima da raiz do repositório — não é um problema da correção em si,
 só uma particularidade desse ambiente de preview específico.
+
+## 2026-09-29 — Etapa 32: reorganização em "capa" + "Sobre" (inspirado no site do Idesam)
+
+Pedido: o autor achou que a organização/apresentação não estava profissional o bastante,
+propondo separar uma capa visual (foto grande + resumo de 1 linha) de um "Sobre" com o conteúdo
+detalhado — no estilo de painéis institucionais como o do Idesam.
+
+**Reestruturação:**
+- `Dashboard/Inicio.py` virou uma capa limpa: foto do gavião-real em destaque, título, um
+  resumo de uma linha e um convite para ir à página Sobre. Todo o texto que antes estava aqui
+  (resumo acessível, "por que Uiraçu", metodologia técnica, cards das Partes 1/2, ferramentas e
+  uso de IA) foi movido para uma página nova.
+- Nova página `Dashboard/pages/1_Sobre.py`, posicionada logo após o Início no menu — recebe todo
+  esse conteúdo.
+- As 3 páginas existentes foram renumeradas para abrir espaço (`1_Riqueza...` → `2_Riqueza...`,
+  `2_Modelagem...` → `3_Modelagem...`, `3_Roteiro...` → `4_Roteiro...`, via `git mv`, preservando
+  histórico). O prefixo numérico só afeta a ordem no menu — as URLs de cada página **não
+  mudaram** (`/Riqueza_de_Especies`, `/Modelagem_Lagothrix`, `/Roteiro_do_Projeto` continuam os
+  mesmos), então nenhum link já compartilhado quebrou.
+
+Menu final: Início → Sobre → Riqueza de Espécies → Modelagem Lagothrix → Roteiro do Projeto.
+Testado ao vivo, ordem e conteúdo corretos, sem erros de console reais.

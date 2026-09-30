@@ -3,6 +3,9 @@
 __pycache__/
 *.pyc
 
+# Chaves de API pessoais (nunca versionar)
+.env
+
 # Dado bruto de terceiros, grande, reobtenivel pela fonte documentada no README
 Dados/ucs_cnuc_bruto/
 Dados/ecoregioes_bruto/

@@ -899,3 +899,90 @@ usamos — não vale o esforço de implementar um coletor separado para ele. Das
 só o **speciesLink** tem potencial real de dado genuinamente novo, e depende do autor se cadastrar
 lá primeiro. Arquivos temporários (763 MB de download) removidos do scratchpad após a análise, não
 versionados.
+
+## 2026-09-29 — Etapa 34: integração do speciesLink e filtro de espécimes históricos
+
+Sequência direta da Etapa 33: o autor se cadastrou no speciesLink e forneceu a chave de API
+pessoal para a IA usar nos scripts de coleta.
+
+**Segurança da chave de API.** A chave (`SPECIESLINK_API_KEY`) nunca é escrita em nenhum arquivo
+versionado. Fica só em `.env`, na raiz do projeto, carregado em tempo de execução via
+`os.environ`/parser manual (sem dependência de `python-dotenv`, que não está instalada). O
+`.gitignore` recebeu uma entrada dedicada (`# Chaves de API pessoais (nunca versionar)` / `.env`),
+confirmada com `git check-ignore -v .env`. Nenhum script, página do dashboard ou documento
+versionado imprime ou referencia o valor da chave — só o nome da variável de ambiente.
+
+**Download (`Scripts/28_baixar_ocorrencias_specieslink.py`).** Consulta a API REST do speciesLink
+(CRIA), `https://specieslink.net/ws/1.0/search`, com `order=Primates`, `coordinates=yes`,
+`output=dwc` (conjunto de campos Darwin Core) e `bbox` **idêntico** ao usado no download original
+do GBIF (Scripts/13: `-74.991206773 -13.880252939231516 -54.99318558660241 3.240947371000061`),
+para os dois levantamentos serem geograficamente comparáveis desde a origem. Paginação via
+`offset`/`limit` (limite de 5.000 por página; `numberMatched`/`numberReturned` da resposta
+controlam o laço). Resultado: **1.352 registros** baixados em uma única página (abaixo do limite),
+salvos em `Dados/specieslink_primatas_bruto.csv` (51 colunas Darwin Core, em minúsculo — diferença
+notada em relação ao GBIF, que usa `camelCase`).
+
+**Comparação e deduplicação (`Scripts/29_comparar_specieslink_gbif.py`).** Aplicada a mesma lição
+da Etapa 33 (o falso positivo do ICMBio): chave de deduplicação **tolerante**, não exata — espécie
+em minúsculo + coordenada arredondada a 2 casas decimais (~1 km), evitando o problema de
+correspondência exata falhar por diferença de precisão de coordenada entre provedores.
+- Dos 1.352 registros baixados, **1.028** caem nos 4 estados-alvo (Amazonas, Acre, Rondônia,
+  Roraima — incluindo a grafia antiga "Território Federal do Amazonas" e variações de
+  codificação de "Rondônia", tratadas via `.str.startswith("Rond")` para não depender de um
+  encoding específico).
+- Desses 1.028, **159** já batem com um registro existente no dataset GBIF do projeto
+  (`Referencias/ocorrencias_primatas_brasil_gbif.csv`) pela chave tolerante — mediana de ano 1967,
+  ou seja, registros antigos que o GBIF já havia capturado de outra forma.
+- **869** não batem com nada already-existente — candidatos a "novo", mediana de ano 1991 (vs.
+  2018 do dataset atual como um todo) — um perfil temporal claramente diferente, sinal de que a
+  fonte não é apenas uma reharvest do mesmo dado.
+
+**Filtro de espécimes históricos (orientação da Profa. Marinez, aplicada nesta etapa).** O dataset
+climático usado no projeto (WorldClim v2.1, ver Etapa 14/22) representa uma normal climática de
+**1970–2000** (confirmado na documentação oficial, worldclim.org/data/worldclim21.html: "They are
+the average for the years 1970-2000"). Um registro de ocorrência coletado muito antes desse período
+— na prática, aqui, espécimes de museu de até 1810 — não tem correspondência confiável com o clima
+usado pelo SDM como referência: ele reflete onde a espécie estava sob um clima diferente do
+modelado, agravado por ~2 séculos de mudança de uso da terra desde a coleta. Isso não é uma questão
+de precisão, é um erro de correspondência temporal (a análise assumiria implicitamente "presença
+sob o clima atual" para um registro que não tem essa propriedade). Regra aplicada: **excluir todo
+registro com ano de coleta < 1970, e também todo registro sem ano determinável** (não dá para
+presumir que um registro sem data é recente).
+- Dos 869 "potencialmente novos": **785 não têm `yearcollected` preenchido** (indeterminável,
+  excluídos por precaução) e **26 têm ano < 1970** (espécime histórico, excluído). Sobram
+  **58 registros genuinamente novos E temporalmente válidos** (ano ≥ 1970).
+- Principais espécies entre os 58: *Saguinus fuscicollis* (15), *Lagothrix lagotricha* (10),
+  *Callithrix acariensis* (4), *Cebuella pygmaea* (3), *Callicebus dubius* (3), entre outras com
+  1–2 registros cada.
+- **Gênero *Lagothrix* (relevante para a Parte 2, cujo *Lagothrix lagothricha* tem hoje só 37
+  pontos de calibração):** sobram 11 registros (10 *L. lagotricha* + 1 *L. lugens*) depois do
+  filtro temporal — bem menos que os "42 potencialmente novos" que uma contagem ingênua (sem o
+  filtro) sugeriria. E, olhando as coordenadas, esses 10 registros de *L. lagotricha* se agrupam em
+  **apenas 2 localidades distintas** (-7,52/-63,03, coletado em 1974, com 4 espécimes; e
+  -6,58/-68,90, coletado em 1991, com 6 espécimes) — ou seja, múltiplos espécimes da mesma
+  expedição/sítio de coleta, não 10 pontos espacialmente independentes. Para fins de SDM (que
+  tipicamente usa 1 ocorrência por célula do raster, thinning espacial padrão), o ganho real é de
+  **até 3 pontos de presença novos e espacialmente únicos** (2 localidades de *L. lagotricha* + 1
+  de *L. lugens*), não 10-42. Um ganho modesto, mas honesto — e ainda assim positivo dado o
+  tamanho pequeno da amostra atual.
+
+**Por que registrar isso com detalhe:** é o mesmo padrão de rigor da Etapa 33 — a primeira
+contagem "empolgante" (869 novos, ou 42 de *Lagothrix*) não é a resposta certa; só depois de
+aplicar o critério metodológico correto (aqui, validade temporal) chega-se ao número que pode
+efetivamente ser usado. Este texto é reaproveitável na seção de métodos da tese (critério de
+inclusão temporal de registros de ocorrência para SDM).
+
+**Arquivos gerados:**
+- `Dados/specieslink_primatas_bruto.csv` — 1.352 registros brutos, direto da API.
+- `Resultados/specieslink_comparacao_completa.csv` — os 1.028 registros da região-alvo, com a
+  coluna `ja_temos_via_gbif`.
+- `Resultados/specieslink_registros_novos.csv` — os 869 "novos" (antes do filtro temporal), com a
+  coluna `ano_valido_temporalmente` para auditoria.
+- `Resultados/specieslink_registros_novos_validos.csv` — os **58** registros novos E
+  temporalmente válidos (o conjunto candidato a uso futuro).
+
+**Status:** nada disso foi integrado ao dataset principal do projeto
+(`Referencias/ocorrencias_primatas_brasil_gbif.csv`) nem ao pipeline da Parte 2 (rarefação,
+redefinição da área M, reajuste dos modelos). Dado o ganho modesto (58 registros, ~3 pontos
+espacialmente únicos de *Lagothrix*), essa é uma decisão a ser tomada explicitamente com o autor —
+não implementada automaticamente — antes de qualquer merge nos dados/pipeline em produção.

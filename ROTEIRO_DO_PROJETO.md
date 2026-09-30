@@ -862,3 +862,40 @@ detalhado — no estilo de painéis institucionais como o do Idesam.
 
 Menu final: Início → Sobre → Riqueza de Espécies → Modelagem Lagothrix → Roteiro do Projeto.
 Testado ao vivo, ordem e conteúdo corretos, sem erros de console reais.
+
+## 2026-09-29 — Etapa 33: investigação real das 3 fontes extras de ocorrência (tese)
+
+Retomada a etapa "aumentar registros com mais fontes" discutida com a professora. Em vez de
+implementar às cegas, cada fonte foi verificada de fato antes de decidir prioridade.
+
+**speciesLink:** API funcional (`specieslink.net/ws/1.0/search`), formato parecido com o GBIF,
+mas **exige `apikey` pessoal** (cadastro próprio, gerenciado em `specieslink.net/aut/profile/apikeys`).
+A IA não pode criar essa conta pelo autor. Fica pendente até o autor se cadastrar e passar a chave.
+
+**SiBBr:** confirmado que é o nó oficial do GBIF no Brasil (selo "NÓ DO GBIF" na própria página) —
+os dados de lá já estão, em grande parte, dentro do GBIF que já usamos. Descartado como fonte
+separada — implementar um coletor próprio seria reimportar o que já temos.
+
+**ICMBio (Portal da Biodiversidade / SISBio):** investigação mais profunda, com dado real, não só
+inferência:
+1. Localizado o dataset principal do ICMBio no IPT deles: "sisbio_ocorrencia" (1.298.907 registros,
+   licença CC-BY 4.0, download livre em Darwin Core Archive, sem necessidade de chave).
+2. Confirmado que **esse dataset já está registrado no GBIF** (UUID `ffe38a37-d659-4b1a-a935-5a5264e3cc0a`).
+3. Baixado o arquivo completo (2,1 GB descompactado) e filtrado para `order == "Primates"`:
+   6.685 registros no Brasil todo, 931 nos 4 estados-alvo (Amazonas, Acre, Rondônia, Roraima).
+4. Primeira comparação (chave exata espécie+coordenada arredondada+ano) sugeriu "931 novos" —
+   **mas era falso positivo**, causado por diferença de precisão de coordenada entre a versão que
+   o GBIF harvesta e o arquivo baixado direto do IPT.
+5. Comparação corrigida (contagem por espécie, dentro da mesma caixa geográfica): dos 1.134
+   registros do SISBio já capturados via GBIF, **943 já caem nos 4 estados-alvo** — praticamente
+   o mesmo total do extrato direto (931). Contagem por espécie bate quase exatamente
+   (*Saguinus bicolor* 85=85, *Mico rondoni* 49=49, *Saimiri boliviensis* 14=14 etc.). As
+   diferenças que pareciam "novas" (*Lagothrix cana*, *Cebus apella*) são **sinônimos taxonômicos
+   antigos** de espécies que já temos sob o nome aceito atual (*Lagothrix lagothricha*,
+   *Sapajus apella*), não ocorrências novas.
+
+**Conclusão:** o ICMBio, assim como o SiBBr, já está substancialmente coberto pelo GBIF que já
+usamos — não vale o esforço de implementar um coletor separado para ele. Das 3 fontes planejadas,
+só o **speciesLink** tem potencial real de dado genuinamente novo, e depende do autor se cadastrar
+lá primeiro. Arquivos temporários (763 MB de download) removidos do scratchpad após a análise, não
+versionados.

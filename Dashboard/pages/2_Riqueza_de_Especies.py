@@ -32,27 +32,32 @@ def carregar_dados(incluir_rr: bool):
     """
     Dois universos de UC no projeto, por motivo conceitual (ver ROTEIRO_DO_PROJETO.md):
     - 85 UCs (AM/AC/RO): usado para o SDM do Lagothrix lagothricha - Roraima
-      excluida por limite biogeografico documentado (Rio Negro/Branco).
+      excluida por limite biogeografico documentado (Rio Negro/Branco). Mantido só com
+      GBIF, para espelhar exatamente o dado usado na Parte 2.
     - 92 UCs (AM/AC/RO/RR): usado para o produto multiespecie/diversidade -
       nao ha motivo para excluir Roraima quando se trata da comunidade de
-      primatas como um todo (base do debate de bonus de biodiversidade).
+      primatas como um todo (base do debate de bonus de biodiversidade). A partir da
+      Etapa 34, usa o dataset INTEGRADO (GBIF + registros válidos do speciesLink,
+      Scripts/28-33) — mais completo para a comunidade toda, sem afetar o SDM.
     """
     if incluir_rr:
-        arq_uc, arq_matriz, arq_ranking = (
+        arq_uc, arq_matriz, arq_ranking, arq_ocorrencias = (
             "ucs_federais_92_multiespecie.gpkg",
-            "matriz_especies_x_ucs92_gbif.csv",
-            "ranking_especies_por_incidencia_ucs92.csv",
+            "matriz_especies_x_ucs92_integrado.csv",
+            "ranking_especies_por_incidencia_ucs92_integrado.csv",
+            "ocorrencias_primatas_brasil_integrado.csv",
         )
     else:
-        arq_uc, arq_matriz, arq_ranking = (
+        arq_uc, arq_matriz, arq_ranking, arq_ocorrencias = (
             "ucs_federais_amazonia_ocidental.gpkg",
             "matriz_especies_x_ucs_gbif.csv",
             "ranking_especies_por_incidencia_ucs.csv",
+            "ocorrencias_primatas_brasil_gbif.csv",
         )
     ucs = gpd.read_file(os.path.join(RAIZ, "Dados", arq_uc)).to_crs("EPSG:4326")
     matriz = pd.read_csv(os.path.join(RAIZ, "Referencias", arq_matriz)).set_index("species")
     ranking = pd.read_csv(os.path.join(RAIZ, "Referencias", arq_ranking)).set_index("species")
-    ocorrencias = pd.read_csv(os.path.join(RAIZ, "Referencias", "ocorrencias_primatas_brasil_gbif.csv"))
+    ocorrencias = pd.read_csv(os.path.join(RAIZ, "Referencias", arq_ocorrencias))
     ocorrencias = ocorrencias.dropna(subset=["decimalLatitude", "decimalLongitude"])
 
     def _coordenada_redonda(serie, casas=1):
@@ -184,6 +189,11 @@ with st.expander("Nota metodológica — leia antes de interpretar os números")
     st.markdown("""
 - **Fonte:** GBIF.org, via API de busca (`occurrence/search`) — **não é um dataset com DOI**, é uma varredura
   exploratória. Ver `Referencias/Primatas_x_UCs_GBIF.xlsx`, aba "Resumo e metodologia", para o processo completo.
+  No recorte de **92 UCs** (padrão), o dataset é complementado por 15 registros do speciesLink (CRIA) que
+  passaram por harmonização taxonômica contra o backbone do GBIF, deduplicação e um filtro de validade
+  temporal (exclui espécimes de museu anteriores a 1970, fora da normal climática do WorldClim) —
+  processo completo no `ROTEIRO_DO_PROJETO.md`, Etapa 34. O recorte de 85 UCs (comparação com a Parte 2)
+  usa só GBIF, para espelhar exatamente o dado do SDM.
 - **Sem restrição política:** os pontos foram filtrados por uma caixa geográfica ao redor das UCs, não pelo país
   declarado no GBIF (que pode estar incorreto — ver caso "Loreto" no `ROTEIRO_DO_PROJETO.md`). A associação a cada
   UC é feita por geometria real (ponto dentro do polígono).

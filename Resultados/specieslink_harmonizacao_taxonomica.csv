@@ -1,0 +1,147 @@
+﻿nome_specieslink,species_aceito_gbif,genus_aceito_gbif,status,matchType,confidence,rank,usageKey
+Alouatta beelzebul,Alouatta belzebul,Alouatta,ACCEPTED,FUZZY,96,SPECIES,2436655.0
+Alouatta belzebul,Alouatta belzebul,Alouatta,ACCEPTED,EXACT,99,SPECIES,2436655.0
+Alouatta caraya,Alouatta caraya,Alouatta,ACCEPTED,EXACT,99,SPECIES,2436652.0
+Alouatta guariba,Alouatta guariba,Alouatta,ACCEPTED,EXACT,99,SPECIES,7262055.0
+Alouatta macconnelli,Alouatta macconnelli,Alouatta,ACCEPTED,EXACT,98,SPECIES,7913455.0
+Alouatta seniculus,Alouatta seniculus,Alouatta,ACCEPTED,EXACT,99,SPECIES,2436648.0
+Alouatta seniculus jurua,Alouatta seniculus,Alouatta,ACCEPTED,HIGHERRANK,99,SPECIES,2436648.0
+Alouatta seniculus macconelli,Alouatta seniculus,Alouatta,ACCEPTED,HIGHERRANK,99,SPECIES,2436648.0
+Alouatta seniculus macconnelli,Alouatta macconnelli,Alouatta,SYNONYM,EXACT,83,SUBSPECIES,11407580.0
+Alouatta seniculus puruensis,Alouatta seniculus,Alouatta,ACCEPTED,EXACT,84,SUBSPECIES,5786096.0
+Alouatta seniculus seniculus,Alouatta seniculus,Alouatta,ACCEPTED,EXACT,84,SUBSPECIES,7262057.0
+Alouatta seniculus ssp.,Alouatta seniculus,Alouatta,ACCEPTED,EXACT,99,SPECIES,2436648.0
+Alouatta sp.,,Alouatta,ACCEPTED,HIGHERRANK,94,GENUS,2436647.0
+Aotus nigriceps,Aotus nigriceps,Aotus,ACCEPTED,EXACT,99,SPECIES,5219595.0
+Aotus sciureus cf.,,,,NONE,100,,
+Aotus sp.,,,,NONE,100,,
+Aotus trivirgatus,Aotus trivirgatus,Aotus,ACCEPTED,EXACT,99,SPECIES,5219590.0
+Aotus trivirgatus infulatus,Aotus trivirgatus,Aotus,ACCEPTED,HIGHERRANK,99,SPECIES,5219590.0
+Aotus trivirgatus vosciferans,Aotus trivirgatus,Aotus,ACCEPTED,HIGHERRANK,99,SPECIES,5219590.0
+Aotus vociferans,Aotus vociferans,Aotus,ACCEPTED,EXACT,99,SPECIES,5219597.0
+Ateles belzebuth,Ateles belzebuth,Ateles,ACCEPTED,EXACT,99,SPECIES,2436642.0
+Ateles belzebuth marginatus,Ateles marginatus,Ateles,SYNONYM,EXACT,83,SUBSPECIES,5786083.0
+Ateles chamek,Ateles chamek,Ateles,ACCEPTED,EXACT,99,SPECIES,2436646.0
+Ateles fusciceps,Ateles fusciceps,Ateles,ACCEPTED,EXACT,99,SPECIES,2436641.0
+Ateles marginatus,Ateles marginatus,Ateles,ACCEPTED,EXACT,99,SPECIES,2436644.0
+Ateles paniscus,Ateles paniscus,Ateles,ACCEPTED,EXACT,99,SPECIES,2436645.0
+Cacajao calvus,Cacajao calvus,Cacajao,ACCEPTED,EXACT,99,SPECIES,2436410.0
+Cacajao calvus rubicundus,Cacajao calvus,Cacajao,ACCEPTED,EXACT,84,SUBSPECIES,4266957.0
+Cacajao melanocephalus,Cacajao melanocephalus,Cacajao,ACCEPTED,EXACT,99,SPECIES,2436409.0
+Cacajao melanocephalus ovakari,Cacajao melanocephalus,Cacajao,ACCEPTED,HIGHERRANK,99,SPECIES,2436409.0
+Callicebus bernhardi,Plecturocebus bernhardi,Plecturocebus,SYNONYM,EXACT,98,SPECIES,2436395.0
+Callicebus brunneus,Plecturocebus brunneus,Plecturocebus,SYNONYM,EXACT,98,SPECIES,2436401.0
+Callicebus caligatus,Plecturocebus caligatus,Plecturocebus,SYNONYM,EXACT,98,SPECIES,2436384.0
+Callicebus cinerascens,Plecturocebus cinerascens,Plecturocebus,SYNONYM,EXACT,98,SPECIES,2436390.0
+Callicebus cupreus,,Plecturocebus,ACCEPTED,HIGHERRANK,97,GENUS,8755067.0
+Callicebus cupreus acreanus,Plecturocebus cupreus,Plecturocebus,SYNONYM,EXACT,83,SUBSPECIES,9061744.0
+Callicebus cupreus cupreus,,Plecturocebus,ACCEPTED,HIGHERRANK,97,GENUS,8755067.0
+Callicebus cupreus discolor,,Plecturocebus,ACCEPTED,HIGHERRANK,97,GENUS,8755067.0
+Callicebus cupreus ornatus,Plecturocebus ornatus,Plecturocebus,SYNONYM,EXACT,83,SUBSPECIES,5786482.0
+Callicebus cupreus ssp.,,Plecturocebus,ACCEPTED,HIGHERRANK,97,GENUS,8755067.0
+Callicebus dubius,Plecturocebus caligatus,Plecturocebus,SYNONYM,EXACT,98,SPECIES,2436403.0
+Callicebus moloch,Plecturocebus moloch,Plecturocebus,SYNONYM,EXACT,98,SPECIES,2436388.0
+Callicebus moloch brunneus,Plecturocebus toppini,Plecturocebus,SYNONYM,EXACT,83,SUBSPECIES,11058529.0
+Callicebus moloch cupreus,Plecturocebus moloch,Plecturocebus,SYNONYM,HIGHERRANK,98,SPECIES,2436388.0
+Callicebus moloch hoffmansi,Plecturocebus moloch,Plecturocebus,SYNONYM,HIGHERRANK,98,SPECIES,2436388.0
+Callicebus moloch remulus,Plecturocebus moloch,Plecturocebus,SYNONYM,HIGHERRANK,98,SPECIES,2436388.0
+Callicebus moloch ssp.,Plecturocebus moloch,Plecturocebus,SYNONYM,EXACT,98,SPECIES,2436388.0
+Callicebus sp.,,Callicebus,ACCEPTED,HIGHERRANK,94,GENUS,2436376.0
+Callicebus torquatus,Cheracebus torquatus,Cheracebus,SYNONYM,EXACT,98,SPECIES,2436394.0
+Callicebus torquatus lucifer,Cheracebus lucifer,Cheracebus,SYNONYM,EXACT,83,SUBSPECIES,5786481.0
+Callicebus torquatus lugens,Cheracebus torquatus,Cheracebus,SYNONYM,HIGHERRANK,98,SPECIES,2436394.0
+Callicebus torquatus medemi,Cheracebus medemi,Cheracebus,SYNONYM,EXACT,83,SUBSPECIES,5786479.0
+Callicebus torquatus regulus,Cheracebus regulus,Cheracebus,SYNONYM,EXACT,83,SUBSPECIES,8843164.0
+Callicebus torquatus torquatus,Cheracebus torquatus,Cheracebus,SYNONYM,HIGHERRANK,98,SPECIES,2436394.0
+Callimico goeldii,Callimico goeldii,Callimico,ACCEPTED,EXACT,99,SPECIES,2436464.0
+Callithrix acariensis,Mico acariensis,Mico,SYNONYM,EXACT,98,SPECIES,5707299.0
+Callithrix argentata,Mico argentatus,Mico,SYNONYM,EXACT,98,SPECIES,5219540.0
+Callithrix humeralifer,Mico humeralifer,Mico,SYNONYM,EXACT,98,SPECIES,9199568.0
+Callithrix humeralifer humeralifer,Mico humeralifer,Mico,SYNONYM,HIGHERRANK,98,SPECIES,9199568.0
+Callithrix manicorensis,Mico marcai,Mico,SYNONYM,EXACT,98,SPECIES,5707294.0
+Callithrix pygmaea,Cebuella pygmaea,Cebuella,SYNONYM,EXACT,98,SPECIES,5219535.0
+Callithrix pygmaea pygmaea,Cebuella pygmaea,Cebuella,SYNONYM,EXACT,83,SUBSPECIES,7261985.0
+Cebuella pygmaea,Cebuella pygmaea,Cebuella,ACCEPTED,EXACT,99,SPECIES,4827382.0
+Cebuella pygmaea niveiventris,Cebuella niveiventris,Cebuella,SYNONYM,EXACT,83,SUBSPECIES,5786449.0
+Cebus,,Cebus,ACCEPTED,HIGHERRANK,94,GENUS,2436635.0
+Cebus albifrons,Cebus albifrons,Cebus,ACCEPTED,EXACT,99,SPECIES,2436636.0
+Cebus albifrons cuscinus,Cebus cuscinus,Cebus,SYNONYM,EXACT,83,SUBSPECIES,4266908.0
+Cebus albifrons ssp.,Cebus albifrons,Cebus,ACCEPTED,EXACT,99,SPECIES,2436636.0
+Cebus albifrons unicolor,Cebus unicolor,Cebus,SYNONYM,EXACT,83,SUBSPECIES,4266916.0
+Cebus apella,Sapajus apella,Sapajus,SYNONYM,EXACT,98,SPECIES,2436639.0
+Cebus apella apella,Sapajus apella,Sapajus,SYNONYM,EXACT,83,SUBSPECIES,7261994.0
+Cebus apella libidinosus,Sapajus apella,Sapajus,SYNONYM,HIGHERRANK,98,SPECIES,2436639.0
+Cebus apella macrocephalus,Sapajus apella,Sapajus,SYNONYM,EXACT,83,SUBSPECIES,4266925.0
+Cebus fatuellus,,Cebus,ACCEPTED,HIGHERRANK,94,GENUS,2436635.0
+Cebus olivaceus,Cebus olivaceus,Cebus,ACCEPTED,EXACT,99,SPECIES,2436638.0
+Cebus sp.,,Cebus,ACCEPTED,HIGHERRANK,94,GENUS,2436635.0
+Cheracebus torquatus,Cheracebus torquatus,Cheracebus,ACCEPTED,EXACT,99,SPECIES,9264949.0
+Cheracebus torquatus lucifer,Cheracebus torquatus,Cheracebus,ACCEPTED,HIGHERRANK,99,SPECIES,9264949.0
+Chiropotes albinasus,Chiropotes albinasus,Chiropotes,ACCEPTED,EXACT,99,SPECIES,5219526.0
+Chiropotes chiropotes,Chiropotes chiropotes,Chiropotes,ACCEPTED,EXACT,99,SPECIES,5707307.0
+Chiropotes sagulatus,Chiropotes sagulatus,Chiropotes,ACCEPTED,EXACT,99,SPECIES,8091165.0
+Chiropotes satanas,Chiropotes satanas,Chiropotes,ACCEPTED,EXACT,99,SPECIES,5219527.0
+Cothurus rubicundus,,,ACCEPTED,HIGHERRANK,92,KINGDOM,1.0
+Lagothrix infumata,,Lagothrix,ACCEPTED,HIGHERRANK,94,GENUS,2436656.0
+Lagothrix lagothricha,Lagothrix lagothricha,Lagothrix,ACCEPTED,EXACT,99,SPECIES,5786085.0
+Lagothrix lagothricha lagothricha,Lagothrix lagothricha,Lagothrix,ACCEPTED,EXACT,84,SUBSPECIES,8756566.0
+Lagothrix lagothricha poeppigii,Lagothrix lagothricha,Lagothrix,ACCEPTED,EXACT,84,SUBSPECIES,5786087.0
+Lagothrix lagotricha,Lagothrix lagothricha,Lagothrix,ACCEPTED,FUZZY,96,SPECIES,5786085.0
+Lagothrix lagotricha cana,Lagothrix lagothricha,Lagothrix,ACCEPTED,HIGHERRANK,96,SPECIES,5786085.0
+Lagothrix lagotricha poeppigii,Lagothrix lagothricha,Lagothrix,ACCEPTED,HIGHERRANK,96,SPECIES,5786085.0
+Lagothrix lagotricha ssp.,Lagothrix lagothricha,Lagothrix,ACCEPTED,FUZZY,96,SPECIES,5786085.0
+Lagothrix lugens,Lagothrix lagothricha,Lagothrix,SYNONYM,EXACT,98,SPECIES,4267241.0
+Leontocebus fuscicollis weddelli,Leontocebus weddelli,Leontocebus,SYNONYM,EXACT,83,SUBSPECIES,11025801.0
+Leontocebus graellsi,,Leontocebus,ACCEPTED,HIGHERRANK,92,GENUS,5428933.0
+Leontopithecus rosalia,Leontopithecus rosalia,Leontopithecus,ACCEPTED,EXACT,99,SPECIES,2436482.0
+Mico humeralifer,Mico humeralifer,Mico,ACCEPTED,EXACT,99,SPECIES,5786463.0
+Mico intermedius,Mico intermedius,Mico,ACCEPTED,EXACT,99,SPECIES,5786465.0
+Mico melanurus,Mico melanurus,Mico,ACCEPTED,EXACT,99,SPECIES,5786462.0
+Mico rondoni,Mico rondoni,Mico,ACCEPTED,EXACT,99,SPECIES,5786458.0
+Mico sp.,,Mico,ACCEPTED,HIGHERRANK,94,GENUS,7826251.0
+Pithecia irrorata,Pithecia irrorata,Pithecia,ACCEPTED,EXACT,99,SPECIES,2436372.0
+Pithecia irrorata irrorata,Pithecia irrorata,Pithecia,SYNONYM,EXACT,83,SUBSPECIES,7342631.0
+Pithecia irrorata vanzolinii,Pithecia vanzolinii,Pithecia,SYNONYM,EXACT,83,SUBSPECIES,5786469.0
+Pithecia mittermeieri,Pithecia mittermeieri,Pithecia,ACCEPTED,EXACT,99,SPECIES,8480241.0
+Pithecia monachus,Pithecia monachus,Pithecia,ACCEPTED,EXACT,99,SPECIES,2436375.0
+Pithecia monachus monachus,Pithecia monachus,Pithecia,SYNONYM,EXACT,83,SUBSPECIES,7261999.0
+Pithecia pithecia,Pithecia pithecia,Pithecia,ACCEPTED,EXACT,99,SPECIES,2436373.0
+Pithecia satanas chiropotes,,Pithecia,ACCEPTED,HIGHERRANK,94,GENUS,2436370.0
+Plecturocebus bernhardi,Plecturocebus bernhardi,Plecturocebus,ACCEPTED,EXACT,99,SPECIES,9418473.0
+Plecturocebus hoffmannsi,Plecturocebus hoffmannsi,Plecturocebus,ACCEPTED,EXACT,99,SPECIES,9584627.0
+Plecturocebus moloch,Plecturocebus moloch,Plecturocebus,ACCEPTED,EXACT,99,SPECIES,9523044.0
+Plecturocebus toppini,Plecturocebus toppini,Plecturocebus,ACCEPTED,EXACT,99,SPECIES,9483946.0
+Primates,,,ACCEPTED,HIGHERRANK,94,ORDER,798.0
+Saguinus,,Saguinus,ACCEPTED,HIGHERRANK,94,GENUS,2436465.0
+Saguinus bicolor,Saguinus bicolor,Saguinus,ACCEPTED,EXACT,99,SPECIES,2436470.0
+Saguinus fuscicollis,Leontocebus fuscicollis,Leontocebus,SYNONYM,EXACT,98,SPECIES,2436474.0
+Saguinus fuscicollis acrensis,Leontocebus weddelli,Leontocebus,HETEROTYPIC_SYNONYM,EXACT,82,SUBSPECIES,9425339.0
+Saguinus fuscicollis fuscicollis,Leontocebus fuscicollis,Leontocebus,SYNONYM,EXACT,83,SUBSPECIES,4266874.0
+Saguinus fuscicollis melanoleucus,Leontocebus weddelli,Leontocebus,SYNONYM,EXACT,83,SUBSPECIES,5786448.0
+Saguinus fuscicollis pebilis,Leontocebus fuscicollis,Leontocebus,SYNONYM,HIGHERRANK,98,SPECIES,2436474.0
+Saguinus fuscicollis weddelii,Leontocebus fuscicollis,Leontocebus,SYNONYM,HIGHERRANK,98,SPECIES,2436474.0
+Saguinus fuscicollis weddelli,Leontocebus weddelli,Leontocebus,SYNONYM,EXACT,83,SUBSPECIES,4266879.0
+Saguinus imperator,Saguinus imperator,Saguinus,ACCEPTED,EXACT,99,SPECIES,2436471.0
+Saguinus imperator imperator,Saguinus imperator,Saguinus,ACCEPTED,EXACT,84,SUBSPECIES,4266870.0
+Saguinus imperator subgrisescens,Saguinus imperator,Saguinus,ACCEPTED,EXACT,84,SUBSPECIES,4266888.0
+Saguinus inustus,Saguinus inustus,Saguinus,ACCEPTED,EXACT,99,SPECIES,2436475.0
+Saguinus labiatus,Saguinus labiatus,Saguinus,ACCEPTED,EXACT,99,SPECIES,9178968.0
+Saguinus labiatus labiatus,Saguinus labiatus,Saguinus,ACCEPTED,EXACT,84,SUBSPECIES,7261986.0
+Saguinus midas,Saguinus midas,Saguinus,ACCEPTED,EXACT,99,SPECIES,2436468.0
+Saguinus mystax,Saguinus mystax,Saguinus,ACCEPTED,EXACT,99,SPECIES,2436472.0
+Saguinus mystax mystax,Saguinus mystax,Saguinus,ACCEPTED,EXACT,84,SUBSPECIES,7261988.0
+Saguinus nigricollis,Leontocebus nigricollis,Leontocebus,SYNONYM,EXACT,98,SPECIES,2436477.0
+Saguinus weddelli,Leontocebus weddelli,Leontocebus,SYNONYM,EXACT,98,SPECIES,8242404.0
+Saimiri,,Saimiri,ACCEPTED,HIGHERRANK,94,GENUS,2436659.0
+Saimiri boliviensis,Saimiri boliviensis,Saimiri,ACCEPTED,EXACT,99,SPECIES,2436663.0
+Saimiri boliviensis boliviensis,Saimiri boliviensis,Saimiri,ACCEPTED,EXACT,84,SUBSPECIES,4266897.0
+Saimiri boliviensis peruviensis,Saimiri boliviensis,Saimiri,ACCEPTED,EXACT,84,SUBSPECIES,4266901.0
+Saimiri sciureus,Saimiri sciureus,Saimiri,ACCEPTED,EXACT,99,SPECIES,2436661.0
+Saimiri sciureus caquetensis,Saimiri sciureus,Saimiri,ACCEPTED,HIGHERRANK,99,SPECIES,2436661.0
+Saimiri sciureus cassiquiarensis,Saimiri cassiquiarensis,Saimiri,SYNONYM,EXACT,83,SUBSPECIES,4266896.0
+Saimiri sciureus macrodon,Saimiri macrodon,Saimiri,SYNONYM,EXACT,83,SUBSPECIES,4266900.0
+Saimiri sciureus sciureus,Saimiri sciureus,Saimiri,SYNONYM,EXACT,83,SUBSPECIES,7261989.0
+Saimiri sciureus ssp.,Saimiri sciureus,Saimiri,ACCEPTED,EXACT,99,SPECIES,2436661.0
+Saimiri ustus,Saimiri ustus,Saimiri,ACCEPTED,EXACT,99,SPECIES,8885431.0
+Sapajus apella,Sapajus apella,Sapajus,ACCEPTED,EXACT,99,SPECIES,7477334.0
+Unidentified sp.,,,,NONE,100,,

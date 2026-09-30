@@ -46,9 +46,11 @@ O projeto tem duas partes independentes, ambas cobrindo os Estados da **Amazôni
 regional do projeto de doutorado:
 
 - **Verificação de riqueza (Parte 1):** varredura de ocorrências via API do GBIF
-  (`occurrence/search`), sem restrição por país/estado declarado — associação a cada UC feita por
-  geometria real (ponto dentro do polígono), não por rótulo textual, que pode estar incorreto
-  (ver o caso documentado no `ROTEIRO_DO_PROJETO.md`).
+  (`occurrence/search`), complementada por um pequeno número de registros do speciesLink (CRIA)
+  que passaram por harmonização taxonômica contra o backbone do GBIF, deduplicação e filtro de
+  validade temporal (Etapa 34), sem restrição por país/estado declarado — associação a cada UC
+  feita por geometria real (ponto dentro do polígono), não por rótulo textual, que pode estar
+  incorreto (ver o caso documentado no `ROTEIRO_DO_PROJETO.md`).
 - **Modelagem de distribuição — SDM (Parte 2):** GLM, Maxent (via biblioteca Python `elapid`,
   substituindo o software Maxent original de Phillips et al.) e Random Forest, ajustados sobre
   eixos de PCA das variáveis WorldClim, com validação cruzada K-fold, mapa de consenso e de
@@ -85,7 +87,8 @@ with col1:
 - Todas as **168 espécies** de primata pan-amazônicas pesquisadas no GBIF
 - Todas as **92 UCs federais** (Amazonas, Acre, Rondônia **e Roraima**)
 - Mapa de riqueza, ranking por incidência, nome popular e foto de cada espécie
-- Baseado em **evidência de ocorrência** (registros confirmados), não em modelagem
+- Baseado em **evidência de ocorrência** (GBIF + speciesLink, registros confirmados), não em
+  modelagem
 
 *Status: completo e interativo.*
 """)
@@ -122,8 +125,10 @@ with st.expander("Ferramentas e uso de IA"):
   reaproveitados aqui).
 
 **Dados:**
-- **APIs do GBIF** (`occurrence/search` e `occurrence/download`, esta com DOI): fonte direta de
+- **APIs do GBIF** (`occurrence/search` e `occurrence/download`, esta com DOI): fonte principal de
   todos os dados de ocorrência de primatas, sem intermediários.
+- **API do speciesLink (CRIA)**: fonte complementar de ocorrências para a Parte 1, usada só após
+  harmonização taxonômica, deduplicação e filtro de validade temporal (Etapa 34 do Roteiro).
 - **WorldClim v2.1** (variáveis bioclimáticas) e **MapBiomas Coleção 11** (cobertura da terra).
 
 **Python — todo o pipeline (sem QGIS, sem R, sem software Maxent original):**

@@ -966,23 +966,104 @@ presumir que um registro sem data é recente).
   de *L. lugens*), não 10-42. Um ganho modesto, mas honesto — e ainda assim positivo dado o
   tamanho pequeno da amostra atual.
 
-**Por que registrar isso com detalhe:** é o mesmo padrão de rigor da Etapa 33 — a primeira
-contagem "empolgante" (869 novos, ou 42 de *Lagothrix*) não é a resposta certa; só depois de
-aplicar o critério metodológico correto (aqui, validade temporal) chega-se ao número que pode
-efetivamente ser usado. Este texto é reaproveitável na seção de métodos da tese (critério de
-inclusão temporal de registros de ocorrência para SDM).
-
-**Arquivos gerados:**
+**Arquivos gerados nesta primeira passada:**
 - `Dados/specieslink_primatas_bruto.csv` — 1.352 registros brutos, direto da API.
 - `Resultados/specieslink_comparacao_completa.csv` — os 1.028 registros da região-alvo, com a
   coluna `ja_temos_via_gbif`.
 - `Resultados/specieslink_registros_novos.csv` — os 869 "novos" (antes do filtro temporal), com a
   coluna `ano_valido_temporalmente` para auditoria.
-- `Resultados/specieslink_registros_novos_validos.csv` — os **58** registros novos E
-  temporalmente válidos (o conjunto candidato a uso futuro).
+- `Resultados/specieslink_registros_novos_validos.csv` — os 58 registros novos E temporalmente
+  válidos segundo essa primeira comparação.
 
-**Status:** nada disso foi integrado ao dataset principal do projeto
-(`Referencias/ocorrencias_primatas_brasil_gbif.csv`) nem ao pipeline da Parte 2 (rarefação,
-redefinição da área M, reajuste dos modelos). Dado o ganho modesto (58 registros, ~3 pontos
-espacialmente únicos de *Lagothrix*), essa é uma decisão a ser tomada explicitamente com o autor —
-não implementada automaticamente — antes de qualquer merge nos dados/pipeline em produção.
+**Terceiro problema encontrado: nomes científicos desatualizados (`Scripts/30` e `Scripts/31`).**
+Antes de integrar os 58 registros a qualquer coisa, uma inspeção mais de perto revelou o MESMO
+tipo de erro do caso ICMBio (Etapa 33): a comparação acima usa `scientificname`, o nome **verbatim**
+catalogado por cada coleção do speciesLink — não necessariamente o nome aceito hoje pelo backbone
+do GBIF, que é o que a coluna `species` do dataset já usado no projeto representa. A taxonomia de
+primatas neotropicais mudou muito nas últimas duas décadas (splits de *Saguinus* → *Leontocebus*,
+*Callicebus* → *Plecturocebus*/*Cheracebus*, *Callithrix* → *Mico*/*Cebuella*, entre outros), e boa
+parte das coleções de museu catalogou os espécimes com o nome vigente na época da identificação, não
+o atual. Sinal concreto: entre os 58 "válidos", havia 10 registros de "*Lagothrix lagotricha*" e 1
+de "*Lagothrix lugens*" — nomes que **não existem** textualmente no dataset atual, que usa
+"*Lagothrix lagothricha*" (note a diferença de grafia/nome) — fazendo esses registros parecerem
+"novos" quando talvez não fossem.
+1. `Scripts/30_harmonizar_taxonomia_specieslink.py` resolveu, um a um, os **146 nomes científicos
+   únicos** do download bruto do speciesLink contra o backbone do GBIF (`species/match`,
+   `rank=SPECIES`, `strict=False` — mesmo endpoint/parâmetros do `Scripts/02`), salvando uma tabela
+   de harmonização auditável (`Resultados/specieslink_harmonizacao_taxonomica.csv`: nome do
+   speciesLink → nome aceito, status taxonômico, `usageKey`). Confirmado: "Lagothrix lagotricha" e
+   "Lagothrix lugens" resolvem para "**Lagothrix lagothricha**" (status `ACCEPTED`/`SYNONYM`,
+   respectivamente) — a mesma espécie-alvo da Parte 2. Outros casos relevantes: "Saguinus
+   fuscicollis" → "Leontocebus fuscicollis", "Callithrix acariensis" → "Mico acariensis",
+   "Callicebus dubius" → "Plecturocebus caligatus", "Callicebus torquatus" → "Cheracebus torquatus".
+   122 dos 1.352 registros brutos (9%) não resolvem a nenhuma espécie (nível gênero, ordem, ou
+   indeterminado — ex. "Primates", "Cebus sp.", "Unidentified sp.") e não podem entrar numa matriz
+   de riqueza por espécie.
+2. `Scripts/31_comparar_specieslink_gbif_harmonizado.py` refez a comparação inteira (mesma chave
+   tolerante — espécie + coordenada arredondada a 2 casas — mas agora com o **nome aceito**, não o
+   verbatim):
+   - Das 1.352, **916** têm espécie resolvida E caem nos 4 estados-alvo (menos que as 1.028 da
+     primeira passada, porque 122 registros indeterminados saem do total).
+   - **226** já batem com o dataset atual pela chave tolerante (era 159) — a correção capturou 67
+     registros que a primeira passada tinha classificado erradamente como "novos" só porque o nome
+     de texto era diferente, mesmo a espécie e o local sendo os mesmos.
+   - **690** continuam sem bater (era 869).
+   - Aplicando o mesmo filtro temporal (ano ≥ 1970): 674 sem ano determinável + 1 anterior a 1970,
+     restando **15 registros genuinamente novos E temporalmente válidos** (era 58).
+   - **Gênero *Lagothrix*, com o nome correto: sobra só 1 registro** ("Lagothrix lugens", 1998,
+     Amazonas — harmonizado para *Lagothrix lagothricha*), não os 11 (ou os "até 3 localidades
+     únicas") estimados na primeira passada. Os outros 10 registros de "Lagothrix lagotricha" já
+     estavam no dataset GBIF sob o nome aceito, nos mesmos locais — não eram novos, só catalogados
+     com um nome de texto diferente no speciesLink.
+
+**Por que registrar as duas passadas, com o erro incluído:** é o mesmo padrão de rigor da Etapa 33
+— e vale reafirmar aqui porque se repetiu numa forma diferente (sinonímia textual, não precisão de
+coordenada) dentro do MESMO exercício. A contagem "empolgante" da primeira passada (869 novos, ou
+11 de *Lagothrix*) não era a resposta certa; só depois de harmonizar a taxonomia chega-se ao número
+que pode efetivamente ser usado. Este texto — incluindo o erro e a correção — é diretamente
+reaproveitável na seção de métodos da tese, como exemplo de dois critérios de inclusão que precisam
+ser aplicados juntos ao combinar fontes de ocorrência (identidade taxonômica aceita + validade
+temporal), não um no lugar do outro.
+
+**Integração ao dataset principal (`Scripts/32` e `Scripts/33`), decidida com o autor.** Dos 15
+registros finais, a decisão foi integrar apenas à **Parte 1** (riqueza/ranking multiespécie), não à
+Parte 2 (SDM do *Lagothrix lagothricha*) — com só 1 ponto novo de *Lagothrix* após a correção, o
+ganho não justifica reprocessar rarefação/área M/ensemble.
+- `Scripts/32_integrar_specieslink_ao_dataset.py` criou
+  `Referencias/ocorrencias_primatas_brasil_integrado.csv` = dataset original do GBIF (14.588
+  registros, 123 espécies, arquivo original **intocado**, mantido para proveniência) + os 15
+  registros do speciesLink (mapeados para o mesmo esquema de colunas: nome aceito em `species`,
+  `taxonKey`/`speciesKey` = `usageKey` do GBIF, `datasetName` = "speciesLink (CRIA)" para manter a
+  origem rastreável). Resultado: **14.603 registros, 124 espécies** — uma espécie inteiramente nova
+  para o levantamento regional, ***Alouatta guariba***, que não tinha nenhum registro via GBIF na
+  caixa geográfica do projeto.
+- `Scripts/33_cruzar_especies_ucs_92_integrado.py` refez o cruzamento espacial com as 92 UCs sobre
+  o dataset integrado. **Achado importante, verificado, não assumido:** o número de ocorrências
+  dentro do polígono de alguma das 92 UCs **não mudou** (825, igual à versão só-GBIF) — nenhum dos
+  15 registros novos cai dentro de uma UC (todos fora do polígono, embora dentro da caixa
+  geográfica ampla da região). Ou seja, a integração enriquece o levantamento regional geral (mais
+  1 espécie, mais pontos no mapa completo) mas **não muda o ranking de riqueza por UC**, que é o
+  produto central da Parte 1 — resultado honesto, não o "salto" que a contagem bruta de "15 novos"
+  sozinha sugeriria.
+- Dashboard atualizado (`Dashboard/pages/2_Riqueza_de_Especies.py`): o recorte padrão de 92 UCs
+  (toggle "Incluir Roraima", ligado por padrão) agora carrega o dataset e as tabelas integradas; o
+  recorte de 85 UCs (comparação direta com o escopo da Parte 2) continua só com GBIF, para
+  continuar espelhando exatamente o dado usado no SDM. Testado ao vivo nos dois modos do toggle —
+  92 UCs mostra 825 ocorrências/68 espécies com registro dentro de UC (idêntico a antes, como
+  esperado); 85 UCs mostra 792/68, inalterado.
+
+**Arquivos gerados nesta correção/integração:**
+- `Resultados/specieslink_harmonizacao_taxonomica.csv` — tabela de harmonização, 146 nomes.
+- `Resultados/specieslink_registros_novos_harmonizado.csv`,
+  `specieslink_comparacao_completa_harmonizado.csv`,
+  `specieslink_registros_novos_validos_harmonizado.csv` (os 15 finais) — versões corrigidas dos
+  outputs do `Scripts/29`.
+- `Referencias/ocorrencias_primatas_brasil_integrado.csv` — dataset integrado (só usado na Parte 1).
+- `Referencias/matriz_especies_x_ucs92_integrado.csv`,
+  `Referencias/ranking_especies_por_incidencia_ucs92_integrado.csv` — outputs do `Scripts/33`.
+
+**Status final:** Parte 1 (dashboard, recorte de 92 UCs) usa o dataset integrado desde esta etapa.
+Parte 2 (SDM do *Lagothrix lagothricha*) permanece intocada — decisão explícita, registrada aqui e
+comunicada à orientação da disciplina (Profa. Marinez): depois de aplicar os filtros corretos
+(nome aceito + validade temporal), sobra só 1 registro novo de *Lagothrix* nas fontes adicionais
+investigadas, número baixo demais para justificar reabrir a modelagem.

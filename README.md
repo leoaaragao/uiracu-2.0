@@ -21,7 +21,7 @@ Projeto desenvolvido para a disciplina **Análise espacial da biodiversidade, mu
 **Pergunta:** quais Unidades de Conservação federais da Amazônia têm mais espécies de primata?
 
 - **168 espécies** pan-amazônicas (todos os gêneros de primata), **92 UCs** (Amazonas, Acre, Rondônia **e Roraima** — não há motivo biogeográfico para excluir Roraima quando o assunto é a comunidade toda; ver `ROTEIRO_DO_PROJETO.md`).
-- Baseado em evidência de ocorrência (GBIF), com nome popular e foto por espécie.
+- Baseado em evidência de ocorrência (GBIF + speciesLink, este último com harmonização taxonômica e filtro temporal — Etapa 34), com nome popular e foto por espécie.
 - Dashboard interativo pronto (mapa de riqueza, ranking, exploração por espécie/UC).
 
 ## Parte 2 — Modelagem de *Lagothrix lagothricha* (✅ modelagem completa)
@@ -43,6 +43,7 @@ Processo completo, decisão por decisão — incluindo onde e como a IA (Claude)
 | Unidades de Conservação (CNUC) | MMA/ICMBio, via reaproveitamento do projeto Uiraçu 1.0 | Dado público |
 | Ocorrências de *Lagothrix lagothricha* | GBIF.org, [doi.org/10.15468/dl.r8eynx](https://doi.org/10.15468/dl.r8eynx) (23/09/2026) | GBIF Data User Agreement |
 | Ocorrências de outros primatas (168 espécies, sem DOI) | GBIF.org, API `occurrence/search` (24/09/2026) | GBIF Data User Agreement |
+| Ocorrências complementares (15 registros, Parte 1 apenas) | speciesLink/CRIA, API `search` (29/09/2026), após harmonização taxonômica e filtro temporal — ver `ROTEIRO_DO_PROJETO.md`, Etapa 34 | Requer chave pessoal (`.env`, não versionada) |
 | Nomes populares e fotos | GBIF (`vernacularNames` + `occurrence` media) | Variável por registro — ver `Referencias/especies_nomes_populares_fotos.csv` |
 | Ecorregiões (base para a área M) | WWF Terrestrial Ecoregions (Olson et al. 2001), via material da disciplina | Dado público |
 | Fronteiras internacionais | ESRI World Countries, via material da disciplina | Dado público |
@@ -73,8 +74,9 @@ O repositório já está pronto para deploy no [Railway](https://railway.app) �
 `.python-version` e `railpack.json` (este último instala bibliotecas de sistema exigidas pelo
 `rasterio`/GDAL em tempo de execução — sem elas o deploy quebra com `ImportError: libexpat.so.1:
 cannot open shared object file`; ver `ROTEIRO_DO_PROJETO.md`, Etapas 28-30, para o processo de
-diagnóstico). Não há nenhum arquivo `.env` nem dado sensível no projeto (sem chaves de API: o
-GBIF é consultado via API pública, sem autenticação).
+diagnóstico). Nenhuma chave de API é versionada no projeto: o GBIF é consultado via API pública,
+sem autenticação; o speciesLink exige uma chave pessoal, mantida só em `.env` local (nunca
+versionado, ver `.gitignore`) e não necessária para rodar o dashboard.
 
 Passo a passo:
 1. Em [railway.app](https://railway.app), **New Project → Deploy from GitHub repo** e selecione
@@ -84,6 +86,10 @@ Passo a passo:
 3. Em **Settings → Networking**, clique em **Generate Domain** para obter a URL pública
    (`algo.up.railway.app`).
 4. Pronto — o app sobe direto do repositório público; não precisa subir nenhum arquivo à parte.
+
+**Nota sobre chave de API:** o `Scripts/28` (coleta complementar via speciesLink) usa uma chave
+pessoal, lida de um `.env` local **nunca versionado** (`.gitignore`). Ela não é necessária para
+rodar o dashboard — só para reexecutar aquele script específico de coleta.
 
 **Nota sobre dados grandes:** os rasters brutos do WorldClim e do MapBiomas (centenas de MB) ficam
 fora do git (`.gitignore`) porque são reobteníveis pela fonte documentada acima — o dashboard **não
